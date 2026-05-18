@@ -41,7 +41,7 @@ const ActionButtons = ({
   t,
 }) => {
   return (
-    <div className='flex items-center gap-2 md:gap-3'>
+    <div className='header-actions-toolbar flex shrink-0 items-center gap-1 rounded-xl border border-indigo-100/85 bg-white/65 px-1.5 py-1 shadow-sm shadow-indigo-500/[0.06] dark:border-white/10 dark:bg-zinc-900/55 dark:shadow-black/40 md:gap-1.5 md:px-2 md:py-1'>
       <NewYearButton isNewYear={isNewYear} />
 
       <NotificationButton

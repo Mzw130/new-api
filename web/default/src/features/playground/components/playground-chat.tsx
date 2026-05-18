@@ -1,3 +1,21 @@
+/*
+Copyright (C) 2023-2026 QuantumNous
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+For commercial licensing, please contact support@quantumnous.com
+*/
 import { useEffect, useMemo, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -94,13 +112,27 @@ export function PlaygroundChat({
             return (
               <Branch defaultBranch={0} key={message.key}>
                 <BranchMessages>
-                  {versions.map((version, versionIndex) => (
-                    <Message
-                      className='group flex-row-reverse'
-                      from={message.from}
-                      key={`${message.key}-${version.id}-${versionIndex}`}
-                    >
-                      <div className='w-full min-w-0 flex-1 basis-full py-1'>
+                  {versions.map((version, versionIndex) => {
+                    const isUser = message.from === MESSAGE_ROLES.USER
+                    const editingThis = isEditing(message.key)
+                    return (
+                      <Message
+                        from={message.from}
+                        key={`${message.key}-${version.id}-${versionIndex}`}
+                      >
+                        <div
+                          className={cn(
+                            'min-w-0 py-1',
+                            isUser
+                              ? cn(
+                                  'ms-auto flex max-w-[min(100%,42rem)] flex-col gap-1',
+                                  editingThis
+                                    ? 'w-full items-stretch'
+                                    : 'w-fit items-end'
+                                )
+                              : 'w-full min-w-0 flex-1 basis-full'
+                          )}
+                        >
                         {isEditing(message.key) ? (
                           <div className='space-y-2'>
                             <Textarea
@@ -225,7 +257,11 @@ export function PlaygroundChat({
                                     <>
                                       <MessageError
                                         message={message}
-                                        className='mb-2'
+                                        className={cn(
+                                          'mb-2',
+                                          message.from === MESSAGE_ROLES.USER &&
+                                            'w-full max-w-lg'
+                                        )}
                                       />
                                       {actions}
                                     </>
@@ -251,7 +287,8 @@ export function PlaygroundChat({
                         )}
                       </div>
                     </Message>
-                  ))}
+                    )
+                  })}
                 </BranchMessages>
 
                 {/* Branch selector for multiple versions */}

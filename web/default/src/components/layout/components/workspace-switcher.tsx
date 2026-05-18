@@ -22,6 +22,7 @@ import {
 import { useWorkspace } from '../context/workspace-context'
 import { getWorkspaceByPath, WORKSPACE_IDS } from '../lib/workspace-registry'
 import { type Workspace } from '../types'
+import { DEFAULT_SYSTEM_NAME, logoSrcWithCacheBust } from '@/lib/constants'
 
 type WorkspaceSwitcherProps = {
   workspaces: Workspace[]
@@ -37,7 +38,7 @@ type WorkspaceSwitcherProps = {
  */
 export function WorkspaceSwitcher({
   workspaces,
-  defaultName = 'New API',
+  defaultName = DEFAULT_SYSTEM_NAME,
   defaultVersion,
 }: WorkspaceSwitcherProps) {
   const { t } = useTranslation()
@@ -106,6 +107,14 @@ export function WorkspaceSwitcher({
     }
   }, [pathname, availableWorkspaces, setActiveWorkspace])
 
+  const logoCacheKey =
+    typeof status?.start_time === 'string' && status.start_time
+      ? status.start_time
+      : typeof status?.version === 'string'
+        ? status.version
+        : undefined
+  const logoSrc = logoSrcWithCacheBust(logo, logoCacheKey)
+
   const handleWorkspaceChange = (workspace: Workspace) => {
     // Only navigate, let useEffect synchronize workspace state based on new pathname
     // This avoids race conditions and context loss issues
@@ -124,21 +133,25 @@ export function WorkspaceSwitcher({
   const workspaceButtonContent = (
     <>
       {activeWorkspace.id === WORKSPACE_IDS.SYSTEM_SETTINGS ? (
-        <div className='bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg'>
+        <div className='bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg shadow-sm ring-1 ring-sidebar-primary/30'>
           <activeWorkspace.logo className='size-4' />
         </div>
       ) : (
-        <div className='flex aspect-square size-8 items-center justify-center overflow-hidden rounded-lg'>
+        <div className='ring-sidebar-border/50 flex aspect-square size-8 items-center justify-center overflow-hidden rounded-lg shadow-sm ring-1'>
           <img
-            src={logo}
+            src={logoSrc}
             alt={t('Logo')}
-            className='size-full rounded-lg object-cover'
+            className='size-full rounded-md object-contain'
           />
         </div>
       )}
-      <div className='grid flex-1 text-start text-sm leading-tight group-data-[collapsible=icon]:hidden'>
-        <span className='truncate font-semibold'>{activeWorkspace.name}</span>
-        <span className='truncate text-xs'>{activeWorkspace.plan}</span>
+      <div className='text-sidebar-foreground/80 grid flex-1 text-start text-sm leading-tight group-data-[collapsible=icon]:hidden'>
+        <span className='truncate font-semibold tracking-tight'>
+          {activeWorkspace.name}
+        </span>
+        <span className='text-sidebar-foreground/50 truncate text-xs'>
+          {activeWorkspace.plan}
+        </span>
       </div>
       {canSwitchWorkspace && (
         <ChevronsUpDown className='ms-auto group-data-[collapsible=icon]:hidden' />
@@ -177,9 +190,9 @@ export function WorkspaceSwitcher({
                   {index === 0 ? (
                     <div className='flex size-6 items-center justify-center overflow-hidden rounded-sm border'>
                       <img
-                        src={logo}
+                        src={logoSrc}
                         alt='Logo'
-                        className='size-full object-cover'
+                        className='size-full object-contain'
                       />
                     </div>
                   ) : (

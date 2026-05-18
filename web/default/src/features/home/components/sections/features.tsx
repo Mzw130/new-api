@@ -1,3 +1,21 @@
+/*
+Copyright (C) 2023-2026 QuantumNous
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+For commercial licensing, please contact support@quantumnous.com
+*/
 import {
   Zap,
   Shield,
@@ -34,7 +52,7 @@ export function Features(_props: FeaturesProps) {
             (name) => (
               <div
                 key={name}
-                className='border-border/30 bg-muted/20 text-muted-foreground flex items-center justify-center rounded-lg border px-3 py-2 text-xs transition-colors duration-300 hover:border-blue-500/30 hover:bg-blue-500/5'
+                className='border-border/30 bg-muted/20 text-muted-foreground flex items-center justify-center rounded-lg border px-3 py-2 text-xs transition-all duration-300 hover:border-blue-500/40 hover:bg-blue-500/10 hover:text-blue-600 hover:scale-105 dark:hover:text-blue-400'
               >
                 {name}
               </div>
@@ -55,13 +73,13 @@ export function Features(_props: FeaturesProps) {
       visual: (
         <div className='mt-4 flex items-center justify-center'>
           <div className='relative'>
-            <div className='flex size-16 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/5'>
+            <div className='flex size-16 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/5 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-emerald-500/20 hover:border-emerald-500/30 hover:bg-emerald-500/10'>
               <Shield
-                className='size-7 text-emerald-500/70'
+                className='size-7 text-emerald-500/70 transition-colors duration-300 hover:text-emerald-600 dark:hover:text-emerald-400'
                 strokeWidth={1.5}
               />
             </div>
-            <div className='absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full bg-emerald-500'>
+            <div className='absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full bg-emerald-500 transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-emerald-500/30'>
               <svg
                 className='size-2.5 text-white'
                 fill='none'
@@ -93,16 +111,18 @@ export function Features(_props: FeaturesProps) {
             (step, i) => (
               <div key={step} className='flex items-center gap-2'>
                 <div
-                  className={`flex size-6 items-center justify-center rounded-full text-[10px] font-bold ${
+                  className={`flex size-6 items-center justify-center rounded-full text-[10px] font-bold transition-all duration-300 ${
                     i === 1
-                      ? 'border border-blue-500/30 bg-blue-500/20 text-blue-500'
-                      : 'border-border/40 bg-muted text-muted-foreground border'
+                      ? 'border border-blue-500/30 bg-blue-500/20 text-blue-500 hover:scale-110 hover:shadow-md hover:shadow-blue-500/20'
+                      : 'border-border/40 bg-muted text-muted-foreground border hover:border-blue-500/30 hover:bg-blue-500/10 hover:text-blue-600 hover:scale-105 dark:hover:text-blue-400'
                   }`}
                 >
                   {i + 1}
                 </div>
-                <div className='bg-border/40 h-px flex-1' />
-                <span className='text-muted-foreground text-xs'>{step}</span>
+                <div className='bg-border/40 h-px flex-1 transition-colors duration-300 hover:bg-blue-500/30' />
+                <span className='text-muted-foreground text-xs transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400'>
+                  {step}
+                </span>
               </div>
             )
           )}
@@ -122,14 +142,14 @@ export function Features(_props: FeaturesProps) {
             {['API', 'SDK', 'CLI', 'Docs'].map((n) => (
               <div
                 key={n}
-                className='border-background from-muted to-muted/60 text-muted-foreground flex size-8 items-center justify-center rounded-full border-2 bg-gradient-to-br text-[9px] font-bold'
+                className='border-background from-muted to-muted/60 text-muted-foreground flex size-8 items-center justify-center rounded-full border-2 bg-gradient-to-br text-[9px] font-bold transition-all duration-300 hover:scale-110 hover:border-blue-500/30 hover:from-blue-500/10 hover:to-violet-500/10 hover:text-blue-600 dark:hover:text-blue-400'
               >
                 {n}
               </div>
             ))}
           </div>
-          <div className='text-muted-foreground flex items-center gap-1.5 text-xs'>
-            <Code className='size-3.5 text-blue-500' />
+          <div className='text-muted-foreground flex items-center gap-1.5 text-xs transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400'>
+            <Code className='size-3.5 text-blue-500 transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400' />
             {t('Multi-protocol Compatible')}
           </div>
         </div>
@@ -161,55 +181,96 @@ export function Features(_props: FeaturesProps) {
   ]
 
   return (
-    <section className='relative z-10 px-6 py-24 md:py-32'>
+    <section className='relative isolate z-10 overflow-hidden px-6 py-24 md:py-32'>
+      <div
+        aria-hidden
+        className='pointer-events-none absolute inset-0 -z-10 opacity-90 dark:opacity-100'
+        style={{
+          background: [
+            'linear-gradient(125deg, oklch(0.72 0.14 250 / 12%) 0%, transparent 55%)',
+            'linear-gradient(215deg, oklch(0.78 0.12 55 / 10%) 0%, transparent 50%)',
+            'linear-gradient(180deg, var(--background) 0%, oklch(0.97 0.02 250 / 35%) 45%, var(--background) 100%)',
+          ].join(', '),
+        }}
+      />
+      <div
+        aria-hidden
+        className='absolute inset-0 -z-10 bg-[linear-gradient(105deg,transparent_48%,var(--border)_49%,var(--border)_51%,transparent_52%)] opacity-[0.035] dark:opacity-[0.08]'
+        style={{ backgroundSize: '120% 100%' }}
+      />
+      <div
+        aria-hidden
+        className='absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px)] bg-[length:min(100%,560px)_100%] [mask-image:radial-gradient(ellipse_80%_70%_at_50%_40%,black,transparent)] opacity-[0.06] dark:opacity-[0.1]'
+      />
+
       <div className='mx-auto max-w-6xl'>
-        <AnimateInView className='mb-16 max-w-lg'>
-          <p className='text-muted-foreground mb-3 text-xs font-medium tracking-widest uppercase'>
+        <AnimateInView className='relative mx-auto mb-16 max-w-2xl text-center md:mb-20'>
+          <span className='text-muted-foreground mb-4 inline-flex items-center justify-center rounded-full border border-amber-500/25 bg-amber-500/[0.08] px-3 py-1 text-[11px] font-semibold tracking-[0.2em] text-amber-800 uppercase dark:text-amber-200/90'>
             {t('Core Features')}
-          </p>
-          <h2 className='text-2xl leading-tight font-bold tracking-tight md:text-3xl'>
+          </span>
+          <h2 className='text-balance text-3xl leading-[1.15] font-bold tracking-tight md:text-4xl lg:text-[2.75rem]'>
             {t('Built for developers,')}
             <br />
-            {t('designed for scale')}
+            <span className='bg-gradient-to-r from-amber-600 via-orange-500 to-rose-600 bg-clip-text text-transparent dark:from-amber-400 dark:via-orange-400 dark:to-rose-400'>
+              {t('designed for scale')}
+            </span>
           </h2>
+          <p className='text-muted-foreground/85 mt-4 text-pretty text-sm md:text-base'>
+            {t(
+              'Simple setup process to get your AI gateway running in minutes'
+            )}
+          </p>
         </AnimateInView>
 
         {/* Bento grid */}
-        <div className='border-border/40 bg-border/40 grid gap-px overflow-hidden rounded-xl border md:grid-cols-3'>
+        <div className='grid gap-5 md:grid-cols-3 md:gap-5'>
           {features.map((f, i) => (
             <AnimateInView
               key={f.id}
               delay={i * 100}
               animation='scale-in'
-              className={`bg-background group hover:bg-muted/20 p-7 transition-colors duration-300 md:p-8 ${f.span}`}
+              className={`group relative overflow-hidden rounded-[1.35rem] border-2 border-border/35 bg-background/65 shadow-[0_20px_50px_-40px_rgba(251,146,60,0.2)] ring-1 ring-transparent transition-all duration-500 hover:-translate-y-1 hover:border-amber-500/25 hover:shadow-[0_28px_60px_-36px_rgba(251,146,60,0.35)] hover:ring-amber-500/10 dark:bg-background/40 dark:shadow-[0_24px_60px_-40px_rgba(0,0,0,0.6)] dark:hover:border-amber-400/20 ${f.span}`}
             >
-              <div className='mb-3 flex items-center gap-3'>
-                <span className='border-border/40 bg-muted text-muted-foreground flex size-7 items-center justify-center rounded-md border text-[10px] font-semibold tabular-nums'>
-                  {f.num}
-                </span>
-                <h3 className='text-sm font-semibold'>{f.title}</h3>
+              <div className='pointer-events-none absolute inset-0 -z-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100'>
+                <div className='absolute inset-0 bg-gradient-to-br from-amber-500/[0.07] via-transparent to-violet-500/[0.06]' />
               </div>
-              <p className='text-muted-foreground text-sm leading-relaxed'>
-                {f.desc}
-              </p>
-              {f.visual}
+
+              <div className='relative z-10 p-7 md:p-8'>
+                <div className='mb-4 flex flex-wrap items-center gap-3'>
+                  <span className='flex size-9 items-center justify-center rounded-xl border border-border/50 bg-muted/60 font-mono text-[11px] font-bold text-muted-foreground transition-colors duration-300 group-hover:border-amber-500/35 group-hover:bg-amber-500/[0.12] group-hover:text-amber-700 dark:group-hover:text-amber-300'>
+                    {f.num}
+                  </span>
+                  <div className='flex min-w-0 items-center gap-2'>
+                    {f.icon}
+                    <h3 className='text-base font-semibold transition-colors duration-300 group-hover:text-foreground'>
+                      {f.title}
+                    </h3>
+                  </div>
+                </div>
+                <p className='text-muted-foreground text-sm leading-relaxed transition-colors duration-300 group-hover:text-muted-foreground/90'>
+                  {f.desc}
+                </p>
+                {f.visual}
+              </div>
             </AnimateInView>
           ))}
         </div>
 
         {/* Additional features row */}
-        <div className='mt-12 grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12'>
+        <div className='mt-16 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5'>
           {additionalFeatures.map((f, i) => (
             <AnimateInView
               key={f.title}
               delay={i * 100}
               animation='fade-up'
-              className='flex flex-col items-center text-center'
+              className='group relative flex flex-col items-center rounded-2xl border border-dashed border-border/50 bg-muted/[0.35] px-3 py-7 text-center transition-all duration-500 hover:border-solid hover:border-amber-500/30 hover:bg-background/80 hover:shadow-lg hover:shadow-orange-500/10 dark:bg-muted/15 dark:hover:bg-background/50'
             >
-              <div className='text-muted-foreground border-border/50 bg-muted/30 group-hover:text-foreground mb-3 flex size-12 items-center justify-center rounded-xl border transition-colors'>
+              <div className='mb-3 flex size-11 items-center justify-center rounded-2xl border border-border/45 bg-background/80 text-muted-foreground shadow-sm transition-all duration-500 group-hover:-translate-y-0.5 group-hover:border-amber-500/35 group-hover:bg-gradient-to-br group-hover:from-amber-500/15 group-hover:to-orange-500/10 group-hover:text-amber-700 group-hover:shadow-md dark:group-hover:text-amber-300'>
                 {f.icon}
               </div>
-              <h3 className='mb-1.5 text-sm font-semibold'>{f.title}</h3>
+              <h3 className='mb-1 text-sm font-semibold transition-colors duration-300 group-hover:text-foreground'>
+                {f.title}
+              </h3>
               <p className='text-muted-foreground max-w-[200px] text-xs leading-relaxed'>
                 {f.desc}
               </p>

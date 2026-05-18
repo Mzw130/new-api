@@ -53,7 +53,7 @@ const NewYearButton = ({ isNewYear }) => {
         type='tertiary'
         icon={<span className='text-xl'>🎉</span>}
         aria-label='New Year'
-        className='!p-1.5 !text-current focus:!bg-semi-color-fill-1 dark:focus:!bg-gray-700 rounded-full'
+        className='!rounded-md !border border-transparent !bg-transparent !p-1.5 !text-current transition-colors hover:border-indigo-200/50 hover:!bg-indigo-500/10 focus:!bg-semi-color-fill-1 dark:hover:border-white/10 dark:hover:!bg-indigo-400/15 dark:focus:!bg-gray-700'
       />
     </Dropdown>
   );

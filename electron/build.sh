@@ -2,7 +2,7 @@
 
 set -e
 
-echo "Building New API Electron App..."
+echo "Building 1router API Electron App..."
 
 echo "Step 1: Building frontend..."
 cd ../web

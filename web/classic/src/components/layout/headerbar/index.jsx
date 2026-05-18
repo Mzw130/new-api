@@ -65,64 +65,88 @@ const HeaderBar = ({ onMobileMenuToggle, drawerOpen }) => {
   const { mainNavLinks } = useNavigation(t, docsLink, headerNavModules);
 
   return (
-    <header className='text-semi-color-text-0 sticky top-0 z-50 transition-colors duration-300 bg-white/75 dark:bg-zinc-900/75 backdrop-blur-lg'>
-      <NoticeModal
-        visible={noticeVisible}
-        onClose={handleNoticeClose}
-        isMobile={isMobile}
-        defaultTab={unreadCount > 0 ? 'system' : 'inApp'}
-        unreadKeys={getUnreadKeys()}
+    <header className='app-header-bar relative sticky top-0 z-50 overflow-hidden text-semi-color-text-0 transition-[background,box-shadow,border-color] duration-300'>
+      {/* 顶栏氛围：轻渐变 + 网格 + 光晕（pointer-events-none 避免挡点击） */}
+      <div
+        className='pointer-events-none absolute inset-0 bg-gradient-to-r from-white/92 via-indigo-50/35 to-teal-50/28 dark:from-zinc-950/94 dark:via-[rgba(49,46,129,0.22)] dark:to-zinc-900/92'
+        aria-hidden
       />
+      <div
+        className='pointer-events-none absolute inset-0 opacity-[0.45] dark:opacity-[0.14]'
+        style={{
+          backgroundImage:
+            'linear-gradient(to right, rgba(99,102,241,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(99,102,241,0.07) 1px, transparent 1px)',
+          backgroundSize: '44px 44px',
+        }}
+        aria-hidden
+      />
+      <div
+        className='pointer-events-none absolute -left-16 top-1/2 h-44 w-44 -translate-y-1/2 rounded-full bg-indigo-400/20 blur-3xl dark:bg-indigo-500/12'
+        aria-hidden
+      />
+      <div
+        className='pointer-events-none absolute -right-8 -top-20 h-40 w-56 rounded-full bg-violet-400/15 blur-3xl dark:bg-violet-500/12'
+        aria-hidden
+      />
+      <div className='relative border-b border-indigo-200/45 bg-white/55 shadow-[0_12px_40px_-28px_rgba(79,70,229,0.28)] backdrop-blur-xl backdrop-saturate-150 dark:border-white/[0.09] dark:bg-zinc-950/55 dark:shadow-[0_14px_44px_-26px_rgba(0,0,0,0.55)]'>
+        <NoticeModal
+          visible={noticeVisible}
+          onClose={handleNoticeClose}
+          isMobile={isMobile}
+          defaultTab={unreadCount > 0 ? 'system' : 'inApp'}
+          unreadKeys={getUnreadKeys()}
+        />
 
-      <div className='w-full px-2'>
-        <div className='flex items-center justify-between h-16'>
-          <div className='flex items-center'>
-            <MobileMenuButton
-              isConsoleRoute={isConsoleRoute}
+        <div className='w-full px-3 sm:px-4'>
+          <div className='flex h-16 items-center justify-between gap-2'>
+            <div className='flex shrink-0 items-center'>
+              <MobileMenuButton
+                isConsoleRoute={isConsoleRoute}
+                isMobile={isMobile}
+                drawerOpen={drawerOpen}
+                collapsed={collapsed}
+                onToggle={handleMobileMenuToggle}
+                t={t}
+              />
+
+              <HeaderLogo
+                isMobile={isMobile}
+                isConsoleRoute={isConsoleRoute}
+                logo={logo}
+                logoLoaded={logoLoaded}
+                isLoading={isLoading}
+                systemName={systemName}
+                isSelfUseMode={isSelfUseMode}
+                isDemoSiteMode={isDemoSiteMode}
+                t={t}
+              />
+            </div>
+
+            <Navigation
+              mainNavLinks={mainNavLinks}
               isMobile={isMobile}
-              drawerOpen={drawerOpen}
-              collapsed={collapsed}
-              onToggle={handleMobileMenuToggle}
-              t={t}
+              isLoading={isLoading}
+              userState={userState}
+              pricingRequireAuth={pricingRequireAuth}
             />
 
-            <HeaderLogo
-              isMobile={isMobile}
-              isConsoleRoute={isConsoleRoute}
-              logo={logo}
-              logoLoaded={logoLoaded}
+            <ActionButtons
+              isNewYear={isNewYear}
+              unreadCount={unreadCount}
+              onNoticeOpen={handleNoticeOpen}
+              theme={theme}
+              onThemeToggle={handleThemeToggle}
+              currentLang={currentLang}
+              onLanguageChange={handleLanguageChange}
+              userState={userState}
               isLoading={isLoading}
-              systemName={systemName}
+              isMobile={isMobile}
               isSelfUseMode={isSelfUseMode}
-              isDemoSiteMode={isDemoSiteMode}
+              logout={logout}
+              navigate={navigate}
               t={t}
             />
           </div>
-
-          <Navigation
-            mainNavLinks={mainNavLinks}
-            isMobile={isMobile}
-            isLoading={isLoading}
-            userState={userState}
-            pricingRequireAuth={pricingRequireAuth}
-          />
-
-          <ActionButtons
-            isNewYear={isNewYear}
-            unreadCount={unreadCount}
-            onNoticeOpen={handleNoticeOpen}
-            theme={theme}
-            onThemeToggle={handleThemeToggle}
-            currentLang={currentLang}
-            onLanguageChange={handleLanguageChange}
-            userState={userState}
-            isLoading={isLoading}
-            isMobile={isMobile}
-            isSelfUseMode={isSelfUseMode}
-            logout={logout}
-            navigate={navigate}
-            t={t}
-          />
         </div>
       </div>
     </header>

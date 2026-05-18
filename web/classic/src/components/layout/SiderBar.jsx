@@ -401,7 +401,7 @@ const SiderBar = ({ onNavigate = () => {} }) => {
         showAdmin={isAdmin()}
       >
         <Nav
-          className='sidebar-nav'
+          className='sidebar-nav sidebar-nav-enhanced'
           defaultIsCollapsed={collapsed}
           isCollapsed={collapsed}
           onCollapseChange={toggleCollapsed}
@@ -453,7 +453,7 @@ const SiderBar = ({ onNavigate = () => {} }) => {
           {hasSectionVisibleModules('console') && (
             <>
               <Divider className='sidebar-divider' />
-              <div>
+              <div className='sidebar-section'>
                 {!collapsed && (
                   <div className='sidebar-group-label'>{t('控制台')}</div>
                 )}
@@ -466,7 +466,7 @@ const SiderBar = ({ onNavigate = () => {} }) => {
           {hasSectionVisibleModules('personal') && (
             <>
               <Divider className='sidebar-divider' />
-              <div>
+              <div className='sidebar-section'>
                 {!collapsed && (
                   <div className='sidebar-group-label'>{t('个人中心')}</div>
                 )}
@@ -479,7 +479,7 @@ const SiderBar = ({ onNavigate = () => {} }) => {
           {isAdmin() && hasSectionVisibleModules('admin') && (
             <>
               <Divider className='sidebar-divider' />
-              <div>
+              <div className='sidebar-section'>
                 {!collapsed && (
                   <div className='sidebar-group-label'>{t('管理员')}</div>
                 )}

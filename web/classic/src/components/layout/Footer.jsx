@@ -42,7 +42,7 @@ const FooterBar = () => {
 
   const customFooter = useMemo(
     () => (
-      <footer className='relative h-auto py-16 px-6 md:px-24 w-full flex flex-col items-center justify-between overflow-hidden'>
+      <footer className='relative h-auto border-t border-indigo-100/40 bg-gradient-to-b from-transparent to-indigo-50/[0.35] py-16 px-6 md:px-24 dark:border-white/[0.06] dark:to-indigo-950/20 flex flex-col items-center justify-between overflow-hidden'>
         <div className='absolute hidden md:block top-[204px] left-[-100px] w-[151px] h-[151px] rounded-full bg-[#FFD166]'></div>
         <div className='absolute md:hidden bottom-[20px] left-[-50px] w-[80px] h-[80px] rounded-full bg-[#FFD166] opacity-60'></div>
 
@@ -52,7 +52,7 @@ const FooterBar = () => {
               <img
                 src={logo}
                 alt={systemName}
-                className='w-16 h-16 rounded-full bg-gray-800 p-1.5 object-contain'
+                className='h-16 w-16 rounded-xl object-contain'
               />
             </div>
 
@@ -199,14 +199,7 @@ const FooterBar = () => {
             <span className='!text-semi-color-text-1'>
               {t('设计与开发由')}{' '}
             </span>
-            <a
-              href='https://github.com/QuantumNous/new-api'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='!text-semi-color-primary font-medium'
-            >
-              New API
-            </a>
+            <span className='!text-semi-color-primary font-medium'>1router API</span>
           </div>
         </div>
       </footer>
@@ -221,7 +214,7 @@ const FooterBar = () => {
   return (
     <div className='w-full'>
       {footer ? (
-        <footer className='relative h-auto py-4 px-6 md:px-24 w-full flex items-center justify-center overflow-hidden'>
+        <footer className='relative h-auto border-t border-indigo-100/30 py-4 px-6 md:px-24 dark:border-white/[0.06] w-full flex items-center justify-center overflow-hidden bg-gradient-to-b from-transparent to-indigo-50/30 dark:to-transparent'>
           <div className='flex flex-col md:flex-row items-center justify-between w-full max-w-[1110px] gap-4'>
             <div
               className='custom-footer na-cb6feafeb3990c78 text-sm !text-semi-color-text-1'
@@ -231,14 +224,7 @@ const FooterBar = () => {
               <span className='!text-semi-color-text-1'>
                 {t('设计与开发由')}{' '}
               </span>
-              <a
-                href='https://github.com/QuantumNous/new-api'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='!text-semi-color-primary font-medium'
-              >
-                New API
-              </a>
+              <span className='!text-semi-color-primary font-medium'>1router API</span>
             </div>
           </div>
         </footer>

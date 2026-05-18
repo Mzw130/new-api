@@ -3,13 +3,16 @@
 # Usage:
 #   1. docker compose -f docker-compose.dev.yml up -d
 #   2. cd web && bun install && bun run dev
-#   3. Open http://localhost:3001 (Rsbuild dev server, API auto-proxied to :3000)
+#   3. Open http://localhost:3001 — Rsbuild proxies /api, /mj, /pg, /v1, /v1beta, /suno to :3000
 #
 # Rebuild backend after Go code changes:
 #   docker compose -f docker-compose.dev.yml up -d --build new-api
 #
 # Stop:
 #   docker compose -f docker-compose.dev.yml down
+#
+# Local cap 2 CPU / 4GiB on new-api only:
+#   docker compose -f docker-compose.dev.yml -f docker-compose.local-2c4g.yml up -d
 #
 # Reset data:
 #   docker compose -f docker-compose.dev.yml down -v
@@ -27,8 +30,10 @@ services:
     volumes:
       - dev_data:/data
     environment:
-      - SQL_DSN=postgresql://root:123456@postgres:5432/new-api
-      - REDIS_CONN_STRING=redis://redis
+      - SQL_DSN=root:Lg2026!!@tcp(172.22.0.16:3306)/newapi
+      - REDIS_CONN_STRING=redis://root:Lg2026!!@172.16.16.12:6379
+      - SESSION_SECRET=cluster_secret
+      - CRYPTO_SECRET=cluster_secret
       - TZ=Asia/Shanghai
       - BATCH_UPDATE_ENABLED=true
     depends_on:

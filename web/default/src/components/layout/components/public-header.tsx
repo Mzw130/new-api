@@ -1,3 +1,21 @@
+/*
+Copyright (C) 2023-2026 QuantumNous
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+For commercial licensing, please contact support@quantumnous.com
+*/
 import { useState, useEffect } from 'react'
 import { Link, useRouterState } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
@@ -116,7 +134,7 @@ export function PublicHeader(props: PublicHeaderProps) {
                   />
                 )}
               </div>
-              <span className='text-sm font-semibold tracking-tight'>
+              <span className='text-sm font-semibold tracking-wide text-foreground/95'>
                 {loading ? <Skeleton className='h-4 w-16' /> : displaySiteName}
               </span>
             </Link>
@@ -132,7 +150,7 @@ export function PublicHeader(props: PublicHeaderProps) {
                       href={link.href}
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='text-muted-foreground hover:text-foreground rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors duration-200'
+                      className='text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-md px-3 py-1.5 text-sm font-medium tracking-wide transition-colors duration-200'
                     >
                       {t(link.title)}
                     </a>
@@ -143,10 +161,10 @@ export function PublicHeader(props: PublicHeaderProps) {
                     key={i}
                     to={link.href}
                     className={cn(
-                      'rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors duration-200',
+                      'rounded-md px-3 py-1.5 text-sm font-medium tracking-wide transition-colors duration-200',
                       isActive
-                        ? 'text-foreground'
-                        : 'text-muted-foreground hover:text-foreground'
+                        ? 'text-foreground bg-muted/60'
+                        : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                     )}
                   >
                     {t(link.title)}
@@ -180,9 +198,9 @@ export function PublicHeader(props: PublicHeaderProps) {
                     <Button
                       size='sm'
                       className='h-8 rounded-lg px-3.5 text-xs font-medium'
-                      asChild
+                      render={<Link to='/sign-in' />}
                     >
-                      <Link to='/sign-in'>{t('Sign in')}</Link>
+                      {t('Sign in')}
                     </Button>
                   )}
                 </>
@@ -195,8 +213,11 @@ export function PublicHeader(props: PublicHeaderProps) {
               {showAuthButtons && !loading && isAuthenticated && (
                 <ProfileDropdown />
               )}
-              <button
-                className='hover:bg-muted/40 flex size-9 items-center justify-center rounded-lg transition-colors'
+              <Button
+                type='button'
+                variant='ghost'
+                size='icon'
+                className='size-9'
                 onClick={() => setMobileOpen((v) => !v)}
                 aria-label={t('Toggle navigation menu')}
               >
@@ -220,7 +241,7 @@ export function PublicHeader(props: PublicHeaderProps) {
                     )}
                   />
                 </div>
-              </button>
+              </Button>
             </div>
           </nav>
         </div>

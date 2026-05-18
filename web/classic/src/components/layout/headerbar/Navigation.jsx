@@ -18,8 +18,26 @@ For commercial licensing, please contact support@quantumnous.com
 */
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import SkeletonWrapper from '../components/SkeletonWrapper';
+
+function navLinkIsActive(pathname, link) {
+  if (link.isExternal) {
+    return false;
+  }
+  switch (link.itemKey) {
+    case 'home':
+      return pathname === '/';
+    case 'console':
+      return pathname.startsWith('/console');
+    case 'pricing':
+      return pathname.startsWith('/pricing');
+    case 'about':
+      return pathname.startsWith('/about');
+    default:
+      return false;
+  }
+}
 
 const Navigation = ({
   mainNavLinks,
@@ -28,16 +46,22 @@ const Navigation = ({
   userState,
   pricingRequireAuth,
 }) => {
-  const renderNavLinks = () => {
-    const baseClasses =
-      'flex-shrink-0 flex items-center gap-1 font-semibold rounded-md transition-all duration-200 ease-in-out';
-    const hoverClasses = 'hover:text-semi-color-primary';
-    const spacingClasses = isMobile ? 'p-1' : 'p-2';
+  const location = useLocation();
+  const pathname = location.pathname;
 
-    const commonLinkClasses = `${baseClasses} ${spacingClasses} ${hoverClasses}`;
+  const renderNavLinks = () => {
+    const shell =
+      'flex flex-shrink-0 items-center gap-1 rounded-lg font-semibold transition-all duration-200 ease-out';
+    const spacing = isMobile ? 'px-2 py-1.5' : 'px-3 py-2';
+    const inactive = `${shell} ${spacing} text-semi-color-text-1 hover:bg-indigo-500/[0.08] hover:text-indigo-600 dark:hover:bg-white/[0.06] dark:hover:text-indigo-300`;
+    const active = `${shell} ${spacing} bg-gradient-to-r from-indigo-500/18 via-violet-500/12 to-teal-600/10 text-indigo-700 shadow-sm ring-1 ring-indigo-400/30 dark:text-indigo-200 dark:ring-indigo-400/25`;
 
     return mainNavLinks.map((link) => {
-      const linkContent = <span>{link.text}</span>;
+      const linkContent = (
+        <span className='whitespace-nowrap text-sm md:text-[0.9375rem]'>
+          {link.text}
+        </span>
+      );
 
       if (link.isExternal) {
         return (
@@ -46,7 +70,7 @@ const Navigation = ({
             href={link.externalLink}
             target='_blank'
             rel='noopener noreferrer'
-            className={commonLinkClasses}
+            className={inactive}
           >
             {linkContent}
           </a>
@@ -61,8 +85,11 @@ const Navigation = ({
         targetPath = '/login';
       }
 
+      const routeActive = navLinkIsActive(pathname, link);
+      const mergedClasses = routeActive ? active : inactive;
+
       return (
-        <Link key={link.itemKey} to={targetPath} className={commonLinkClasses}>
+        <Link key={link.itemKey} to={targetPath} className={mergedClasses}>
           {linkContent}
         </Link>
       );
@@ -70,7 +97,7 @@ const Navigation = ({
   };
 
   return (
-    <nav className='flex flex-1 items-center gap-1 lg:gap-2 mx-2 md:mx-4 overflow-x-auto whitespace-nowrap scrollbar-hide'>
+    <nav className='header-main-nav mx-1 flex min-w-0 flex-1 items-center justify-center gap-0.5 overflow-x-auto whitespace-nowrap px-0.5 scrollbar-hide md:mx-3 md:gap-1 lg:mx-6 lg:gap-1.5'>
       <SkeletonWrapper
         loading={isLoading}
         type='navigation'

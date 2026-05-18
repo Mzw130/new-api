@@ -1,0 +1,31 @@
+# Run the production-style image (Dockerfile) with the same env style as docker-compose.dev.yml.
+#
+# Build (does NOT read this file — only Dockerfile):
+#   docker build -t 1router-api:v20260511 .
+#
+# Configure secrets locally (never commit .env.deploy):
+#   copy .env.deploy.example -> .env.deploy and edit values
+#
+# Start:
+#   docker compose -f docker-compose.image.yml up -d
+#
+# Stop:
+#   docker compose -f docker-compose.image.yml down
+
+
+name: 1router
+
+services:
+  new-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: 1router:0.0.2
+    container_name: 1router
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/data
+    env_file:
+      - .env.deploy

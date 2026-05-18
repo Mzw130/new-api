@@ -48,13 +48,41 @@ export function isRoot() {
 
 export function getSystemName() {
   let system_name = localStorage.getItem('system_name');
-  if (!system_name) return 'New API';
+  if (!system_name || system_name === 'null' || system_name === 'undefined') {
+    return '1router API';
+  }
   return system_name;
+}
+
+function readStatusVersionForAssetCache() {
+  try {
+    const raw = localStorage.getItem('status');
+    if (!raw) return '';
+    const s = JSON.parse(raw);
+    const start = s?.start_time;
+    if (typeof start === 'string' && start) return start;
+    const ver = s?.version;
+    return typeof ver === 'string' && ver ? ver : '';
+  } catch {
+    return '';
+  }
 }
 
 export function getLogo() {
   let logo = localStorage.getItem('logo');
-  if (!logo) return '/logo.png';
+  if (!logo || logo === 'null' || logo === 'undefined') {
+    logo = '/logo.svg';
+  }
+  if (logo === '/logo.png') {
+    logo = '/logo.svg';
+  }
+  const v = readStatusVersionForAssetCache();
+  if (v && !logo.startsWith('http://') && !logo.startsWith('https://')) {
+    const pathOnly = logo.split('?')[0];
+    if (pathOnly === '/logo.svg') {
+      return `/logo.svg?v=${encodeURIComponent(v)}`;
+    }
+  }
   return logo;
 }
 

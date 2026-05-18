@@ -1,8 +1,27 @@
+/*
+Copyright (C) 2023-2026 QuantumNous
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+For commercial licensing, please contact support@quantumnous.com
+*/
 import { useMemo } from 'react'
 import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { useSystemConfig } from '@/hooks/use-system-config'
+import { DEFAULT_SYSTEM_NAME } from '@/lib/constants'
 
 interface FooterLink {
   text: string
@@ -63,14 +82,7 @@ function ProjectAttribution(props: { currentYear: number }) {
     <div className='text-muted-foreground/45 text-center text-xs sm:text-right'>
       <span className='text-muted-foreground/45'>
         &copy; {props.currentYear}{' '}
-        <a
-          href='https://github.com/QuantumNous/new-api'
-          target='_blank'
-          rel='noopener noreferrer'
-          className='text-foreground/70 font-medium transition-colors hover:text-foreground'
-        >
-          {t('New API')}
-        </a>
+        <span className='text-foreground/70 font-medium'>{DEFAULT_SYSTEM_NAME}</span>
         . {t(NEW_API_FOOTER_ATTRIBUTION_KEY)}
       </span>
     </div>
@@ -87,7 +99,7 @@ export function Footer(props: FooterProps) {
   } = useSystemConfig()
 
   const displayLogo = systemLogo || props.logo || '/logo.png'
-  const displayName = systemName || props.name || 'New API'
+  const displayName = systemName || props.name || DEFAULT_SYSTEM_NAME
   const isDemoSiteMode = Boolean(demoSiteEnabled)
   const currentYear = new Date().getFullYear()
 
@@ -139,8 +151,8 @@ export function Footer(props: FooterProps) {
             href: 'https://github.com/novicezk/midjourney-proxy',
           },
           {
-            text: t('footer.columns.related.links.neko'),
-            href: 'https://github.com/Calcium-Ion/neko-api-key-tool',
+            text: t('footer.columns.related.links.newApiKeyTool'),
+            href: 'https://github.com/Calcium-Ion/new-api-key-tool',
           },
         ],
       },
@@ -152,7 +164,12 @@ export function Footer(props: FooterProps) {
 
   if (footerHtml) {
     return (
-      <footer className={cn('border-border/40 relative z-10 border-t', props.className)}>
+      <footer
+        className={cn(
+          'border-border/40 relative z-10 border-t',
+          props.className
+        )}
+      >
         <div className='mx-auto w-full max-w-6xl px-6 py-5'>
           <div className='bg-muted/20 border-border/50 flex flex-col items-center justify-between gap-4 rounded-2xl border px-4 py-4 backdrop-blur-sm sm:flex-row sm:px-5'>
             <div

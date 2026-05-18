@@ -504,25 +504,29 @@ const LoginForm = () => {
     return (
       <div className='flex flex-col items-center'>
         <div className='w-full max-w-md'>
-          <div className='flex items-center justify-center mb-6 gap-2'>
-            <img src={logo} alt='Logo' className='h-10 rounded-full' />
-            <Title heading={3} className='!text-gray-800'>
+          <div className='mb-8 flex items-center justify-center gap-3'>
+            <img
+              src={logo}
+              alt='Logo'
+              className='h-11 w-11 rounded-2xl object-cover shadow-lg ring-4 ring-white/60 dark:ring-white/10'
+            />
+            <Title heading={3} className='!font-semibold !text-gray-900 dark:!text-gray-50'>
               {systemName}
             </Title>
           </div>
 
-          <Card className='border-0 !rounded-2xl overflow-hidden'>
-            <div className='flex justify-center pt-6 pb-2'>
-              <Title heading={3} className='text-gray-800 dark:text-gray-200'>
+          <Card className='!rounded-2xl overflow-hidden border border-white/80 bg-white/80 shadow-[0_28px_90px_-28px_rgba(79,70,229,0.28),0_14px_40px_-18px_rgba(20,184,166,0.14)] backdrop-blur-xl dark:border-white/[0.08] dark:bg-[rgba(15,23,42,0.72)] dark:shadow-black/45'>
+            <div className='flex justify-center px-4 pt-8 pb-2'>
+              <Title heading={3} className='!font-semibold text-gray-900 dark:text-gray-50'>
                 {t('登 录')}
               </Title>
             </div>
-            <div className='px-2 py-8'>
+            <div className='px-4 pb-8 pt-2 md:px-6'>
               <div className='space-y-3'>
                 {status.wechat_login && (
                   <Button
                     theme='outline'
-                    className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200 hover:bg-gray-50 transition-colors'
+                    className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200/90 bg-white/50 shadow-sm transition-all hover:border-indigo-300 hover:bg-indigo-50/80 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-indigo-400/35 dark:hover:bg-white/[0.08]'
                     type='tertiary'
                     icon={
                       <Icon svg={<WeChatIcon />} style={{ color: '#07C160' }} />
@@ -537,7 +541,7 @@ const LoginForm = () => {
                 {status.github_oauth && (
                   <Button
                     theme='outline'
-                    className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200 hover:bg-gray-50 transition-colors'
+                    className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200/90 bg-white/50 shadow-sm transition-all hover:border-indigo-300 hover:bg-indigo-50/80 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-indigo-400/35 dark:hover:bg-white/[0.08]'
                     type='tertiary'
                     icon={<IconGithubLogo size='large' />}
                     onClick={handleGitHubClick}
@@ -551,7 +555,7 @@ const LoginForm = () => {
                 {status.discord_oauth && (
                   <Button
                     theme='outline'
-                    className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200 hover:bg-gray-50 transition-colors'
+                    className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200/90 bg-white/50 shadow-sm transition-all hover:border-indigo-300 hover:bg-indigo-50/80 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-indigo-400/35 dark:hover:bg-white/[0.08]'
                     type='tertiary'
                     icon={
                       <SiDiscord
@@ -572,7 +576,7 @@ const LoginForm = () => {
                 {status.oidc_enabled && (
                   <Button
                     theme='outline'
-                    className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200 hover:bg-gray-50 transition-colors'
+                    className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200/90 bg-white/50 shadow-sm transition-all hover:border-indigo-300 hover:bg-indigo-50/80 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-indigo-400/35 dark:hover:bg-white/[0.08]'
                     type='tertiary'
                     icon={<OIDCIcon style={{ color: '#1877F2' }} />}
                     onClick={handleOIDCClick}
@@ -585,7 +589,7 @@ const LoginForm = () => {
                 {status.linuxdo_oauth && (
                   <Button
                     theme='outline'
-                    className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200 hover:bg-gray-50 transition-colors'
+                    className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200/90 bg-white/50 shadow-sm transition-all hover:border-indigo-300 hover:bg-indigo-50/80 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-indigo-400/35 dark:hover:bg-white/[0.08]'
                     type='tertiary'
                     icon={
                       <LinuxDoIcon
@@ -608,7 +612,7 @@ const LoginForm = () => {
                     <Button
                       key={provider.slug}
                       theme='outline'
-                      className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200 hover:bg-gray-50 transition-colors'
+                      className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200/90 bg-white/50 shadow-sm transition-all hover:border-indigo-300 hover:bg-indigo-50/80 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-indigo-400/35 dark:hover:bg-white/[0.08]'
                       type='tertiary'
                       icon={getOAuthProviderIcon(provider.icon || '', 20)}
                       onClick={() => handleCustomOAuthClick(provider)}
@@ -632,7 +636,7 @@ const LoginForm = () => {
                 {status.passkey_login && passkeySupported && (
                   <Button
                     theme='outline'
-                    className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200 hover:bg-gray-50 transition-colors'
+                    className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200/90 bg-white/50 shadow-sm transition-all hover:border-indigo-300 hover:bg-indigo-50/80 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-indigo-400/35 dark:hover:bg-white/[0.08]'
                     type='tertiary'
                     icon={<IconKey size='large' />}
                     onClick={handlePasskeyLogin}
@@ -649,7 +653,7 @@ const LoginForm = () => {
                 <Button
                   theme='solid'
                   type='primary'
-                  className='w-full h-12 flex items-center justify-center bg-black text-white !rounded-full hover:bg-gray-800 transition-colors'
+                  className='w-full h-12 flex items-center justify-center !rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/25 transition-all hover:from-indigo-500 hover:to-violet-500 hover:shadow-indigo-500/35'
                   icon={<IconMail size='large' />}
                   onClick={handleEmailLoginClick}
                   loading={emailLoginLoading}
@@ -720,23 +724,29 @@ const LoginForm = () => {
     return (
       <div className='flex flex-col items-center'>
         <div className='w-full max-w-md'>
-          <div className='flex items-center justify-center mb-6 gap-2'>
-            <img src={logo} alt='Logo' className='h-10 rounded-full' />
-            <Title heading={3}>{systemName}</Title>
+          <div className='mb-8 flex items-center justify-center gap-3'>
+            <img
+              src={logo}
+              alt='Logo'
+              className='h-11 w-11 rounded-2xl object-cover shadow-lg ring-4 ring-white/60 dark:ring-white/10'
+            />
+            <Title heading={3} className='!font-semibold text-gray-900 dark:text-gray-50'>
+              {systemName}
+            </Title>
           </div>
 
-          <Card className='border-0 !rounded-2xl overflow-hidden'>
-            <div className='flex justify-center pt-6 pb-2'>
-              <Title heading={3} className='text-gray-800 dark:text-gray-200'>
+          <Card className='!rounded-2xl overflow-hidden border border-white/80 bg-white/80 shadow-[0_28px_90px_-28px_rgba(79,70,229,0.28),0_14px_40px_-18px_rgba(20,184,166,0.14)] backdrop-blur-xl dark:border-white/[0.08] dark:bg-[rgba(15,23,42,0.72)] dark:shadow-black/45'>
+            <div className='flex justify-center px-4 pt-8 pb-2'>
+              <Title heading={3} className='!font-semibold text-gray-900 dark:text-gray-50'>
                 {t('登 录')}
               </Title>
             </div>
-            <div className='px-2 py-8'>
+            <div className='px-4 pb-8 pt-2 md:px-6'>
               {status.passkey_login && passkeySupported && (
                 <Button
                   theme='outline'
                   type='tertiary'
-                  className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200 hover:bg-gray-50 transition-colors mb-4'
+                  className='w-full h-12 flex items-center justify-center !rounded-full border border-gray-200/90 bg-white/50 shadow-sm transition-all hover:border-indigo-300 hover:bg-indigo-50/80 hover:shadow-md mb-4 dark:border-white/10 dark:bg-white/[0.04]'
                   icon={<IconKey size='large' />}
                   onClick={handlePasskeyLogin}
                   loading={passkeyLoading}
@@ -805,7 +815,7 @@ const LoginForm = () => {
                 <div className='space-y-2 pt-2'>
                   <Button
                     theme='solid'
-                    className='w-full !rounded-full'
+                    className='w-full !rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 shadow-lg shadow-indigo-500/25 transition-all hover:from-indigo-500 hover:to-violet-500'
                     type='primary'
                     htmlType='submit'
                     onClick={handleSubmit}
@@ -814,7 +824,7 @@ const LoginForm = () => {
                       (hasUserAgreement || hasPrivacyPolicy) && !agreedToTerms
                     }
                   >
-                    {t('继续')}
+                    {t('登录')}
                   </Button>
 
                   <Button
@@ -914,28 +924,45 @@ const LoginForm = () => {
     return (
       <Modal
         title={
-          <div className='flex items-center'>
-            <div className='w-8 h-8 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3'>
+          <div className='flex items-center gap-3 pr-2'>
+            <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/35 dark:shadow-indigo-900/40'>
               <svg
-                className='w-4 h-4 text-green-600 dark:text-green-400'
-                fill='currentColor'
-                viewBox='0 0 20 20'
+                className='h-5 w-5'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+                strokeWidth={2}
+                aria-hidden
               >
                 <path
-                  fillRule='evenodd'
-                  d='M6 8a2 2 0 11-4 0 2 2 0 014 0zM8 7a1 1 0 100 2h8a1 1 0 100-2H8zM6 14a2 2 0 11-4 0 2 2 0 014 0zM8 13a1 1 0 100 2h8a1 1 0 100-2H8z'
-                  clipRule='evenodd'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'
                 />
               </svg>
             </div>
-            两步验证
+            <div className='min-w-0'>
+              <div className='text-base font-semibold leading-tight text-[var(--semi-color-text-0)]'>
+                两步验证
+              </div>
+              <div className='mt-0.5 text-xs font-normal text-[var(--semi-color-text-2)]'>
+                保护您的账户安全
+              </div>
+            </div>
           </div>
         }
         visible={showTwoFA}
         onCancel={handleBackToLogin}
         footer={null}
-        width={450}
+        width={480}
         centered
+        bodyStyle={{
+          padding: '8px 24px 24px',
+          maxHeight: 'min(90vh, 620px)',
+          overflowY: 'auto',
+        }}
+        headerStyle={{ paddingBottom: 12, borderBottom: '1px solid var(--semi-color-border)' }}
+        className='!rounded-2xl overflow-hidden'
       >
         <TwoFAVerification
           onSuccess={handle2FASuccess}
@@ -947,7 +974,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className='relative overflow-hidden bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
+    <div className='relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-slate-100 via-indigo-50/60 to-teal-50/45 px-4 py-12 sm:px-6 lg:px-8 dark:from-[#080d18] dark:via-[#0f172a] dark:to-[#111827]'>
       {/* 背景模糊晕染球 */}
       <div
         className='blur-ball blur-ball-indigo'
@@ -957,7 +984,9 @@ const LoginForm = () => {
         className='blur-ball blur-ball-teal'
         style={{ top: '50%', left: '-120px' }}
       />
-      <div className='w-full max-w-sm mt-[60px]'>
+      <div className='blur-ball blur-ball-violet' aria-hidden />
+      <div className='pointer-events-none absolute inset-0 opacity-[0.35] dark:opacity-[0.12] [background-image:linear-gradient(to_right,rgba(99,102,241,0.07)_1px,transparent_1px),linear-gradient(to_bottom,rgba(99,102,241,0.07)_1px,transparent_1px)] [background-size:48px_48px]' />
+      <div className='relative z-[1] mt-[52px] w-full max-w-md'>
         {showEmailLogin ||
         !hasOAuthLoginOptions
           ? renderEmailLoginForm()

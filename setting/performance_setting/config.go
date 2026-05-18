@@ -1,6 +1,10 @@
 package performance_setting
 
 import (
+	"os"
+	"strconv"
+	"strings"
+
 	"github.com/QuantumNous/new-api/common"
 	"github.com/QuantumNous/new-api/setting/config"
 )
@@ -34,7 +38,8 @@ var performanceSetting = PerformanceSetting{
 	DiskCachePath:        "",   // 空表示使用系统临时目录
 
 	MonitorEnabled:         true,
-	MonitorCPUThreshold:    90,
+	// Hosts below ~4 vCPU often exceed 90% during normal bursts (relay middleware returns 503).
+	MonitorCPUThreshold:    98,
 	MonitorMemoryThreshold: 90,
 	MonitorDiskThreshold:   95,
 }
@@ -55,12 +60,29 @@ func syncToCommon() {
 		Path:        performanceSetting.DiskCachePath,
 	})
 
-	common.SetPerformanceMonitorConfig(common.PerformanceMonitorConfig{
+	common.SetPerformanceMonitorConfig(performanceMonitorConfigEffective())
+}
+
+// performanceMonitorConfigEffective merges DB-backed settings with env overrides (Docker / ops).
+// PERFORMANCE_MONITOR_DISABLED=true — disables relay CPU/memory/disk gate entirely.
+// PERFORMANCE_MONITOR_CPU_THRESHOLD — CPU % gate (0 = disable CPU check only); overrides threshold while monitoring stays on.
+func performanceMonitorConfigEffective() common.PerformanceMonitorConfig {
+	m := common.PerformanceMonitorConfig{
 		Enabled:         performanceSetting.MonitorEnabled,
 		CPUThreshold:    performanceSetting.MonitorCPUThreshold,
 		MemoryThreshold: performanceSetting.MonitorMemoryThreshold,
 		DiskThreshold:   performanceSetting.MonitorDiskThreshold,
-	})
+	}
+	if strings.EqualFold(strings.TrimSpace(os.Getenv("PERFORMANCE_MONITOR_DISABLED")), "true") {
+		m.Enabled = false
+		return m
+	}
+	if v := strings.TrimSpace(os.Getenv("PERFORMANCE_MONITOR_CPU_THRESHOLD")); v != "" {
+		if n, err := strconv.Atoi(v); err == nil && n >= 0 {
+			m.CPUThreshold = n
+		}
+	}
+	return m
 }
 
 // GetPerformanceSetting 获取性能设置

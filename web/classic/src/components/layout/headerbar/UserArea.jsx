@@ -17,7 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar, Button, Dropdown, Typography } from '@douyinfe/semi-ui';
 import { ChevronDown } from 'lucide-react';
@@ -39,7 +39,6 @@ const UserArea = ({
   navigate,
   t,
 }) => {
-  const dropdownRef = useRef(null);
   if (isLoading) {
     return (
       <SkeletonWrapper
@@ -53,11 +52,10 @@ const UserArea = ({
 
   if (userState.user) {
     return (
-      <div className='relative' ref={dropdownRef}>
-        <Dropdown
-          position='bottomRight'
-          getPopupContainer={() => dropdownRef.current}
-          render={
+      <Dropdown
+        position='bottomRight'
+        zIndex={1100}
+        render={
             <Dropdown.Menu className='!bg-semi-color-bg-overlay !border-semi-color-border !shadow-lg !rounded-lg dark:!bg-gray-700 dark:!border-gray-600'>
               <Dropdown.Item
                 onClick={() => {
@@ -119,7 +117,7 @@ const UserArea = ({
           <Button
             theme='borderless'
             type='tertiary'
-            className='flex items-center gap-1.5 !p-1 !rounded-full hover:!bg-semi-color-fill-1 dark:hover:!bg-gray-700 !bg-semi-color-fill-0 dark:!bg-semi-color-fill-1 dark:hover:!bg-semi-color-fill-2'
+            className='flex items-center gap-1.5 !rounded-lg !border !border-indigo-100/80 !bg-white/80 !p-1 !pl-1.5 shadow-sm transition-colors hover:!border-indigo-200 hover:!bg-indigo-50/80 dark:!border-white/10 dark:!bg-zinc-800/80 dark:hover:!border-indigo-400/30 dark:hover:!bg-zinc-800'
           >
             <Avatar
               size='extra-small'
@@ -139,7 +137,6 @@ const UserArea = ({
             />
           </Button>
         </Dropdown>
-      </div>
     );
   } else {
     const showRegisterButton = !isSelfUseMode;
@@ -148,7 +145,7 @@ const UserArea = ({
       'flex items-center justify-center !py-[10px] !px-1.5';
 
     const loginButtonSpecificStyling =
-      '!bg-semi-color-fill-0 dark:!bg-semi-color-fill-1 hover:!bg-semi-color-fill-1 dark:hover:!bg-gray-700 transition-colors';
+      '!bg-white/90 !shadow-sm ring-1 ring-indigo-200/40 hover:!bg-indigo-50/90 hover:ring-indigo-300/55 dark:!bg-zinc-800/90 dark:ring-white/10 dark:hover:!bg-zinc-700/90 dark:hover:ring-indigo-400/25';
     let loginButtonClasses = `${commonSizingAndLayoutClass} ${loginButtonSpecificStyling}`;
 
     let registerButtonClasses = `${commonSizingAndLayoutClass}`;

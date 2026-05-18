@@ -38,16 +38,19 @@ const HeaderLogo = ({
   }
 
   return (
-    <Link to='/' className='group flex items-center gap-2'>
-      <div className='relative w-8 h-8 md:w-8 md:h-8'>
+    <Link
+      to='/'
+      className='group ml-0.5 flex items-center gap-2 rounded-xl py-1 pl-0.5 pr-1.5 transition-colors hover:bg-indigo-500/[0.07] dark:hover:bg-white/[0.05] md:gap-2.5 md:pr-2'
+    >
+      <div className='relative h-8 w-8 overflow-hidden rounded-xl ring-2 ring-indigo-200/55 ring-inset transition-all duration-200 group-hover:ring-indigo-400/70 dark:ring-indigo-500/40 md:h-8 md:w-8'>
         <SkeletonWrapper loading={isLoading || !logoLoaded} type='image' />
         <img
           src={logo}
           alt='logo'
-          className={`absolute inset-0 w-full h-full transition-all duration-200 group-hover:scale-110 rounded-full ${!isLoading && logoLoaded ? 'opacity-100' : 'opacity-0'}`}
+          className={`absolute inset-0 box-border h-full w-full object-contain object-center transition-all duration-200 group-hover:scale-[1.04] ${!isLoading && logoLoaded ? 'opacity-100' : 'opacity-0'}`}
         />
       </div>
-      <div className='hidden md:flex items-center gap-2'>
+      <div className='hidden items-center gap-2 md:flex'>
         <div className='flex items-center gap-2'>
           <SkeletonWrapper
             loading={isLoading}
@@ -57,7 +60,7 @@ const HeaderLogo = ({
           >
             <Typography.Title
               heading={4}
-              className='!text-lg !font-semibold !mb-0'
+              className='!mb-0 bg-gradient-to-r from-[var(--semi-color-text-0)] via-indigo-700 to-violet-700 !bg-clip-text !text-lg !font-semibold !text-transparent dark:from-zinc-100 dark:via-indigo-300 dark:to-violet-300'
             >
               {systemName}
             </Typography.Title>
@@ -65,7 +68,7 @@ const HeaderLogo = ({
           {(isSelfUseMode || isDemoSiteMode) && !isLoading && (
             <Tag
               color={isSelfUseMode ? 'purple' : 'blue'}
-              className='text-xs px-1.5 py-0.5 rounded whitespace-nowrap shadow-sm'
+              className='!rounded-md !border !border-indigo-200/60 !bg-indigo-50/90 !px-2 !py-0.5 !font-semibold !text-indigo-800 shadow-sm dark:!border-indigo-400/35 dark:!bg-indigo-950/60 dark:!text-indigo-100'
               size='small'
               shape='circle'
             >
