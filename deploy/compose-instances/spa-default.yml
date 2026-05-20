@@ -1,0 +1,31 @@
+name: 1router-spa
+
+services:
+  spa:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.web
+      args:
+        VITE_REACT_APP_SERVER_URL: "${SPA_BAKED_API_ORIGIN:-}"
+    image: 1router:spa
+    container_name: 1router-spa
+    restart: always
+    ports:
+      - "${SPA_HOST_PORT:-3000}:80"
+    networks:
+      - new-api-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "0.30"
+          memory: 96M
+
+networks:
+  new-api-network:
+    external: true
+    name: new-api-network

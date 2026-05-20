@@ -21,12 +21,40 @@ import i18next from 'i18next'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 
+declare global {
+  interface Window {
+    /** Injected via `/runtime-config.js` on static hosting (same build → multiple backends). */
+    __RUNTIME__?: { API_BASE_URL?: string }
+  }
+}
+
 // ============================================================================
 // Axios Instance Configuration
 // ============================================================================
 
-// Base URL: empty string for same-origin API requests
-const baseURL = ''
+function readRuntimeApiBase(): string {
+  if (typeof window === 'undefined') return ''
+  const v = window.__RUNTIME__?.API_BASE_URL
+  return typeof v === 'string' && v.trim() !== ''
+    ? v.trim().replace(/\/+$/, '')
+    : ''
+}
+
+/** Gateway API origin without trailing slash; empty means same origin as the SPA host. */
+export function getPublicApiBaseURL(): string {
+  const rt = readRuntimeApiBase()
+  if (rt) return rt
+  const raw = import.meta.env.VITE_REACT_APP_SERVER_URL
+  if (typeof raw === 'string' && raw.trim() !== '') {
+    return raw.trim().replace(/\/+$/, '')
+  }
+  if (typeof window !== 'undefined') {
+    return window.location.origin
+  }
+  return ''
+}
+
+const baseURL = getPublicApiBaseURL()
 
 // Create axios instance with default config
 export const api = axios.create({

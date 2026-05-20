@@ -1,0 +1,31 @@
+name: 1router-classic-spa
+
+services:
+  classic-spa:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.web.classic
+      args:
+        VITE_REACT_APP_SERVER_URL: "${SPA_CLASSIC_BAKED_API_ORIGIN:-}"
+    image: 1router:classic-spa
+    container_name: 1router-spa-classic
+    restart: always
+    ports:
+      - "${SPA_CLASSIC_HOST_PORT:-3001}:80"
+    networks:
+      - new-api-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "0.45"
+          memory: 384M
+
+networks:
+  new-api-network:
+    external: true
+    name: new-api-network

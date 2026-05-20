@@ -29,6 +29,7 @@ import {
   DEFAULT_LOGO,
   normalizeSystemLogo,
 } from '@/lib/constants'
+import { getPublicApiBaseURL } from '@/lib/api'
 import { applyFaviconToDom } from '@/lib/dom-utils'
 
 interface UseSystemConfigOptions {
@@ -107,7 +108,9 @@ export function mapStatusDataToConfig(
 
 // Fetch system config from API
 async function fetchSystemConfig(): Promise<Partial<SystemConfig>> {
-  const response = await fetch('/api/status')
+  const response = await fetch(`${getPublicApiBaseURL()}/api/status`, {
+    credentials: 'include',
+  })
   if (!response.ok) throw new Error('Failed to fetch status')
 
   const data: StatusApiResponse = await response.json()

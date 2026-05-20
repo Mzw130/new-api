@@ -1,0 +1,42 @@
+# API-only backend image: skips Bun builds; embeds minimal stub HTML so `go:embed` succeeds.
+# Use when the SPA is hosted separately (OSS/CDN + SERVE_EMBEDDED_FRONTEND=false + FRONTEND_BASE_URL).
+#
+#   docker build -f Dockerfile.api-only -t 1router:api-only .
+#
+# Runtime env (examples):
+#   SERVE_EMBEDDED_FRONTEND=false
+#   FRONTEND_BASE_URL=https://static.example.com
+# Build SPA with: VITE_REACT_APP_SERVER_URL=https://api.example.com
+
+FROM golang:1.26.1-alpine@sha256:2389ebfa5b7f43eeafbd6be0c3700cc46690ef842ad962f6c5bd6be49ed82039 AS builder2
+ENV GO111MODULE=on CGO_ENABLED=0
+
+ARG TARGETOS
+ARG TARGETARCH
+ENV GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH:-amd64}
+ENV GOEXPERIMENT=greenteagc
+
+WORKDIR /build
+
+ADD go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN mkdir -p web/default/dist web/classic/dist && \
+    printf '%s\n' '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>API</title></head><body>Embedded UI disabled.</body></html>' > web/default/dist/index.html && \
+    cp web/default/dist/index.html web/classic/dist/index.html
+
+RUN go build -ldflags "-s -w -X 'github.com/QuantumNous/new-api/common.Version=$(cat VERSION)'" -o new-api
+
+FROM debian:bookworm-slim@sha256:f06537653ac770703bc45b4b113475bd402f451e85223f0f2837acbf89ab020a
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates tzdata libasan8 wget \
+    && rm -rf /var/lib/apt/lists/* \
+    && update-ca-certificates
+
+COPY --from=builder2 /build/new-api /
+EXPOSE 3000
+WORKDIR /data
+ENTRYPOINT ["/new-api"]

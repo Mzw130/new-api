@@ -18,20 +18,44 @@ For commercial licensing, please contact support@quantumnous.com
 */
 
 import react from '@vitejs/plugin-react';
-import { defineConfig, transformWithEsbuild } from 'vite';
+import { defineConfig, loadEnv, transformWithEsbuild } from 'vite';
 import pkg from '@douyinfe/vite-plugin-semi';
 import path from 'path';
 import { codeInspectorPlugin } from 'code-inspector-plugin';
 const { vitePluginSemi } = pkg;
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
+export default defineConfig(({ mode }) => {
+  const fileEnv = loadEnv(mode, process.cwd(), 'VITE_');
+  const viteProcess = process.env.VITE_REACT_APP_SERVER_URL;
+
+  /** Same-origin SPA (scheme A): empty when Docker unset + no .env file value. */
+  const bakedViteOrigin =
+    typeof viteProcess !== 'undefined'
+      ? String(viteProcess).trim().replace(/\/+$/, '')
+      : (typeof fileEnv.VITE_REACT_APP_SERVER_URL === 'string'
+          ? fileEnv.VITE_REACT_APP_SERVER_URL.trim().replace(/\/+$/, '')
+          : '');
+
+  const proxyTarget =
+    (typeof viteProcess !== 'undefined' && String(viteProcess).trim()) ||
+    (typeof fileEnv.VITE_REACT_APP_SERVER_URL === 'string'
+      ? fileEnv.VITE_REACT_APP_SERVER_URL.trim()
+      : '') ||
+    'http://localhost:3000';
+
+  const apiProxy = ['/api', '/mj', '/pg', '/v1'].reduce((acc, key) => {
+    acc[key] = { target: proxyTarget, changeOrigin: true };
+    return acc;
+  }, /** @type {Record<string, import('vite').ProxyOptions>} */ ({}));
+
+  return {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      },
     },
-  },
-  plugins: [
+    plugins: [
     codeInspectorPlugin({
       bundler: 'vite',
     }),
@@ -51,57 +75,49 @@ export default defineConfig({
       },
     },
     react(),
-    vitePluginSemi({
-      cssLayer: true,
-    }),
-  ],
-  optimizeDeps: {
-    force: true,
-    esbuildOptions: {
-      loader: {
-        '.js': 'jsx',
-        '.json': 'json',
-      },
+      vitePluginSemi({
+        cssLayer: true,
+      }),
+    ],
+    define: {
+      'import.meta.env.VITE_REACT_APP_SERVER_URL':
+        JSON.stringify(bakedViteOrigin),
     },
-  },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'react-core': ['react', 'react-dom', 'react-router-dom'],
-          'semi-ui': ['@douyinfe/semi-icons', '@douyinfe/semi-ui'],
-          tools: ['axios', 'history', 'marked'],
-          'react-components': [
-            'react-dropzone',
-            'react-fireworks',
-            'react-telegram-login',
-            'react-toastify',
-            'react-turnstile',
-          ],
-          i18n: [
-            'i18next',
-            'react-i18next',
-            'i18next-browser-languagedetector',
-          ],
+    optimizeDeps: {
+      force: true,
+      esbuildOptions: {
+        loader: {
+          '.js': 'jsx',
+          '.json': 'json',
         },
       },
     },
-  },
-  server: {
-    host: '0.0.0.0',
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-      '/mj': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-      '/pg': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'react-core': ['react', 'react-dom', 'react-router-dom'],
+            'semi-ui': ['@douyinfe/semi-icons', '@douyinfe/semi-ui'],
+            tools: ['axios', 'history', 'marked'],
+            'react-components': [
+              'react-dropzone',
+              'react-fireworks',
+              'react-telegram-login',
+              'react-toastify',
+              'react-turnstile',
+            ],
+            i18n: [
+              'i18next',
+              'react-i18next',
+              'i18next-browser-languagedetector',
+            ],
+          },
+        },
       },
     },
-  },
+    server: {
+      host: '0.0.0.0',
+      proxy: apiProxy,
+    },
+  };
 });

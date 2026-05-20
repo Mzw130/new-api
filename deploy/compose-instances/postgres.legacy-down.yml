@@ -1,0 +1,10 @@
+# 仅用于在迁移到 MySQL 后，把旧版「分列」栈里的 Postgres 项目关掉：
+#   docker compose -f deploy/compose-instances/postgres.legacy-down.yml down
+#
+# 必须与历史 `postgres.yml` 的顶层 `name:` 一致，否则 `down` 不会作用到旧容器。
+name: 1router-postgres
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres

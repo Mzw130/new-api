@@ -40,7 +40,7 @@ import {
 import { motion, useReducedMotion } from 'motion/react'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/stores/auth-store'
-import { getUserModels } from '@/lib/api'
+import { getPublicApiBaseURL, getUserModels } from '@/lib/api'
 import { MOTION_TRANSITION } from '@/lib/motion'
 import { ROLE } from '@/lib/roles'
 import { cn } from '@/lib/utils'
@@ -135,7 +135,8 @@ function getCurrentOrigin(): string {
 }
 
 function normalizeEndpoint(sourceUrl?: string): string {
-  const fallback = `${getCurrentOrigin()}/v1/chat/completions`
+  const apiOrigin = getPublicApiBaseURL() || getCurrentOrigin()
+  const fallback = `${apiOrigin}/v1/chat/completions`
   const trimmed = sourceUrl?.trim()
   if (!trimmed) return fallback
 

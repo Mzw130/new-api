@@ -26,10 +26,25 @@ import {
 import axios from 'axios';
 import { MESSAGE_ROLES } from '../constants/playground.constants';
 
+function viteApiOrigin() {
+  if (typeof window !== 'undefined' && window.__RUNTIME__ && typeof window.__RUNTIME__.API_BASE_URL === 'string') {
+    const rt = window.__RUNTIME__.API_BASE_URL.trim().replace(/\/+$/, '');
+    if (rt) return rt;
+  }
+  const raw = import.meta.env.VITE_REACT_APP_SERVER_URL;
+  if (typeof raw === 'string' && raw.trim() !== '') {
+    return raw.trim().replace(/\/+$/, '');
+  }
+  // Scheme A Docker / Nginx: empty baked VITE → same origin as SPA (parity with web/default/src/lib/api.ts)
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
+  }
+  return '';
+}
+
 export let API = axios.create({
-  baseURL: import.meta.env.VITE_REACT_APP_SERVER_URL
-    ? import.meta.env.VITE_REACT_APP_SERVER_URL
-    : '',
+  baseURL: viteApiOrigin(),
+  withCredentials: true,
   headers: {
     'New-API-User': getUserIdFromLocalStorage(),
     'Cache-Control': 'no-store',
@@ -82,9 +97,8 @@ patchAPIInstance(API);
 
 export function updateAPI() {
   API = axios.create({
-    baseURL: import.meta.env.VITE_REACT_APP_SERVER_URL
-      ? import.meta.env.VITE_REACT_APP_SERVER_URL
-      : '',
+    baseURL: viteApiOrigin(),
+    withCredentials: true,
     headers: {
       'New-API-User': getUserIdFromLocalStorage(),
       'Cache-Control': 'no-store',

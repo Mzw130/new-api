@@ -1,0 +1,4 @@
+# SPA build output for nginx (Pattern A). Populate after:
+#   cd web/default && bun run build && cp -r dist/* deploy/enterprise-split/spa-dist/
+*
+!.gitignore

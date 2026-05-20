@@ -63,6 +63,8 @@ func main() {
 		common.SysLog("running in debug mode")
 	}
 
+	common.LogSplitDeploymentHints()
+
 	defer func() {
 		err := model.CloseDB()
 		if err != nil {
@@ -159,6 +161,23 @@ func main() {
 
 	// Initialize HTTP server
 	server := gin.New()
+	// CORS first: applies to every path, including 404/NoRoute, so split SPA (:3000) → API (:3002) always gets ACAO.
+	server.Use(middleware.CORS())
+	if tp := strings.TrimSpace(os.Getenv("TRUSTED_PROXIES")); tp != "" {
+		parts := strings.Split(tp, ",")
+		for i := range parts {
+			parts[i] = strings.TrimSpace(parts[i])
+		}
+		if err := server.SetTrustedProxies(parts); err != nil {
+			common.SysLog("TRUSTED_PROXIES invalid: " + err.Error())
+		} else {
+			common.SysLog("TRUSTED_PROXIES enabled for reverse-proxy forwarded headers")
+		}
+	}
+	if os.Getenv("ENABLE_SECURITY_HEADERS") == "true" {
+		server.Use(middleware.SecurityHeaders())
+		common.SysLog("ENABLE_SECURITY_HEADERS=true: baseline security headers enabled")
+	}
 	server.Use(gin.CustomRecovery(func(c *gin.Context, err any) {
 		common.SysLog(fmt.Sprintf("panic detected: %v", err))
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -174,15 +193,36 @@ func main() {
 	server.Use(middleware.PoweredBy())
 	server.Use(middleware.I18n())
 	middleware.SetUpLogger(server)
-	// Initialize session store
+	// Initialize session store (cross-origin SPA needs SameSite=None + Secure; see SESSION_COOKIE_* env)
 	store := cookie.NewStore([]byte(common.SessionSecret))
-	store.Options(sessions.Options{
+	sessionOpts := sessions.Options{
 		Path:     "/",
 		MaxAge:   2592000, // 30 days
 		HttpOnly: true,
 		Secure:   false,
 		SameSite: http.SameSiteStrictMode,
-	})
+	}
+	switch strings.ToLower(strings.TrimSpace(os.Getenv("SESSION_COOKIE_SAMESITE"))) {
+	case "lax":
+		sessionOpts.SameSite = http.SameSiteLaxMode
+	case "none":
+		sessionOpts.SameSite = http.SameSiteNoneMode
+	case "strict", "":
+		sessionOpts.SameSite = http.SameSiteStrictMode
+	default:
+		common.SysLog("SESSION_COOKIE_SAMESITE invalid; using Strict")
+		sessionOpts.SameSite = http.SameSiteStrictMode
+	}
+	if os.Getenv("SESSION_COOKIE_SECURE") == "true" {
+		sessionOpts.Secure = true
+	}
+	if sessionOpts.SameSite == http.SameSiteNoneMode {
+		sessionOpts.Secure = true
+	}
+	if d := strings.TrimSpace(os.Getenv("SESSION_COOKIE_DOMAIN")); d != "" {
+		sessionOpts.Domain = d
+	}
+	store.Options(sessionOpts)
 	server.Use(sessions.Sessions("session", store))
 
 	InjectUmamiAnalytics()

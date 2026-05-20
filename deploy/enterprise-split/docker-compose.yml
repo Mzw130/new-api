@@ -1,0 +1,21 @@
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx.unified-gateway.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./spa-dist:/usr/share/nginx/html:ro
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.api-only
+    expose:
+      - "3000"
+    env_file:
+      - api.env
+    restart: unless-stopped

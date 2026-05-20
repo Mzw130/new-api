@@ -1,124 +1,16 @@
-# New-API Docker Compose Configuration
-# 
-# Quick Start (uses repo Dockerfile — embeds YOUR web/default + web/classic builds):
-#   1. docker compose up -d --build   # first run / after frontend changes
-#   2. Access at http://localhost:3002 (mapped host port; change below if needed)
+# -----------------------------------------------------------------------------
+# Docker Desktop 若要「每个容器单独一个 Compose 项目」，请用：
+#   .\scripts\compose-instances-up.ps1 -Build
 #
-# Resource caps for ~2 vCPU / 4GiB host, aligned with observed peaks (Docker Desktop + Tencent top):
-#   CPU: app ~152–160%, postgres ~44%, redis ~24% (each row is "% of one CPU"; sum ~220% ≈ 2.2 cores burst).
-#   Scaled to container limits totaling ~1.8 cores so ~0.2 core stays for OS/Docker on a 2-core VM.
-# Memory: app RSS ~53–90MiB, postgres ~200MiB, redis ~10MiB in snapshots — limits below add headroom for spikes/cache.
-# Raise postgres `memory` first if the DB is heavy; raise `new-api` cpus only if API latency suffers under load.
-#
-# Using MySQL instead of PostgreSQL:
-#   1. Comment out the postgres service and SQL_DSN line 15
-#   2. Uncomment the mysql service and SQL_DSN line 16
-#   3. Uncomment mysql in depends_on (line 28)
-#   4. Uncomment mysql_data in volumes section (line 64)
-#
-# ⚠️  IMPORTANT: Change all default passwords before deploying to production!
+# 合并单栈（一个目录下全在）：docker compose -f docker-compose.monolith.yml up -d --build
+# 说明：deploy/compose-instances/README.md
+# -----------------------------------------------------------------------------
+
+name: new-api-entry
 
 services:
-  new-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: 1router:0.0.2
-    container_name: 1router
-    restart: always
-    command: --log-dir /app/logs
-    ports:
-      # Use 3002 when host :3000 is already taken (e.g. another gateway container).
-      - "3002:3000"
-    volumes:
-      - ./data:/data
-      - ./logs:/app/logs
-    environment:
-      - SQL_DSN=postgresql://root:123456@postgres:5432/new-api # ⚠️ IMPORTANT: Change the password in production!
-#      - SQL_DSN=root:123456@tcp(mysql:3306)/new-api  # Point to the mysql service, uncomment if using MySQL
-      - REDIS_CONN_STRING=redis://:123456@redis:6379 # ⚠️ IMPORTANT: Change the password in production!
-      - TZ=Asia/Shanghai
-      - ERROR_LOG_ENABLED=true # 是否启用错误日志记录 (Whether to enable error log recording)
-      - BATCH_UPDATE_ENABLED=true  # 是否启用批量更新 (Whether to enable batch update)
-      - NODE_NAME=1router-node-1  # 节点名称，用于审计日志中标识节点身份；多节点/容器部署时建议设置 (Node name used in audit logs; recommended when running multiple instances or in containers)
-      # Relay 超 CPU 阈值会 503（system_cpu_overloaded）；DB 里若仍为 90 也会被此项覆盖。设为 0 仅关闭 CPU 门禁。
-      - PERFORMANCE_MONITOR_CPU_THRESHOLD=98
-#      - PERFORMANCE_MONITOR_DISABLED=true  # 关闭性能门禁（CPU/内存/磁盘阈值一并不生效）
-#      - STREAMING_TIMEOUT=300  # 流模式无响应超时时间，单位秒，默认120秒，如果出现空补全可以尝试改为更大值 （Streaming timeout in seconds, default is 120s. Increase if experiencing empty completions）
-#      - SESSION_SECRET=random_string  # 多机部署时设置，必须修改这个随机字符串！！ （multi-node deployment, set this to a random string!!!!!!!）
-#      - SYNC_FREQUENCY=60  # Uncomment if regular database syncing is needed
-#      - GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX  # Google Analytics 的测量 ID (Google Analytics Measurement ID)
-#      - UMAMI_WEBSITE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  # Umami 网站 ID (Umami Website ID)
-#      - UMAMI_SCRIPT_URL=https://analytics.umami.is/script.js  # Umami 脚本 URL，默认为官方地址 (Umami Script URL, defaults to official URL)
-
-    depends_on:
-      - redis
-      - postgres
-#      - mysql  # Uncomment if using MySQL
-    networks:
-      - new-api-network
-    healthcheck:
-      test: ["CMD-SHELL", "wget -q -O - http://localhost:3000/api/status | grep -o '\"success\":\\s*true' || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    deploy:
-      resources:
-        limits:
-          cpus: '1.15'
-          memory: 768M
-
-  redis:
-    image: redis:latest
-    container_name: redis
-    restart: always
-    command: ["redis-server", "--requirepass", "123456"]  # ⚠️ IMPORTANT: Change this password in production!
-    networks:
-      - new-api-network
-    deploy:
-      resources:
-        limits:
-          cpus: '0.20'
-          memory: 128M
-
-  postgres:
-    image: postgres:16
-    container_name: postgres
-    restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: '0.45'
-          memory: 1G
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: 123456  # ⚠️ IMPORTANT: Change this password in production!
-      POSTGRES_DB: new-api
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-    networks:
-      - new-api-network
-#    ports:
-#      - "5432:5432"  # Uncomment if you need to access PostgreSQL from outside Docker
-
-#  mysql:
-#    image: mysql:8.2
-#    container_name: mysql
-#    restart: always
-#    environment:
-#      MYSQL_ROOT_PASSWORD: 123456  # ⚠️ IMPORTANT: Change this password in production!
-#      MYSQL_DATABASE: new-api
-#    volumes:
-#      - mysql_data:/var/lib/mysql
-#    networks:
-#      - new-api-network
-#    ports:
-#      - "3306:3306"  # Uncomment if you need to access MySQL from outside Docker
-
-volumes:
-  pg_data:
-#  mysql_data:
-
-networks:
-  new-api-network:
-    driver: bridge
+  # 无默认服务；避免误 `docker compose up` 拉起整栈。
+  _placeholder:
+    image: alpine:3.19
+    command: ["true"]
+    profiles: ["unused"]

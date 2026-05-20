@@ -1,0 +1,39 @@
+# 独立 Compose 项目 — MySQL（与 Redis/API/SPA 分列 Docker Desktop）
+name: 1router-mysql
+
+services:
+  mysql:
+    image: mysql:8.2
+    container_name: mysql
+    restart: always
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    deploy:
+      resources:
+        limits:
+          cpus: "0.45"
+          memory: 1G
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_DATABASE: new-api
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - new-api-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p123456"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+
+volumes:
+  mysql_data:
+    external: true
+    name: new-api_mysql_data
+
+networks:
+  new-api-network:
+    external: true
+    name: new-api-network

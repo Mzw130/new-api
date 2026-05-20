@@ -1,7 +1,7 @@
 # Run the production-style image (Dockerfile) with the same env style as docker-compose.dev.yml.
 #
-# Build (does NOT read this file — only Dockerfile):
-#   docker build -t 1router-api:v20260511 .
+# Build (does NOT read this file — only Dockerfile.api-only for split):
+#   docker build -f Dockerfile.api-only -t 1router:api-only .
 #
 # Configure secrets locally (never commit .env.deploy):
 #   copy .env.deploy.example -> .env.deploy and edit values
@@ -19,8 +19,8 @@ services:
   new-api:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: 1router:0.0.2
+      dockerfile: Dockerfile.api-only
+    image: 1router:api-only
     container_name: 1router
     restart: unless-stopped
     ports:

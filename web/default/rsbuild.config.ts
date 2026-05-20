@@ -8,10 +8,21 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig(({ envMode }) => {
   const env = loadEnv({ mode: envMode, prefixes: ['VITE_'] })
+  // Docker scheme A sets `ENV VITE_REACT_APP_SERVER_URL=` (empty string → same-origin SPA).
+  // BuildKit caches `bun run build`; without this override stale `env.publicVars` could keep an old baked URL (e.g. :3002).
+  const viteProcess = process.env.VITE_REACT_APP_SERVER_URL
+  const bakedPublicApiOrigin =
+    typeof viteProcess !== 'undefined'
+      ? String(viteProcess).trim().replace(/\/+$/, '')
+      : (typeof env.rawPublicVars.VITE_REACT_APP_SERVER_URL === 'string'
+          ? env.rawPublicVars.VITE_REACT_APP_SERVER_URL.trim().replace(/\/+$/, '')
+          : '')
   const serverUrl =
-    process.env.VITE_REACT_APP_SERVER_URL ||
+    viteProcess ||
     env.rawPublicVars.VITE_REACT_APP_SERVER_URL ||
     'http://localhost:3000'
+  // Rsbuild does not expose VITE_* to the client unless injected via define (PUBLIC_* only by default).
+  // Without this, split Docker SPA falls back to same-origin → POST /api/* hits Nginx → 405.
 
   const isProd = envMode === 'production'
   const devProxy = Object.fromEntries(
@@ -51,6 +62,11 @@ export default defineConfig(({ envMode }) => {
       },
     },
     source: {
+      define: {
+        ...env.publicVars,
+        'import.meta.env.VITE_REACT_APP_SERVER_URL':
+          JSON.stringify(bakedPublicApiOrigin),
+      },
       entry: {
         index: './src/main.tsx',
       },

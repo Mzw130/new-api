@@ -1,0 +1,20 @@
+name: 1router-redis
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    command: ["redis-server", "--requirepass", "123456"]
+    networks:
+      - new-api-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.20"
+          memory: 128M
+
+networks:
+  new-api-network:
+    external: true
+    name: new-api-network

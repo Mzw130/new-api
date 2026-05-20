@@ -1,0 +1,46 @@
+name: 1router-api
+
+services:
+  new-api:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.api-only
+    image: 1router:api-only
+    container_name: 1router
+    restart: always
+    command: --log-dir /app/logs
+    ports:
+      - "3002:3000"
+    volumes:
+      - ../../data:/data
+      - ../../logs:/app/logs
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - SQL_DSN=root:123456@tcp(mysql:3306)/new-api?parseTime=true
+      - REDIS_CONN_STRING=redis://:123456@redis:6379
+      - TZ=Asia/Shanghai
+      - ERROR_LOG_ENABLED=true
+      - BATCH_UPDATE_ENABLED=true
+      - NODE_NAME=1router-node-1
+      - PERFORMANCE_MONITOR_CPU_THRESHOLD=98
+      - SERVE_EMBEDDED_FRONTEND=false
+      - FRONTEND_BASE_URL=${FRONTEND_BASE_URL:-http://localhost:3000}
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost,http://127.0.0.1,http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001,http://127.0.0.1:3001}
+    networks:
+      - new-api-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://localhost:3000/api/status | grep -o '\"success\":\\s*true' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4G
+
+networks:
+  new-api-network:
+    external: true
+    name: new-api-network

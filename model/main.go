@@ -17,6 +17,19 @@ import (
 	"gorm.io/gorm"
 )
 
+// ensurePostgreSQLSSLMode appends sslmode when absent so local / Docker Postgres without TLS
+// does not hit "server refused TLS" (pgx may negotiate TLS otherwise). Production DBs requiring TLS
+// should set sslmode=require (or verify-full) explicitly in SQL_DSN.
+func ensurePostgreSQLSSLMode(dsn string) string {
+	if strings.Contains(strings.ToLower(dsn), "sslmode=") {
+		return dsn
+	}
+	if strings.Contains(dsn, "?") {
+		return dsn + "&sslmode=disable"
+	}
+	return dsn + "?sslmode=disable"
+}
+
 var commonGroupCol string
 var commonKeyCol string
 var commonTrueVal string
@@ -129,6 +142,7 @@ func chooseDB(envName string, isLog bool) (*gorm.DB, error) {
 			} else {
 				common.LogSqlType = common.DatabaseTypePostgreSQL
 			}
+			dsn = ensurePostgreSQLSSLMode(dsn)
 			return gorm.Open(postgres.New(postgres.Config{
 				DSN:                  dsn,
 				PreferSimpleProtocol: true, // disables implicit prepared statement usage
