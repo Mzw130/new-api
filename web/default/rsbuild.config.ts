@@ -81,6 +81,9 @@ export default defineConfig(({ envMode }) => {
     },
     server: {
       host: '0.0.0.0',
+      port: 3000,
+      // TanStack Router paths (/docs, /docs/apps/…) need index.html on refresh & direct open
+      historyApiFallback: true,
       proxy: devProxy,
     },
     output: {

@@ -16,6 +16,7 @@ import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SetupIndexRouteImport } from './routes/setup/index'
 import { Route as PricingIndexRouteImport } from './routes/pricing/index'
+import { Route as DocsIndexRouteImport } from './routes/docs/index'
 import { Route as AboutIndexRouteImport } from './routes/about/index'
 import { Route as OauthProviderRouteImport } from './routes/oauth/$provider'
 import { Route as AuthenticatedChat2linkRouteImport } from './routes/_authenticated/chat2link'
@@ -32,6 +33,10 @@ import { Route as authOauthRouteImport } from './routes/(auth)/oauth'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as AuthenticatedSystemSettingsRouteRouteImport } from './routes/_authenticated/system-settings/route'
 import { Route as PricingModelIdIndexRouteImport } from './routes/pricing/$modelId/index'
+import { Route as DocsOpenaiCompatibleIndexRouteImport } from './routes/docs/openai-compatible/index'
+import { Route as DocsIntegrationIndexRouteImport } from './routes/docs/integration/index'
+import { Route as DocsAppsIndexRouteImport } from './routes/docs/apps/index'
+import { Route as DocsApiIndexRouteImport } from './routes/docs/api/index'
 import { Route as AuthenticatedWalletIndexRouteImport } from './routes/_authenticated/wallet/index'
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedUsageLogsIndexRouteImport } from './routes/_authenticated/usage-logs/index'
@@ -44,6 +49,7 @@ import { Route as AuthenticatedModelsIndexRouteImport } from './routes/_authenti
 import { Route as AuthenticatedKeysIndexRouteImport } from './routes/_authenticated/keys/index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard/index'
 import { Route as AuthenticatedChannelsIndexRouteImport } from './routes/_authenticated/channels/index'
+import { Route as DocsAppsSlugRouteImport } from './routes/docs/apps/$slug'
 import { Route as AuthenticatedUsageLogsSectionRouteImport } from './routes/_authenticated/usage-logs/$section'
 import { Route as AuthenticatedModelsSectionRouteImport } from './routes/_authenticated/models/$section'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
@@ -96,6 +102,11 @@ const SetupIndexRoute = SetupIndexRouteImport.update({
 const PricingIndexRoute = PricingIndexRouteImport.update({
   id: '/pricing/',
   path: '/pricing/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocsIndexRoute = DocsIndexRouteImport.update({
+  id: '/docs/',
+  path: '/docs/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutIndexRoute = AboutIndexRouteImport.update({
@@ -179,6 +190,27 @@ const PricingModelIdIndexRoute = PricingModelIdIndexRouteImport.update({
   path: '/pricing/$modelId/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DocsOpenaiCompatibleIndexRoute =
+  DocsOpenaiCompatibleIndexRouteImport.update({
+    id: '/docs/openai-compatible/',
+    path: '/docs/openai-compatible/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DocsIntegrationIndexRoute = DocsIntegrationIndexRouteImport.update({
+  id: '/docs/integration/',
+  path: '/docs/integration/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocsAppsIndexRoute = DocsAppsIndexRouteImport.update({
+  id: '/docs/apps/',
+  path: '/docs/apps/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocsApiIndexRoute = DocsApiIndexRouteImport.update({
+  id: '/docs/api/',
+  path: '/docs/api/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedWalletIndexRoute =
   AuthenticatedWalletIndexRouteImport.update({
     id: '/wallet/',
@@ -249,6 +281,11 @@ const AuthenticatedChannelsIndexRoute =
     path: '/channels/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const DocsAppsSlugRoute = DocsAppsSlugRouteImport.update({
+  id: '/docs/apps/$slug',
+  path: '/docs/apps/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedUsageLogsSectionRoute =
   AuthenticatedUsageLogsSectionRouteImport.update({
     id: '/usage-logs/$section',
@@ -387,6 +424,7 @@ export interface FileRoutesByFullPath {
   '/chat2link': typeof AuthenticatedChat2linkRoute
   '/oauth/$provider': typeof OauthProviderRoute
   '/about/': typeof AboutIndexRoute
+  '/docs/': typeof DocsIndexRoute
   '/pricing/': typeof PricingIndexRoute
   '/setup/': typeof SetupIndexRoute
   '/user/reset': typeof authUserResetRoute
@@ -395,6 +433,7 @@ export interface FileRoutesByFullPath {
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/models/$section': typeof AuthenticatedModelsSectionRoute
   '/usage-logs/$section': typeof AuthenticatedUsageLogsSectionRoute
+  '/docs/apps/$slug': typeof DocsAppsSlugRoute
   '/channels/': typeof AuthenticatedChannelsIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/keys/': typeof AuthenticatedKeysIndexRoute
@@ -407,6 +446,10 @@ export interface FileRoutesByFullPath {
   '/usage-logs/': typeof AuthenticatedUsageLogsIndexRoute
   '/users/': typeof AuthenticatedUsersIndexRoute
   '/wallet/': typeof AuthenticatedWalletIndexRoute
+  '/docs/api/': typeof DocsApiIndexRoute
+  '/docs/apps/': typeof DocsAppsIndexRoute
+  '/docs/integration/': typeof DocsIntegrationIndexRoute
+  '/docs/openai-compatible/': typeof DocsOpenaiCompatibleIndexRoute
   '/pricing/$modelId/': typeof PricingModelIdIndexRoute
   '/system-settings/auth/$section': typeof AuthenticatedSystemSettingsAuthSectionRoute
   '/system-settings/billing/$section': typeof AuthenticatedSystemSettingsBillingSectionRoute
@@ -441,6 +484,7 @@ export interface FileRoutesByTo {
   '/chat2link': typeof AuthenticatedChat2linkRoute
   '/oauth/$provider': typeof OauthProviderRoute
   '/about': typeof AboutIndexRoute
+  '/docs': typeof DocsIndexRoute
   '/pricing': typeof PricingIndexRoute
   '/setup': typeof SetupIndexRoute
   '/user/reset': typeof authUserResetRoute
@@ -449,6 +493,7 @@ export interface FileRoutesByTo {
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/models/$section': typeof AuthenticatedModelsSectionRoute
   '/usage-logs/$section': typeof AuthenticatedUsageLogsSectionRoute
+  '/docs/apps/$slug': typeof DocsAppsSlugRoute
   '/channels': typeof AuthenticatedChannelsIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/keys': typeof AuthenticatedKeysIndexRoute
@@ -461,6 +506,10 @@ export interface FileRoutesByTo {
   '/usage-logs': typeof AuthenticatedUsageLogsIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
   '/wallet': typeof AuthenticatedWalletIndexRoute
+  '/docs/api': typeof DocsApiIndexRoute
+  '/docs/apps': typeof DocsAppsIndexRoute
+  '/docs/integration': typeof DocsIntegrationIndexRoute
+  '/docs/openai-compatible': typeof DocsOpenaiCompatibleIndexRoute
   '/pricing/$modelId': typeof PricingModelIdIndexRoute
   '/system-settings/auth/$section': typeof AuthenticatedSystemSettingsAuthSectionRoute
   '/system-settings/billing/$section': typeof AuthenticatedSystemSettingsBillingSectionRoute
@@ -499,6 +548,7 @@ export interface FileRoutesById {
   '/_authenticated/chat2link': typeof AuthenticatedChat2linkRoute
   '/oauth/$provider': typeof OauthProviderRoute
   '/about/': typeof AboutIndexRoute
+  '/docs/': typeof DocsIndexRoute
   '/pricing/': typeof PricingIndexRoute
   '/setup/': typeof SetupIndexRoute
   '/(auth)/user/reset': typeof authUserResetRoute
@@ -507,6 +557,7 @@ export interface FileRoutesById {
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/models/$section': typeof AuthenticatedModelsSectionRoute
   '/_authenticated/usage-logs/$section': typeof AuthenticatedUsageLogsSectionRoute
+  '/docs/apps/$slug': typeof DocsAppsSlugRoute
   '/_authenticated/channels/': typeof AuthenticatedChannelsIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/_authenticated/keys/': typeof AuthenticatedKeysIndexRoute
@@ -519,6 +570,10 @@ export interface FileRoutesById {
   '/_authenticated/usage-logs/': typeof AuthenticatedUsageLogsIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
   '/_authenticated/wallet/': typeof AuthenticatedWalletIndexRoute
+  '/docs/api/': typeof DocsApiIndexRoute
+  '/docs/apps/': typeof DocsAppsIndexRoute
+  '/docs/integration/': typeof DocsIntegrationIndexRoute
+  '/docs/openai-compatible/': typeof DocsOpenaiCompatibleIndexRoute
   '/pricing/$modelId/': typeof PricingModelIdIndexRoute
   '/_authenticated/system-settings/auth/$section': typeof AuthenticatedSystemSettingsAuthSectionRoute
   '/_authenticated/system-settings/billing/$section': typeof AuthenticatedSystemSettingsBillingSectionRoute
@@ -556,6 +611,7 @@ export interface FileRouteTypes {
     | '/chat2link'
     | '/oauth/$provider'
     | '/about/'
+    | '/docs/'
     | '/pricing/'
     | '/setup/'
     | '/user/reset'
@@ -564,6 +620,7 @@ export interface FileRouteTypes {
     | '/errors/$error'
     | '/models/$section'
     | '/usage-logs/$section'
+    | '/docs/apps/$slug'
     | '/channels/'
     | '/dashboard/'
     | '/keys/'
@@ -576,6 +633,10 @@ export interface FileRouteTypes {
     | '/usage-logs/'
     | '/users/'
     | '/wallet/'
+    | '/docs/api/'
+    | '/docs/apps/'
+    | '/docs/integration/'
+    | '/docs/openai-compatible/'
     | '/pricing/$modelId/'
     | '/system-settings/auth/$section'
     | '/system-settings/billing/$section'
@@ -610,6 +671,7 @@ export interface FileRouteTypes {
     | '/chat2link'
     | '/oauth/$provider'
     | '/about'
+    | '/docs'
     | '/pricing'
     | '/setup'
     | '/user/reset'
@@ -618,6 +680,7 @@ export interface FileRouteTypes {
     | '/errors/$error'
     | '/models/$section'
     | '/usage-logs/$section'
+    | '/docs/apps/$slug'
     | '/channels'
     | '/dashboard'
     | '/keys'
@@ -630,6 +693,10 @@ export interface FileRouteTypes {
     | '/usage-logs'
     | '/users'
     | '/wallet'
+    | '/docs/api'
+    | '/docs/apps'
+    | '/docs/integration'
+    | '/docs/openai-compatible'
     | '/pricing/$modelId'
     | '/system-settings/auth/$section'
     | '/system-settings/billing/$section'
@@ -667,6 +734,7 @@ export interface FileRouteTypes {
     | '/_authenticated/chat2link'
     | '/oauth/$provider'
     | '/about/'
+    | '/docs/'
     | '/pricing/'
     | '/setup/'
     | '/(auth)/user/reset'
@@ -675,6 +743,7 @@ export interface FileRouteTypes {
     | '/_authenticated/errors/$error'
     | '/_authenticated/models/$section'
     | '/_authenticated/usage-logs/$section'
+    | '/docs/apps/$slug'
     | '/_authenticated/channels/'
     | '/_authenticated/dashboard/'
     | '/_authenticated/keys/'
@@ -687,6 +756,10 @@ export interface FileRouteTypes {
     | '/_authenticated/usage-logs/'
     | '/_authenticated/users/'
     | '/_authenticated/wallet/'
+    | '/docs/api/'
+    | '/docs/apps/'
+    | '/docs/integration/'
+    | '/docs/openai-compatible/'
     | '/pricing/$modelId/'
     | '/_authenticated/system-settings/auth/$section'
     | '/_authenticated/system-settings/billing/$section'
@@ -717,8 +790,14 @@ export interface RootRouteChildren {
   errors503Route: typeof errors503Route
   OauthProviderRoute: typeof OauthProviderRoute
   AboutIndexRoute: typeof AboutIndexRoute
+  DocsIndexRoute: typeof DocsIndexRoute
   PricingIndexRoute: typeof PricingIndexRoute
   SetupIndexRoute: typeof SetupIndexRoute
+  DocsAppsSlugRoute: typeof DocsAppsSlugRoute
+  DocsApiIndexRoute: typeof DocsApiIndexRoute
+  DocsAppsIndexRoute: typeof DocsAppsIndexRoute
+  DocsIntegrationIndexRoute: typeof DocsIntegrationIndexRoute
+  DocsOpenaiCompatibleIndexRoute: typeof DocsOpenaiCompatibleIndexRoute
   PricingModelIdIndexRoute: typeof PricingModelIdIndexRoute
 }
 
@@ -771,6 +850,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing/'
       preLoaderRoute: typeof PricingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs/': {
+      id: '/docs/'
+      path: '/docs'
+      fullPath: '/docs/'
+      preLoaderRoute: typeof DocsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about/': {
@@ -885,6 +971,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingModelIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/docs/openai-compatible/': {
+      id: '/docs/openai-compatible/'
+      path: '/docs/openai-compatible'
+      fullPath: '/docs/openai-compatible/'
+      preLoaderRoute: typeof DocsOpenaiCompatibleIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs/integration/': {
+      id: '/docs/integration/'
+      path: '/docs/integration'
+      fullPath: '/docs/integration/'
+      preLoaderRoute: typeof DocsIntegrationIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs/apps/': {
+      id: '/docs/apps/'
+      path: '/docs/apps'
+      fullPath: '/docs/apps/'
+      preLoaderRoute: typeof DocsAppsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs/api/': {
+      id: '/docs/api/'
+      path: '/docs/api'
+      fullPath: '/docs/api/'
+      preLoaderRoute: typeof DocsApiIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/wallet/': {
       id: '/_authenticated/wallet/'
       path: '/wallet'
@@ -968,6 +1082,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/channels/'
       preLoaderRoute: typeof AuthenticatedChannelsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/docs/apps/$slug': {
+      id: '/docs/apps/$slug'
+      path: '/docs/apps/$slug'
+      fullPath: '/docs/apps/$slug'
+      preLoaderRoute: typeof DocsAppsSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/usage-logs/$section': {
       id: '/_authenticated/usage-logs/$section'
@@ -1253,8 +1374,14 @@ const rootRouteChildren: RootRouteChildren = {
   errors503Route: errors503Route,
   OauthProviderRoute: OauthProviderRoute,
   AboutIndexRoute: AboutIndexRoute,
+  DocsIndexRoute: DocsIndexRoute,
   PricingIndexRoute: PricingIndexRoute,
   SetupIndexRoute: SetupIndexRoute,
+  DocsAppsSlugRoute: DocsAppsSlugRoute,
+  DocsApiIndexRoute: DocsApiIndexRoute,
+  DocsAppsIndexRoute: DocsAppsIndexRoute,
+  DocsIntegrationIndexRoute: DocsIntegrationIndexRoute,
+  DocsOpenaiCompatibleIndexRoute: DocsOpenaiCompatibleIndexRoute,
   PricingModelIdIndexRoute: PricingModelIdIndexRoute,
 }
 export const routeTree = rootRouteImport

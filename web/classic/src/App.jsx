@@ -55,6 +55,11 @@ const Dashboard = lazy(() => import('./pages/Dashboard'));
 const About = lazy(() => import('./pages/About'));
 const UserAgreement = lazy(() => import('./pages/UserAgreement'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const DocsIndexPage = lazy(() => import('./pages/Docs/DocsIndex'));
+const ClientIntegrationDocsPage = lazy(() => import('./pages/Docs/ClientIntegration'));
+const IntegrationAppsIndexPage = lazy(() => import('./pages/Docs/IntegrationAppsIndex'));
+const IntegrationGuideDetailPage = lazy(() => import('./pages/Docs/IntegrationGuideDetail'));
+const OpenAiCompatibleDocPage = lazy(() => import('./pages/Docs/OpenAiCompatible'));
 
 function DynamicOAuth2Callback() {
   const { provider } = useParams();
@@ -339,6 +344,54 @@ function App() {
           element={
             <Suspense fallback={<Loading></Loading>} key={location.pathname}>
               <About />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/docs'
+          element={
+            <Suspense fallback={<Loading></Loading>} key={location.pathname}>
+              <DocsIndexPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/docs/integration'
+          element={
+            <Suspense fallback={<Loading></Loading>} key={location.pathname}>
+              <ClientIntegrationDocsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/docs/apps'
+          element={
+            <Suspense fallback={<Loading></Loading>} key={location.pathname}>
+              <IntegrationAppsIndexPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/docs/apps/:slug'
+          element={
+            <Suspense fallback={<Loading></Loading>} key={location.pathname}>
+              <IntegrationGuideDetailPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/docs/api'
+          element={
+            <Suspense fallback={<Loading></Loading>} key={location.pathname}>
+              <OpenAiCompatibleDocPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/docs/openai-compatible'
+          element={
+            <Suspense fallback={<Loading></Loading>} key={location.pathname}>
+              <OpenAiCompatibleDocPage />
             </Suspense>
           }
         />

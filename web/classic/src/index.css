@@ -1305,3 +1305,250 @@ html.dark .with-pastel-balls::before {
 }
 
 .ec-dbcd0a3c01b55203 { forced-color-adjust: auto; }
+
+/* Docs pages — Classic public layout (indigo / teal gradient, grid, blur) */
+.docs-page-shell .docs-page-blur {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.docs-page-shell .docs-page-blur-indigo {
+  width: 280px;
+  height: 280px;
+  top: 72px;
+  right: -80px;
+}
+
+.docs-page-shell .docs-page-blur-teal {
+  width: 220px;
+  height: 220px;
+  bottom: 120px;
+  left: -60px;
+}
+
+.docs-page-shell .docs-toc-panel .semi-anchor-link-title-active {
+  color: rgb(79 70 229) !important;
+  font-weight: 600;
+}
+
+.dark .docs-page-shell .docs-toc-panel .semi-anchor-link-title-active {
+  color: rgb(165 180 252) !important;
+}
+
+.docs-page-shell .docs-page-body .semi-typography {
+  color: var(--semi-color-text-1);
+}
+
+.docs-page-shell .docs-prose h1,
+.docs-page-shell .docs-prose h2,
+.docs-page-shell .docs-prose h3 {
+  color: var(--semi-color-text-0);
+  font-weight: 600;
+}
+
+.docs-page-shell .docs-prose h2 {
+  font-size: 1.125rem;
+  margin: 1.25rem 0 0.75rem;
+  scroll-margin-top: 7rem;
+}
+
+.docs-page-shell .docs-prose h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+  scroll-margin-top: 7rem;
+  color: var(--semi-color-text-0);
+}
+
+.docs-page-shell .docs-prose p,
+.docs-page-shell .docs-prose li {
+  color: var(--semi-color-text-1);
+  line-height: 1.65;
+}
+
+.docs-page-shell .docs-prose a {
+  color: rgb(79 70 229);
+  font-weight: 500;
+}
+
+.dark .docs-page-shell .docs-prose a {
+  color: rgb(165 180 252);
+}
+
+.docs-page-shell .docs-prose blockquote {
+  border-left: 3px solid rgb(99 102 241 / 0.45);
+  background: rgb(99 102 241 / 0.06);
+  border-radius: 0 10px 10px 0;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+}
+
+/* Docs markdown — API doc typography (inline code stays inline) */
+.docs-markdown.docs-prose {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--semi-color-text-1);
+}
+
+.docs-markdown .docs-md-p {
+  margin: 0.75rem 0;
+  line-height: 1.7;
+  color: var(--semi-color-text-1);
+}
+
+.docs-markdown .docs-md-h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.75rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgb(99 102 241 / 0.2);
+  color: var(--semi-color-text-0);
+  scroll-margin-top: 7rem;
+}
+
+.docs-markdown .docs-md-h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.35rem 0 0.5rem;
+  color: var(--semi-color-text-0);
+  scroll-margin-top: 7rem;
+}
+
+.docs-markdown .docs-md-strong {
+  color: var(--semi-color-text-0);
+  font-weight: 600;
+}
+
+.docs-markdown .docs-inline-code {
+  display: inline;
+  padding: 0.12em 0.4em;
+  margin: 0 0.05em;
+  font-size: 0.88em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: rgb(67 56 202);
+  background: rgb(99 102 241 / 0.1);
+  border: 1px solid rgb(99 102 241 / 0.22);
+  border-radius: 6px;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.dark .docs-markdown .docs-inline-code {
+  color: rgb(199 210 254);
+  background: rgb(99 102 241 / 0.18);
+  border-color: rgb(129 140 248 / 0.35);
+}
+
+.docs-markdown .docs-code-block {
+  border-radius: 12px;
+  border: 1px solid rgb(99 102 241 / 0.2);
+  background: linear-gradient(180deg, rgb(248 250 252) 0%, rgb(241 245 249) 100%);
+  box-shadow: 0 1px 2px rgb(99 102 241 / 0.06);
+}
+
+.dark .docs-markdown .docs-code-block {
+  border-color: rgb(99 102 241 / 0.28);
+  background: linear-gradient(180deg, rgb(15 23 42 / 0.95) 0%, rgb(30 27 75 / 0.85) 100%);
+}
+
+.docs-markdown .docs-code-pre {
+  margin: 0;
+  padding: 1rem 1.15rem;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.55;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 12px;
+}
+
+.docs-markdown .docs-code-pre code {
+  display: block;
+  padding: 0;
+  background: transparent !important;
+  border: none !important;
+  color: rgb(30 41 59);
+  white-space: pre;
+}
+
+.dark .docs-markdown .docs-code-pre code {
+  color: rgb(226 232 240);
+}
+
+.docs-markdown .docs-md-ul,
+.docs-markdown .docs-md-ol {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.35rem;
+}
+
+.docs-markdown .docs-md-li {
+  margin: 0.35rem 0;
+  line-height: 1.65;
+}
+
+.docs-markdown .docs-md-link {
+  color: rgb(79 70 229);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.docs-markdown .docs-md-link:hover {
+  text-decoration: underline;
+}
+
+.dark .docs-markdown .docs-md-link {
+  color: rgb(165 180 252);
+}
+
+.docs-markdown .docs-md-blockquote {
+  margin: 1rem 0;
+  padding: 0.65rem 1rem;
+  border-left: 3px solid rgb(99 102 241 / 0.5);
+  border-radius: 0 8px 8px 0;
+  background: rgb(99 102 241 / 0.06);
+  color: var(--semi-color-text-1);
+}
+
+.docs-markdown .docs-md-table-wrap {
+  margin: 1rem 0;
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid var(--semi-color-border);
+}
+
+.docs-markdown .docs-md-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.docs-markdown .docs-md-th {
+  padding: 0.5rem 0.85rem;
+  text-align: left;
+  font-weight: 600;
+  background: rgb(99 102 241 / 0.08);
+  border-bottom: 1px solid var(--semi-color-border);
+  color: var(--semi-color-text-0);
+}
+
+.docs-markdown .docs-md-td {
+  padding: 0.5rem 0.85rem;
+  border-bottom: 1px solid var(--semi-color-border);
+}
+
+.docs-page-shell .docs-prose pre {
+  border-radius: 12px;
+  border: 1px solid rgb(99 102 241 / 0.15);
+  background: var(--semi-color-fill-0) !important;
+}
+
+.docs-page-shell .docs-prose table {
+  border: 1px solid var(--semi-color-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.docs-page-shell .docs-param-table .semi-table {
+  background: var(--semi-color-bg-1);
+}

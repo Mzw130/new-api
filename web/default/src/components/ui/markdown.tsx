@@ -16,17 +16,19 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown, { type Components } from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
+import { Link } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
 
 interface MarkdownProps {
   children: string
   className?: string
+  components?: Components
 }
 
-export function Markdown({ children, className }: MarkdownProps) {
+export function Markdown({ children, className, components }: MarkdownProps) {
   return (
     <div
       className={cn(
@@ -51,10 +53,29 @@ export function Markdown({ children, className }: MarkdownProps) {
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw]}
         components={{
-          // 自定义组件渲染（可选）
-          a: ({ node, ...props }) => (
-            <a {...props} target='_blank' rel='noopener noreferrer' />
-          ),
+          a: ({ href, children, className }) => {
+            if (href?.startsWith('/')) {
+              return (
+                <Link
+                  to={href}
+                  className={cn('text-primary hover:underline', className)}
+                >
+                  {children}
+                </Link>
+              )
+            }
+            return (
+              <a
+                href={href}
+                target='_blank'
+                rel='noopener noreferrer'
+                className={className}
+              >
+                {children}
+              </a>
+            )
+          },
+          ...components,
         }}
       >
         {children}

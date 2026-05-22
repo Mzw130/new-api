@@ -247,13 +247,11 @@ export function PublicHeader(props: PublicHeaderProps) {
         </div>
       </header>
 
-      {/* Mobile full-screen overlay */}
+      {/* Mobile full-screen overlay — closed state must mount as display:none so it never intercepts taps on the page below */}
       <div
         className={cn(
-          'bg-background/98 fixed inset-0 z-40 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] sm:pointer-events-none sm:hidden',
-          mobileOpen
-            ? 'pointer-events-auto opacity-100'
-            : 'pointer-events-none opacity-0'
+          'bg-background/98 fixed inset-0 z-40 flex-col backdrop-blur-2xl transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] sm:hidden',
+          mobileOpen ? 'pointer-events-auto flex opacity-100' : 'pointer-events-none hidden opacity-0'
         )}
       >
         <div className='flex h-full flex-col justify-between px-8 pt-20 pb-10'>

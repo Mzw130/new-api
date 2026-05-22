@@ -4,7 +4,7 @@
 #     --build-arg VITE_REACT_APP_SERVER_URL=https://api.example.com .
 #
 # Scheme A (root docker-compose `classic-spa`): leave VITE_* empty → axios uses page origin + Nginx
-# `deploy/split/nginx.spa.conf` proxies /api, /v1, /pg, /mj → new-api:3000.
+# `deploy/split/nginx.spa.conf` proxies /api, /v1, /pg, /mj → 1router.ai:3000.
 
 # syntax=docker/dockerfile:1
 FROM oven/bun:alpine AS builder

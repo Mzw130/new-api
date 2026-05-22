@@ -33,7 +33,6 @@ export function setStatusData(data) {
   }
   localStorage.setItem('footer_html', data.footer_html);
   localStorage.setItem('quota_per_unit', data.quota_per_unit);
-  // 兼容：保留旧字段，同时写入新的额度展示类型
   localStorage.setItem('display_in_currency', data.display_in_currency);
   localStorage.setItem('quota_display_type', data.quota_display_type || 'USD');
   localStorage.setItem('enable_drawing', data.enable_drawing);
@@ -63,6 +62,33 @@ export function setStatusData(data) {
     localStorage.setItem('docs_link', data.docs_link);
   } else {
     localStorage.removeItem('docs_link');
+  }
+}
+
+export async function loadConfigJson() {
+  try {
+    const res = await fetch('/config.json');
+    if (!res.ok) return;
+    const config = await res.json();
+    const status = JSON.parse(localStorage.getItem('status') || '{}');
+    // 非空字符串或布尔值才覆盖
+    Object.keys(config).forEach((key) => {
+      const val = config[key];
+      if (val !== '' && val !== null && val !== undefined) {
+        status[key] = val;
+      }
+    });
+    localStorage.setItem('status', JSON.stringify(status));
+    // 同步更新单独的 localStorage key
+    if (config.system_name) localStorage.setItem('system_name', config.system_name);
+    if (config.logo !== undefined && config.logo !== null) localStorage.setItem('logo', config.logo);
+    if (config.footer_html !== undefined && config.footer_html !== null) localStorage.setItem('footer_html', config.footer_html);
+    if (config.docs_link) localStorage.setItem('docs_link', config.docs_link);
+    if (config.quota_display_type) localStorage.setItem('quota_display_type', config.quota_display_type);
+    if (config.display_in_currency !== undefined) localStorage.setItem('display_in_currency', config.display_in_currency);
+    return config;
+  } catch (e) {
+    // config.json 是可选的，加载失败静默跳过
   }
 }
 

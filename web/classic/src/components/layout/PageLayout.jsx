@@ -34,6 +34,7 @@ import {
   getSystemName,
   showError,
   setStatusData,
+  loadConfigJson,
 } from '../../helpers';
 import { UserContext } from '../../context/User';
 import { StatusContext } from '../../context/Status';
@@ -62,7 +63,9 @@ const PageLayout = () => {
     '/pricing',
   ];
 
-  const shouldHideFooter = cardProPages.includes(location.pathname);
+  const shouldHideFooter =
+    cardProPages.includes(location.pathname) ||
+    location.pathname.startsWith('/docs');
 
   const shouldInnerPadding =
     location.pathname.includes('/console') &&
@@ -93,6 +96,11 @@ const PageLayout = () => {
       if (success) {
         statusDispatch({ type: 'set', payload: data });
         setStatusData(data);
+        // config.json 覆盖 API 返回值，实现不改 Docker 就能改配置
+        const config = await loadConfigJson();
+        if (config) {
+          statusDispatch({ type: 'set', payload: { ...data, ...config } });
+        }
       } else {
         showError('Unable to connect to server');
       }

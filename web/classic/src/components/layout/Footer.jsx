@@ -63,25 +63,19 @@ const FooterBar = () => {
                 </p>
                 <div className='flex flex-col gap-4'>
                   <a
-                    href='https://docs.newapi.pro/wiki/project-introduction/'
-                    target='_blank'
-                    rel='noopener noreferrer'
+                    href='/docs'
                     className='!text-semi-color-text-1'
                   >
                     {t('关于项目')}
                   </a>
                   <a
-                    href='https://docs.newapi.pro/support/community-interaction/'
-                    target='_blank'
-                    rel='noopener noreferrer'
+                    href='/docs/integration'
                     className='!text-semi-color-text-1'
                   >
                     {t('联系我们')}
                   </a>
                   <a
-                    href='https://docs.newapi.pro/wiki/features-introduction/'
-                    target='_blank'
-                    rel='noopener noreferrer'
+                    href='/docs/api'
                     className='!text-semi-color-text-1'
                   >
                     {t('功能特性')}
@@ -91,32 +85,28 @@ const FooterBar = () => {
 
               <div className='text-left'>
                 <p className='!text-semi-color-text-0 font-semibold mb-5'>
-                  {t('文档')}
+                  {t('footer.columns.docs.title')}
                 </p>
                 <div className='flex flex-col gap-4'>
-                  <a
-                    href='https://docs.newapi.pro/getting-started/'
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='!text-semi-color-text-1'
-                  >
-                    {t('快速开始')}
+                  <a href='/docs' className='!text-semi-color-text-1'>
+                    {t('footer.columns.docs.links.clientIntegration')}
+                  </a>
+                  <a href='/docs/apps' className='!text-semi-color-text-1'>
+                    {t('footer.columns.docs.links.connectionGuides')}
                   </a>
                   <a
-                    href='https://docs.newapi.pro/installation/'
-                    target='_blank'
-                    rel='noopener noreferrer'
+                    href='/docs/api'
                     className='!text-semi-color-text-1'
                   >
-                    {t('安装指南')}
+                    {t('footer.columns.docs.links.openaiCompatibleRef')}
                   </a>
                   <a
-                    href='https://docs.newapi.pro/api/'
+                    href='https://github.com/QuantumNous/new-api'
                     target='_blank'
                     rel='noopener noreferrer'
                     className='!text-semi-color-text-1'
                   >
-                    {t('API 文档')}
+                    {t('footer.columns.docs.links.sourceInstall')}
                   </a>
                 </div>
               </div>

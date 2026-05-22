@@ -34,6 +34,8 @@ function navLinkIsActive(pathname, link) {
       return pathname.startsWith('/pricing');
     case 'about':
       return pathname.startsWith('/about');
+    case 'docs':
+      return pathname.startsWith('/docs');
     default:
       return false;
   }
