@@ -31,7 +31,9 @@ import {
 import { parseTags } from '../lib/filters'
 import { isTokenBasedModel } from '../lib/model-helpers'
 import { formatPrice, formatRequestPrice } from '../lib/price'
+import type { ModelOfficialPrice } from '../lib/official-price-map'
 import type { PricingModel, TokenUnit } from '../types'
+import { ModelCardOfficialPrice } from './model-card-official-price'
 import { ModelPerfBadge, type ModelPerfBadgeData } from './model-perf-badge'
 
 export interface ModelCardProps {
@@ -42,6 +44,7 @@ export interface ModelCardProps {
   tokenUnit?: TokenUnit
   showRechargePrice?: boolean
   perf?: ModelPerfBadgeData
+  official?: ModelOfficialPrice
 }
 
 export const ModelCard = memo(function ModelCard(props: ModelCardProps) {
@@ -197,6 +200,13 @@ export const ModelCard = memo(function ModelCard(props: ModelCardProps) {
                   / {t('request')}
                 </span>
               )}
+              {props.official && isTokenBased && !dynamicSummary ? (
+                <ModelCardOfficialPrice
+                  official={props.official}
+                  tokenUnit={tokenUnit}
+                  className='w-full basis-full'
+                />
+              ) : null}
             </div>
           </div>
         </div>

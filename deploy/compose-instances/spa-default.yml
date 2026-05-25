@@ -11,7 +11,7 @@ services:
     container_name: 1router-spa
     restart: always
     ports:
-      - "${SPA_HOST_PORT:-3000}:80"
+      - "${SPA_HOST_PORT:-3003}:80"
     networks:
       - new-api-network
     healthcheck:
@@ -28,4 +28,5 @@ services:
 networks:
   new-api-network:
     external: true
-    name: new-api-network
+    # 与 API 容器同网：分列栈默认 new-api-network；若 API 来自 docker-compose.monolith.yml 则设为 new-api_new-api-network
+    name: ${NEW_API_DOCKER_NETWORK:-new-api-network}

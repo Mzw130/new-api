@@ -25,10 +25,13 @@ services:
       - NODE_NAME=1router-node-1
       - PERFORMANCE_MONITOR_CPU_THRESHOLD=98
       - SERVE_EMBEDDED_FRONTEND=false
-      - FRONTEND_BASE_URL=${FRONTEND_BASE_URL:-http://localhost:3000}
-      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost,http://127.0.0.1,http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001,http://127.0.0.1:3001}
+      - FRONTEND_BASE_URL=${FRONTEND_BASE_URL:-http://1router.ai:3001}
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://1router.ai,http://1router.ai:3001,http://1router.ai:3003,http://localhost,http://127.0.0.1,http://localhost:3003,http://127.0.0.1:3003,http://localhost:3001,http://127.0.0.1:3001}
     networks:
-      - new-api-network
+      new-api-network:
+        aliases:
+          - 1router.ai
+          - api
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://localhost:3000/api/status | grep -o '\"success\":\\s*true' || exit 1"]
       interval: 30s
@@ -43,4 +46,4 @@ services:
 networks:
   new-api-network:
     external: true
-    name: new-api-network
+    name: ${NEW_API_DOCKER_NETWORK:-new-api-network}

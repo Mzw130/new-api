@@ -136,9 +136,13 @@ export const DEFAULT_TOKEN_UNIT: TokenUnit = 'M'
 export const VIEW_MODES = {
   CARD: 'card',
   TABLE: 'table',
+  OFFICIAL_COMPARE: 'official-compare',
 } as const
 
 export type ViewMode = (typeof VIEW_MODES)[keyof typeof VIEW_MODES]
 
 /** Default page size for pricing table */
 export const DEFAULT_PRICING_PAGE_SIZE = 20
+
+/** Official vendor list prices (models.dev) — fetched in the browser */
+export const MODELS_DEV_API_URL = 'https://models.dev/api.json'

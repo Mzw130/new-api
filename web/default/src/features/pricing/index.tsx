@@ -29,9 +29,11 @@ import {
   PricingToolbar,
   ModelCardGrid,
   ModelDetailsDrawer,
+  OfficialCompareTable,
 } from './components'
 import { EXCLUDED_GROUPS, VIEW_MODES } from './constants'
 import { useFilters } from './hooks/use-filters'
+import { useOfficialPricingClient } from './hooks/use-official-pricing-client'
 import { usePricingData } from './hooks/use-pricing-data'
 
 export function Pricing() {
@@ -81,6 +83,19 @@ export function Pricing() {
     clearSearch,
   } = useFilters(models || [])
 
+  const isOfficialCompare = viewMode === VIEW_MODES.OFFICIAL_COMPARE
+  const {
+    officialByModel,
+    rows: officialRows,
+    source: officialSource,
+    isLoading: officialLoading,
+  } = useOfficialPricingClient(
+    models || [],
+    groupRatio || {},
+    searchInput,
+    true
+  )
+
   const handleModelClick = useCallback((modelName: string) => {
     setSelectedModelName(modelName)
   }, [])
@@ -109,6 +124,16 @@ export function Pricing() {
   }, [clearFilters, clearSearch])
 
   const renderPricingContent = () => {
+    if (isOfficialCompare) {
+      return (
+        <OfficialCompareTable
+          rows={officialRows}
+          isLoading={officialLoading}
+          source={officialSource}
+        />
+      )
+    }
+
     if (filteredModels.length === 0) {
       return (
         <EmptyState
@@ -128,6 +153,7 @@ export function Pricing() {
           usdExchangeRate={usdExchangeRate}
           tokenUnit={tokenUnit}
           showRechargePrice={showRechargePrice}
+          officialByModel={officialByModel}
         />
       )
     }
@@ -178,18 +204,26 @@ export function Pricing() {
               {t('Models Directory')}
             </p>
             <h1 className='text-[clamp(2rem,5.5vw,3.5rem)] leading-[1.15] font-bold tracking-tight'>
-              {t('Model Square')}
+              {isOfficialCompare
+                ? t('Official price compare')
+                : t('Model Square')}
             </h1>
             <p className='text-muted-foreground/80 mt-3 text-sm sm:mt-4 sm:text-base'>
-              {t('This site currently has {{count}} models enabled', {
-                count: models?.length || 0,
-              })}
+              {isOfficialCompare
+                ? t(
+                    'Compare our lowest platform rates with official vendor list prices. Routed model aliases are grouped by the same official model.'
+                  )
+                : t('This site currently has {{count}} models enabled', {
+                    count: models?.length || 0,
+                  })}
             </p>
-            <p className='text-muted-foreground/60 mx-auto mt-2 max-w-2xl text-xs leading-relaxed sm:text-sm'>
-              {t(
-                'Discover curated AI models, compare pricing and capabilities, and choose the right model for every scenario.'
-              )}
-            </p>
+            {!isOfficialCompare && (
+              <p className='text-muted-foreground/60 mx-auto mt-2 max-w-2xl text-xs leading-relaxed sm:text-sm'>
+                {t(
+                  'Discover curated AI models, compare pricing and capabilities, and choose the right model for every scenario.'
+                )}
+              </p>
+            )}
             <SearchBar
               value={searchInput}
               onChange={setSearchInput}
@@ -201,7 +235,14 @@ export function Pricing() {
             />
           </header>
 
-          <div className='grid gap-4 xl:grid-cols-[330px_minmax(0,1fr)]'>
+          <div
+            className={
+              isOfficialCompare
+                ? 'space-y-4'
+                : 'grid gap-4 xl:grid-cols-[330px_minmax(0,1fr)]'
+            }
+          >
+            {!isOfficialCompare && (
             <PricingSidebar
               quotaTypeFilter={quotaTypeFilter}
               endpointTypeFilter={endpointTypeFilter}
@@ -222,10 +263,13 @@ export function Pricing() {
               onClearFilters={clearFilters}
               className='hover-scrollbar sticky top-4 hidden max-h-[calc(100dvh-2rem)] self-start overflow-y-auto xl:block'
             />
+            )}
 
             <main className='min-w-0 space-y-4'>
               <PricingToolbar
-                filteredCount={filteredModels.length}
+                filteredCount={
+                  isOfficialCompare ? officialRows.length : filteredModels.length
+                }
                 totalCount={models?.length}
                 sortBy={sortBy}
                 onSortChange={setSortBy}

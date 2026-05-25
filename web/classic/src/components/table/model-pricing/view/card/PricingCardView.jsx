@@ -42,6 +42,7 @@ import {
   getLobeHubIcon,
 } from '../../../../../helpers';
 import PricingCardSkeleton from './PricingCardSkeleton';
+import CardOfficialPrice from './CardOfficialPrice';
 import { useMinimumLoadingTime } from '../../../../../hooks/common/useMinimumLoadingTime';
 import { renderLimitedItems } from '../../../../common/ui/RenderUtils';
 import { useIsMobile } from '../../../../../hooks/common/useIsMobile';
@@ -76,6 +77,7 @@ const PricingCardView = ({
   selectedRowKeys = [],
   setSelectedRowKeys,
   openModelDetail,
+  officialByModel,
 }) => {
   const showSkeleton = useMinimumLoadingTime(loading);
   const startIndex = (currentPage - 1) * pageSize;
@@ -251,6 +253,13 @@ const PricingCardView = ({
             quotaDisplayType: siteDisplayType,
           });
 
+          const official =
+            officialByModel?.get?.(model.model_name) ?? undefined;
+          const showOfficial =
+            official &&
+            model.quota_type === 0 &&
+            !priceData.isDynamicPricing;
+
           return (
             <Card
               key={modelKey || index}
@@ -273,6 +282,14 @@ const PricingCardView = ({
                         ) : (
                           formatPriceInfo(priceData, t, siteDisplayType)
                         )}
+                        {showOfficial ? (
+                          <CardOfficialPrice
+                            official={official}
+                            tokenUnit={tokenUnit}
+                            displayPrice={displayPrice}
+                            t={t}
+                          />
+                        ) : null}
                       </div>
                     </div>
                   </div>

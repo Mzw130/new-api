@@ -28,4 +28,5 @@ services:
 networks:
   new-api-network:
     external: true
-    name: new-api-network
+    # 必须与 API（deploy/compose-instances/api.yml）同网，Nginx 才能反代 1router.ai:3000
+    name: ${NEW_API_DOCKER_NETWORK:-new-api-network}

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2023-2026 QuantumNous
+Copyright (C) 2025 QuantumNous
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -16,17 +16,20 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-export { PricingSidebar } from './pricing-sidebar'
-export { PricingToolbar } from './pricing-toolbar'
-export { ModelCard } from './model-card'
-export { ModelCardGrid } from './model-card-grid'
-export { LoadingSkeleton } from './loading-skeleton'
-export { EmptyState } from './empty-state'
-export { SearchBar } from './search-bar'
-export {
-  ModelDetails,
-  ModelDetailsContent,
-  ModelDetailsDrawer,
-} from './model-details'
-export { PricingTable } from './pricing-table'
-export { OfficialCompareTable } from './official-compare-table'
+
+/** Format USD/1M official price using the same token unit rules as pricing cards. */
+export function formatOfficialTokenPrice(
+  usdPerM,
+  tokenUnit,
+  displayPrice,
+  precision = 4,
+) {
+  if (usdPerM == null || usdPerM <= 0) return null;
+  const unitDivisor = tokenUnit === 'K' ? 1000 : 1;
+  const rawDisplayPrice = displayPrice(usdPerM);
+  const match = rawDisplayPrice.match(/^([^\d]*)([\d.]+)/);
+  if (!match) return rawDisplayPrice;
+  const symbol = match[1];
+  const numericPrice = parseFloat(match[2]) / unitDivisor;
+  return `${symbol}${numericPrice.toFixed(precision)}`;
+}

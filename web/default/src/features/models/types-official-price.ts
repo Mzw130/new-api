@@ -16,17 +16,28 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-export { PricingSidebar } from './pricing-sidebar'
-export { PricingToolbar } from './pricing-toolbar'
-export { ModelCard } from './model-card'
-export { ModelCardGrid } from './model-card-grid'
-export { LoadingSkeleton } from './loading-skeleton'
-export { EmptyState } from './empty-state'
-export { SearchBar } from './search-bar'
-export {
-  ModelDetails,
-  ModelDetailsContent,
-  ModelDetailsDrawer,
-} from './model-details'
-export { PricingTable } from './pricing-table'
-export { OfficialCompareTable } from './official-compare-table'
+
+export type OfficialPriceChange = {
+  canonical_key: string
+  field: string
+  old_value: number
+  new_value: number
+  change_pct: number
+  official: {
+    input_per_m: number
+    output_per_m?: number
+    provider?: string
+  }
+}
+
+export type OfficialPriceAlertsResponse = {
+  success: boolean
+  message?: string
+  data?: {
+    changes: OfficialPriceChange[]
+    snapshot?: {
+      updated_at: number
+      source: string
+    }
+  }
+}

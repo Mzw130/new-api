@@ -3735,6 +3735,15 @@
     "footer.columns.docs.links.connectionGuides": "各端接入详解",
     "footer.columns.docs.links.openaiCompatibleRef": "OpenAI 兼容 HTTP",
     "footer.columns.docs.links.sourceInstall": "源码与自建（GitHub）",
+    "Acknowledge and update baseline": "確認並更新基準價",
+    "Current": "當前",
+    "Dismiss for now": "暫時忽略",
+    "Input price": "輸入價格",
+    "Official price change alert": "官網價格變動提醒",
+    "Output price": "輸出價格",
+    "Previous": "此前",
+    "Save {{percent}}%": "節省 {{percent}}%",
+    "Vendor list prices on models.dev changed since your last acknowledged baseline. Review before updating ratios.": "models.dev 上的官網標價自上次確認的基準以來已發生變化，請在調整倍率前核對。",
     "footer.columns.docs.title": "文档"
   }
 }

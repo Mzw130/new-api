@@ -4276,6 +4276,15 @@
     "footer.columns.docs.links.connectionGuides": "Hướng dẫn từng app",
     "footer.columns.docs.links.openaiCompatibleRef": "HTTP tương thích OpenAI",
     "footer.columns.docs.links.sourceInstall": "Tự host từ mã nguồn (GitHub)",
+    "Acknowledge and update baseline": "Xác nhận và cập nhật mức chuẩn",
+    "Current": "Hiện tại",
+    "Dismiss for now": "Bỏ qua tạm thời",
+    "Input price": "Giá đầu vào",
+    "Official price change alert": "Cảnh báo thay đổi giá chính thức",
+    "Output price": "Giá đầu ra",
+    "Previous": "Trước đó",
+    "Save {{percent}}%": "Tiết kiệm {{percent}}%",
+    "Vendor list prices on models.dev changed since your last acknowledged baseline. Review before updating ratios.": "Giá niêm yết trên models.dev đã thay đổi kể từ mức chuẩn bạn xác nhận lần trước. Hãy kiểm tra trước khi cập nhật hệ số.",
     "footer.columns.docs.title": "Tài Liệu"
   }
 }

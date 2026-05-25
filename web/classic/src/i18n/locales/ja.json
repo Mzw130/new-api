@@ -3711,6 +3711,15 @@
     "footer.columns.docs.links.connectionGuides": "端末別解説",
     "footer.columns.docs.links.openaiCompatibleRef": "OpenAI 互換 HTTP",
     "footer.columns.docs.links.sourceInstall": "ソースからの構築（GitHub）",
+    "Acknowledge and update baseline": "確認してベースラインを更新",
+    "Current": "現在",
+    "Dismiss for now": "今は閉じる",
+    "Input price": "入力価格",
+    "Official price change alert": "公式価格変更アラート",
+    "Output price": "出力価格",
+    "Previous": "以前",
+    "Save {{percent}}%": "{{percent}}% お得",
+    "Vendor list prices on models.dev changed since your last acknowledged baseline. Review before updating ratios.": "models.dev の公式価格が最後に確認した基準から変更されています。倍率を更新する前にご確認ください。",
     "footer.columns.docs.title": "ドキュメント"
   }
 }

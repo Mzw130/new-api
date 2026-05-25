@@ -60,4 +60,5 @@ foreach ($s in $steps) {
     }
 }
 
-Write-Host "`nDone. API http://localhost:3002  Default UI :3000  Classic :3001" -ForegroundColor Green
+Write-Host "`nDone. Classic (1router.ai): http://1router.ai:3001  API direct :3002  Default :3003" -ForegroundColor Green
+Write-Host "Add hosts entry if needed: 127.0.0.1  1router.ai" -ForegroundColor Yellow

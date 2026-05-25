@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { getPerfMetricsSummary } from '@/features/performance-metrics/api'
 import { DEFAULT_PRICING_PAGE_SIZE, DEFAULT_TOKEN_UNIT } from '../constants'
+import type { ModelOfficialPrice } from '../lib/official-price-map'
 import type { PricingModel, TokenUnit } from '../types'
 import { ModelCard } from './model-card'
 import type { ModelPerfBadgeData } from './model-perf-badge'
@@ -34,6 +35,7 @@ export interface ModelCardGridProps {
   usdExchangeRate?: number
   tokenUnit?: TokenUnit
   showRechargePrice?: boolean
+  officialByModel?: Map<string, ModelOfficialPrice>
 }
 
 export function ModelCardGrid(props: ModelCardGridProps) {
@@ -82,6 +84,7 @@ export function ModelCardGrid(props: ModelCardGridProps) {
             usdExchangeRate={props.usdExchangeRate}
             showRechargePrice={props.showRechargePrice}
             perf={perfMap.get(model.model_name || '')}
+            official={props.officialByModel?.get(model.model_name || '')}
             onClick={() => props.onModelClick(model.model_name || '')}
           />
         ))}

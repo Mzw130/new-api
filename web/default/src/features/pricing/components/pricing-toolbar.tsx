@@ -17,7 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { useCallback, useState } from 'react'
-import { ArrowUpDown, Check, Filter, Grid2X2, Table2 } from 'lucide-react'
+import { ArrowUpDown, Check, Filter, Grid2X2, Scale, Table2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -192,27 +192,30 @@ export function PricingToolbar(props: PricingToolbarProps) {
         </div>
 
         <div className='flex flex-wrap items-center gap-2'>
-          <div className='hidden items-center gap-2 sm:flex'>
-            <SegmentedControl
-              options={[
-                { value: 'standard', label: t('Standard') },
-                { value: 'recharge', label: t('Recharge') },
-              ]}
-              value={props.showRechargePrice ? 'recharge' : 'standard'}
-              onChange={handleRechargePriceChange}
-              ariaLabel={t('Price display mode')}
-            />
-            <SegmentedControl
-              options={[
-                { value: 'M', label: '/1M' },
-                { value: 'K', label: '/1K' },
-              ]}
-              value={props.tokenUnit}
-              onChange={handleTokenUnitChange}
-              ariaLabel={t('Token unit')}
-            />
-          </div>
+          {props.viewMode !== VIEW_MODES.OFFICIAL_COMPARE && (
+            <div className='hidden items-center gap-2 sm:flex'>
+              <SegmentedControl
+                options={[
+                  { value: 'standard', label: t('Standard') },
+                  { value: 'recharge', label: t('Recharge') },
+                ]}
+                value={props.showRechargePrice ? 'recharge' : 'standard'}
+                onChange={handleRechargePriceChange}
+                ariaLabel={t('Price display mode')}
+              />
+              <SegmentedControl
+                options={[
+                  { value: 'M', label: '/1M' },
+                  { value: 'K', label: '/1K' },
+                ]}
+                value={props.tokenUnit}
+                onChange={handleTokenUnitChange}
+                ariaLabel={t('Token unit')}
+              />
+            </div>
+          )}
 
+          {props.viewMode !== VIEW_MODES.OFFICIAL_COMPARE && (
           <DropdownMenu>
             <DropdownMenuTrigger
               render={
@@ -245,6 +248,7 @@ export function PricingToolbar(props: PricingToolbarProps) {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+          )}
 
           <SegmentedControl
             options={[
@@ -257,6 +261,11 @@ export function PricingToolbar(props: PricingToolbarProps) {
                 value: VIEW_MODES.TABLE,
                 icon: Table2,
                 tooltip: t('Table view'),
+              },
+              {
+                value: VIEW_MODES.OFFICIAL_COMPARE,
+                icon: Scale,
+                tooltip: t('Official price compare'),
               },
             ]}
             value={props.viewMode}

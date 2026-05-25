@@ -23,16 +23,23 @@ import PricingSidebar from './PricingSidebar';
 import PricingContent from './content/PricingContent';
 import ModelDetailSideSheet from '../modal/ModelDetailSideSheet';
 import { useModelPricingData } from '../../../../hooks/model-pricing/useModelPricingData';
+import { useOfficialPricingClient } from '../../../../hooks/model-pricing/useOfficialPricingClient';
 import { useIsMobile } from '../../../../hooks/common/useIsMobile';
 
 const PricingPage = () => {
   const pricingData = useModelPricingData();
+  const { officialByModel } = useOfficialPricingClient(
+    pricingData.models,
+    pricingData.groupRatio,
+    !pricingData.loading && pricingData.models.length > 0,
+  );
   const { Sider, Content } = Layout;
   const isMobile = useIsMobile();
   const [showRatio, setShowRatio] = React.useState(false);
   const [viewMode, setViewMode] = React.useState('card');
   const allProps = {
     ...pricingData,
+    officialByModel,
     showRatio,
     setShowRatio,
     viewMode,

@@ -30,6 +30,7 @@ import EditVendorModal from './modals/EditVendorModal';
 import { useModelsData } from '../../../hooks/models/useModelsData';
 import { useIsMobile } from '../../../hooks/common/useIsMobile';
 import { createCardProPagination } from '../../../helpers/utils';
+import OfficialPriceAlertHost from './OfficialPriceAlertHost';
 
 const MARKETPLACE_DISPLAY_NOTICE_STORAGE_KEY =
   'models_marketplace_display_notice_dismissed';
@@ -107,8 +108,16 @@ const ModelsPage = () => {
     });
   };
 
+  const displayPriceUsd = (usd) => `$${Number(usd).toFixed(4)}`;
+
   return (
     <>
+      <OfficialPriceAlertHost
+        enabled
+        displayPrice={displayPriceUsd}
+        t={t}
+      />
+
       <EditModelModal
         refresh={refresh}
         editingModel={editingModel}

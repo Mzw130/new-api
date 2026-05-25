@@ -16,17 +16,39 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-export { PricingSidebar } from './pricing-sidebar'
-export { PricingToolbar } from './pricing-toolbar'
-export { ModelCard } from './model-card'
-export { ModelCardGrid } from './model-card-grid'
-export { LoadingSkeleton } from './loading-skeleton'
-export { EmptyState } from './empty-state'
-export { SearchBar } from './search-bar'
-export {
-  ModelDetails,
-  ModelDetailsContent,
-  ModelDetailsDrawer,
-} from './model-details'
-export { PricingTable } from './pricing-table'
-export { OfficialCompareTable } from './official-compare-table'
+
+export type OfficialPriceEntry = {
+  input_per_m: number
+  output_per_m?: number
+  cache_read_per_m?: number
+  provider?: string
+}
+
+export type OfficialPlatformVariant = {
+  model_name: string
+  input_per_m: number
+  output_per_m?: number
+}
+
+export type OfficialCompareRow = {
+  canonical_key: string
+  vendor_name?: string
+  vendor_icon?: string
+  official?: OfficialPriceEntry | null
+  platform_input_per_m: number
+  platform_output_per_m?: number
+  discount_percent?: number | null
+  variant_count: number
+  variants?: OfficialPlatformVariant[]
+  quota_type: number
+}
+
+export type OfficialCompareResponse = {
+  success: boolean
+  message?: string
+  data?: {
+    source: string
+    rows: OfficialCompareRow[]
+    updated: number
+  }
+}

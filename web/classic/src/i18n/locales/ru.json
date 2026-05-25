@@ -3762,6 +3762,15 @@
     "footer.columns.docs.links.connectionGuides": "Подробные гиды по клиентам",
     "footer.columns.docs.links.openaiCompatibleRef": "OpenAI-совместимый HTTP",
     "footer.columns.docs.links.sourceInstall": "Развёртывание из исходников (GitHub)",
+    "Acknowledge and update baseline": "Подтвердить и обновить базовую цену",
+    "Current": "Текущая",
+    "Dismiss for now": "Отложить",
+    "Input price": "Цена ввода",
+    "Official price change alert": "Оповещение об изменении официальной цены",
+    "Output price": "Цена вывода",
+    "Previous": "Было",
+    "Save {{percent}}%": "Экономия {{percent}}%",
+    "Vendor list prices on models.dev changed since your last acknowledged baseline. Review before updating ratios.": "Официальные цены на models.dev изменились с момента последнего подтверждённого базиса. Проверьте перед изменением коэффициентов.",
     "footer.columns.docs.title": "Документация"
   }
 }

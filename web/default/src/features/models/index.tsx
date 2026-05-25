@@ -31,6 +31,7 @@ import { CreateDeploymentDrawer } from './components/dialogs/create-deployment-d
 import { ModelsDialogs } from './components/models-dialogs'
 import { ModelsPrimaryButtons } from './components/models-primary-buttons'
 import { ModelsProvider, useModels } from './components/models-provider'
+import { OfficialPriceAlertHost } from './components/official-price-alert-host'
 import { ModelsTable } from './components/models-table'
 import { useModelDeploymentSettings } from './hooks/use-model-deployment-settings'
 import { deploymentsQueryKeys } from './lib'
@@ -170,6 +171,7 @@ function ModelsContent() {
       </SectionPageLayout>
 
       <ModelsDialogs />
+      <OfficialPriceAlertHost enabled={activeSection === 'metadata'} />
       <CreateDeploymentDrawer
         open={createDeploymentOpen}
         onOpenChange={setCreateDeploymentOpen}

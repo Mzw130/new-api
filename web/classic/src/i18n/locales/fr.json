@@ -3742,6 +3742,15 @@
     "footer.columns.docs.links.connectionGuides": "Guides détaillés",
     "footer.columns.docs.links.openaiCompatibleRef": "HTTP compatible OpenAI",
     "footer.columns.docs.links.sourceInstall": "Hébergement depuis les sources (GitHub)",
+    "Acknowledge and update baseline": "Confirmer et mettre à jour la référence",
+    "Current": "Actuel",
+    "Dismiss for now": "Ignorer pour l'instant",
+    "Input price": "Prix d'entrée",
+    "Official price change alert": "Alerte de changement de prix officiel",
+    "Output price": "Prix de sortie",
+    "Previous": "Précédent",
+    "Save {{percent}}%": "Économisez {{percent}} %",
+    "Vendor list prices on models.dev changed since your last acknowledged baseline. Review before updating ratios.": "Les prix catalogue sur models.dev ont changé depuis votre dernière référence confirmée. Vérifiez avant de mettre à jour les ratios.",
     "footer.columns.docs.title": "Documentation"
   }
 }
