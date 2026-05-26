@@ -10,9 +10,9 @@ export type IntegrationSlug =
   | 'claude-code'
   | 'codex-cli'
   | 'openclaw'
-  | 'continue'
+  | 'opencode'
   | 'lobechat'
-  | 'sdk-and-http'
+  | 'cc-switch'
 
 /** Route order matches hub cards */
 export const INTEGRATION_SLUGS: IntegrationSlug[] = [
@@ -21,9 +21,9 @@ export const INTEGRATION_SLUGS: IntegrationSlug[] = [
   'claude-code',
   'codex-cli',
   'openclaw',
-  'continue',
+  'opencode',
   'lobechat',
-  'sdk-and-http',
+  'cc-switch',
 ]
 
 /** Keys under `docs.integration.apps.<key>.*` in locale JSON */
@@ -34,18 +34,18 @@ export const SLUG_APP_I18N_KEY: Record<
   | 'claudeCode'
   | 'codex'
   | 'openclaw'
-  | 'continue'
+  | 'opencode'
   | 'lobechat'
-  | 'generic'
+  | 'ccSwitch'
 > = {
   'cherry-studio': 'cherry',
   cursor: 'cursor',
   'claude-code': 'claudeCode',
   'codex-cli': 'codex',
   openclaw: 'openclaw',
-  continue: 'continue',
+  opencode: 'opencode',
   lobechat: 'lobechat',
-  'sdk-and-http': 'generic',
+  'cc-switch': 'ccSwitch',
 }
 
 export function isIntegrationSlug(s: string): s is IntegrationSlug {

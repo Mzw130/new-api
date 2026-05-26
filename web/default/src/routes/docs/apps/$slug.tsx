@@ -22,6 +22,9 @@ import { isIntegrationSlug } from '@/features/docs/guides/integration-types'
 
 export const Route = createFileRoute('/docs/apps/$slug')({
   beforeLoad: ({ params }) => {
+    if (params.slug === 'continue') {
+      throw redirect({ to: '/docs/apps/opencode', replace: true })
+    }
     if (!isIntegrationSlug(params.slug)) {
       throw redirect({ to: '/404' })
     }

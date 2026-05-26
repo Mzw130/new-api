@@ -6,8 +6,34 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 Long-form onboarding copy for `/docs/apps/:slug` (zh + en).
 Cloud base URL `https://1router.ai/v1`; self-hosters replace the host, keep `/v1`.
 */
+import {
+  CLAUDE_CODE_GUIDE_EN,
+  CLAUDE_CODE_GUIDE_ZH,
+} from './claude-code-guide-markdown'
+import {
+  CC_SWITCH_GUIDE_EN,
+  CC_SWITCH_GUIDE_ZH,
+} from './cc-switch-guide-markdown'
+import {
+  CODEX_CLI_GUIDE_EN,
+  CODEX_CLI_GUIDE_ZH,
+} from './codex-cli-guide-markdown'
+import {
+  OPENCODE_GUIDE_EN,
+  OPENCODE_GUIDE_ZH,
+} from './opencode-guide-markdown'
+import { CURSOR_GUIDE_EN, CURSOR_GUIDE_ZH } from './cursor-guide-markdown'
+import {
+  LOBECHAT_GUIDE_EN,
+  LOBECHAT_GUIDE_ZH,
+} from './lobechat-guide-markdown'
+import {
+  OPENCLAW_GUIDE_EN,
+  OPENCLAW_GUIDE_ZH,
+} from './openclaw-guide-markdown'
+
+
 const CLOUD_BASE = 'https://1router.ai/v1'
-const CLOUD_ORIGIN = 'https://1router.ai'
 
 const CHERRY_ZH = [
   '# Cherry Studio × 1router.ai',
@@ -22,11 +48,35 @@ const CHERRY_ZH = [
   '',
   '## 2. 客户端里怎么做',
   '',
-  '1. 打开 Cherry Studio → **模型服务 / Providers**。',
-  '2. 新增 **自定义** 或 **OpenAI Compatible**。',
-  `3. \`API 地址 / Base URL\` 填 ${CLOUD_BASE}（注意不要重复两段 \`/v1\`——按客户端提示为准）。`,
-  '4. 把密钥粘到 Password / Token 字段。',
-  '5. **保存** 后在对话里选择对应模型前缀或手动输入模型标识。',
+  '1. 在 1router 控制台复制 **API Key**（[/console/token](/console/token) 或令牌管理页）。',
+  '',
+  '![令牌管理页复制密钥](/docs/cherry-studio-01-copy-api-key.png)',
+  '',
+  '2. 打开 Cherry Studio → **模型服务 / Providers**。',
+  '',
+  '![模型服务页面](/docs/cherry-studio-02-providers.png)',
+  '',
+  '3. 新增 **自定义** 或 **OpenAI Compatible** 提供商。',
+  '',
+  '![新增提供商](/docs/cherry-studio-03-add-provider.png)',
+  '',
+  '![填入 API Key 与 Host](/docs/cherry-studio-04-api-key-and-host.png)',
+  '',
+  '4. 填入上方复制好的 API Key；输入 API Host：`https://1router.ai`；点击 **Fetch Model List** 获取模型列表。',
+  '',
+  '![获取模型列表](/docs/cherry-studio-05-fetch-model-list.png)',
+  '',
+  '5. 选择想使用的模型并点击添加。',
+  '',
+  '![添加模型](/docs/cherry-studio-06-add-models.png)',
+  '',
+  '6. 可点击**健康检测**按钮，测试配置是否正确。',
+  '',
+  '![健康检测](/docs/cherry-studio-07-health-check.png)',
+  '',
+  '7. 在对话中点击 **@** 按钮，选择要使用的模型。',
+  '',
+  '![对话中选择模型](/docs/cherry-studio-08-select-model.png)',
   '',
   '## 3. 排错',
   '',
@@ -49,11 +99,35 @@ const CHERRY_EN = [
   '',
   '## 2. In Cherry Studio',
   '',
-  '1. Open **Providers / Model services**.',
-  '2. Add **Custom** or **OpenAI compatible**.',
-  `3. Set base URL to ${CLOUD_BASE} (avoid duplicating \`/v1\` if the form appends it).`,
-  '4. Paste the API key / token field.',
-  '5. Pick the model in chat or type the model id explicitly.',
+  '1. Copy your **API key** from the 1router console ([/console/token](/console/token) or API Keys).',
+  '',
+  '![Copy API key on the tokens page](/docs/cherry-studio-01-copy-api-key.png)',
+  '',
+  '2. Open **Providers / Model services**.',
+  '',
+  '![Providers screen](/docs/cherry-studio-02-providers.png)',
+  '',
+  '3. Add **Custom** or **OpenAI compatible** provider.',
+  '',
+  '![Add provider](/docs/cherry-studio-03-add-provider.png)',
+  '',
+  '![API Key and Host](/docs/cherry-studio-04-api-key-and-host.png)',
+  '',
+  '4. Paste the API key you copied from the console; enter API Host: `https://1router.ai`; click **Fetch Model List** to load models.',
+  '',
+  '![Fetch model list](/docs/cherry-studio-05-fetch-model-list.png)',
+  '',
+  '5. Select models and click **Add**.',
+  '',
+  '![Add models](/docs/cherry-studio-06-add-models.png)',
+  '',
+  '6. Run **Health check** to verify the setup.',
+  '',
+  '![Health check](/docs/cherry-studio-07-health-check.png)',
+  '',
+  '7. In chat, click **@** and choose a model.',
+  '',
+  '![Select model in chat](/docs/cherry-studio-08-select-model.png)',
   '',
   '## 3. Troubleshooting',
   '',
@@ -63,257 +137,22 @@ const CHERRY_EN = [
   'See also [all guides](/docs/apps) and [OpenAI-compatible reference](/docs/openai-compatible).',
 ].join('\n')
 
-const CURSOR_ZH = [
-  '# Cursor × 1router.ai',
-  '',
-  '> Cursor 支持 **Override OpenAI Base URL**（不同版本菜单位置略有差异，以下原则一致）。',
-  '',
-  '## 配置',
-  '',
-  `1. 打开 **Settings → Models**（或 **Cursor Settings → AI → OpenAI API**）。`,
-  `2. 填入 **Custom / Override base URL**：\`${CLOUD_BASE}\`。`,
-  '3. 将 **API Key** 设为 1router 控制台签发的令牌。',
-  '4. 若界面要求「Official OpenAI key」与自定义二选一，请关闭官方 key，仅保留自定义网关。',
-  '5. 在 Composer / Chat 中选用与后台一致的 **模型名称**。',
-  '',
-  '## 建议',
-  '',
-  '- 先在本站 Playground 或 curl 打通，再回到 Cursor。',
-  `- 密钥仅保存在受信任的设备；团队建议每人独立子密钥。[/keys](/keys)`,
-].join('\n')
+const CURSOR_ZH = CURSOR_GUIDE_ZH
 
-const CURSOR_EN = [
-  '# Cursor × 1router.ai',
-  '',
-  '> Cursor can route chat/completions traffic through any **OpenAI-compatible** HTTPS gateway.',
-  '',
-  '## Steps',
-  '',
-  `1. Open **Settings → Models** (or **Cursor Settings → AI → OpenAI API**).`,
-  `2. Set **custom / override base URL** to \`${CLOUD_BASE}\`.`,
-  '3. Paste your 1router **API key** from [/keys](/keys).',
-  '4. If the UI distinguishes “official OpenAI” vs custom, disable the official key slot.',
-  '5. Pick the correct **model id** for your upstream mapping.',
-  '',
-  '## Tips',
-  '',
-  '- Verify with [/docs/apps/sdk-and-http](/docs/apps/sdk-and-http) curl first.',
-].join('\n')
+const CURSOR_EN = CURSOR_GUIDE_EN
 
-const CLAUDE_ZH = [
-  '# Claude Code × 1router.ai',
-  '',
-  '> 若产品与文档提供 **Custom provider / OpenAI-compatible endpoint** 入口，可把 1router 当作统一网关：同一套 Key 复用多种上游。',
-  '',
-  '## 典型填法',
-  '',
-  `1. **Base URL / API host**：${CLOUD_BASE}`,
-  `2. **密钥**：控制台 [/keys](/keys)。`,
-  '3. **模型**：选择与 Playground / 控制台一致的标识（可能被品牌重命名——以控制台为准）。',
-  '',
-  '## Claude Messages vs OpenAI 形态',
-  '',
-  '- 网关若仅暴露 `/v1/chat/completions` 一类的 **OpenAI 路由**，请选择客户端里标明 *OpenAI compatible* / *third-party* 的配置项。',
-].join('\n')
+const CLAUDE_ZH = CLAUDE_CODE_GUIDE_ZH
+const CLAUDE_EN = CLAUDE_CODE_GUIDE_EN
 
-const CLAUDE_EN = [
-  '# Claude Code × 1router.ai',
-  '',
-  '> Route Claude-compatible tooling through **OpenAI-compatible** settings when your deployment exposes `/v1/...` style endpoints.',
-  '',
-  '## Configuration',
-  '',
-  `- **Base URL**: ${CLOUD_BASE}`,
-  `- **API key**: from [/keys](/keys)`,
-  '- **Model id**: match whatever your operator mapped in the console.',
-].join('\n')
+const CODEX_ZH = CODEX_CLI_GUIDE_ZH
+const CODEX_EN = CODEX_CLI_GUIDE_EN
+const OPENCLAW_ZH = OPENCLAW_GUIDE_ZH
+const OPENCLAW_EN = OPENCLAW_GUIDE_EN
+const LOBE_ZH = LOBECHAT_GUIDE_ZH
+const LOBE_EN = LOBECHAT_GUIDE_EN
 
-const CODEX_ZH = [
-  '# Codex CLI / 终端工具 × 1router.ai',
-  '',
-  '> 多数 CLI 沿用 `OPENAI_API_KEY`，部分支持 `OPENAI_BASE_URL`。以下以 Bash 为例；Windows 请在「系统环境变量」或对应 shell profile 写入。',
-  '',
-  '```bash',
-  `export OPENAI_API_KEY='sk-xxxx'`,
-  `export OPENAI_API_URL='${CLOUD_BASE}'   # 或 OPENAI_BASE_URL，视工具 README 而定`,
-  '```',
-  '',
-  '## 校验',
-  '',
-  '- `401`：`OPENAI_API_KEY` 未生效（检查是否被其它 profile 覆盖）。',
-  '- 若工具硬编码 `api.openai.com`，需换用支持自定义 host 的版本或插件。',
-  '',
-  '完整 curl 见 [SDK 与 HTTP](/docs/apps/sdk-and-http)。',
-].join('\n')
-
-const CODEX_EN = [
-  '# Codex CLI & terminal agents × 1router.ai',
-  '',
-  '> Point `OPENAI_API_KEY` (and optional `OPENAI_BASE_URL` / `OPENAI_API_URL`) to your gateway.',
-  '',
-  '```bash',
-  `export OPENAI_API_KEY='sk-xxxx'`,
-  `export OPENAI_BASE_URL='${CLOUD_BASE}'`,
-  '```',
-  '',
-  'Confirm variable precedence in your shell manager (direnv, systemd user units, etc.).',
-  '',
-  'Smoke test with [SDK & HTTP](/docs/apps/sdk-and-http).',
-].join('\n')
-
-const OPENCLAW_ZH = [
-  '# OpenClaw / 机器人桥接 × 1router.ai',
-  '',
-  '> 自托管助理、飞书/Discord/Slack 机器人常通过 **OpenAI 兼容** 通道转发消息。把 1router 当作统一出口即可集中计费和模型治理。',
-  '',
-  '## 网关侧',
-  '',
-  `- **HTTPS 根路径**：${CLOUD_BASE}`,
-  '- **鉴权**：`Authorization: Bearer <token>`',
-  '- **模型字符串**：与控制台映射一致，避免大小写拼写错误。',
-  '',
-  '## 部署建议',
-  '',
-  '- 机器人在公网时，仅把 **Token** 当作机密；定期在 [/keys](/keys) 轮换。',
-  '- 若同进程多租户，按业务拆分多把子密钥便于审计。',
-].join('\n')
-
-const OPENCLAW_EN = [
-  '# OpenClaw & bot bridges × 1router.ai',
-  '',
-  '> Treat 1router as an **OpenAI-compatible** upstream: one HTTPS base, one bearer token, stable model ids.',
-  '',
-  '## Checklist',
-  '',
-  `- Base URL: ${CLOUD_BASE}`,
-  '- Auth: `Authorization: Bearer <api-key>`',
-  '- Model id: copy from the console / pricing page.',
-  '',
-  'Rotate keys from [/keys](/keys) if a bot host is shared.',
-].join('\n')
-
-const CONTINUE_ZH = [
-  '# Continue（VS Code / JetBrains）× 1router.ai',
-  '',
-  '> [Continue](https://www.continue.dev/) 通过 **Models → Add model** 增加 REST 提供商。',
-  '',
-  '## 配置步骤',
-  '',
-  `1. Base / API URL：${CLOUD_BASE}`,
-  '2. 选择 **OpenAI** 或文档所述的兼容类型。',
-  `3. API Key：来自 [/keys](/keys)。`,
-  '4. 保存后在内联补全或 Chat 中选用对应模型条目。',
-  '',
-  '## JetBrains',
-  '',
-  '- 逻辑相同：在 Continue 插件设置里找到 **OpenAI compatible** 区域填写。',
-].join('\n')
-
-const CONTINUE_EN = [
-  '# Continue (VS Code / JetBrains) × 1router.ai',
-  '',
-  '> Add a custom **OpenAI-compatible** provider inside Continue.',
-  '',
-  `- Base URL / API URL: ${CLOUD_BASE}`,
-  '- API Key: [/keys](/keys)',
-  '- Model: pick upstream id mirrored in console.',
-].join('\n')
-
-const LOBE_ZH = [
-  '# Lobe Chat / Web UI × 1router.ai',
-  '',
-  '> 多数 Web Chat 项目在「兼容 OpenAI」设置里拆分 **接入点（含或不含 `/v1`）** 与密钥，请严格遵守产品文案。',
-  '',
-  `## 推荐填法`,
-  '',
-  `- 若表单写「接口地址请以 \`/v1\` 结尾」：填入 \`${CLOUD_BASE}\`。`,
-  '- 若表单会自动拼接 `/v1/chat/completions`：仅需 origin（例如 `' +
-    CLOUD_ORIGIN +
-    '`），避免重复。',
-  `- **密钥**：控制台 [/keys](/keys)。`,
-  '',
-  '## PWA / 多端',
-  '',
-  '- 同一密钥勿提交到开源仓库；使用环境变量或 CI Secret。',
-].join('\n')
-
-const LOBE_EN = [
-  '# Lobe Chat / web assistants × 1router.ai',
-  '',
-  '> Each UI labels fields differently — map them to gateway base (`/v1` rules) + API key.',
-  '',
-  `- When the form insists on trailing \`/v1\`, use \`${CLOUD_BASE}\`.`,
-  '- When the assistant appends `/v1` automatically, provide only `' +
-    CLOUD_ORIGIN +
-    '`.',
-  '- API keys live under [/keys](/keys).',
-].join('\n')
-
-const SDK_ZH = [
-  '# SDK 与自建 HTTP × 1router.ai',
-  '',
-  '> 任意能发 HTTPS JSON 的客户端都可直接对接；官方 OpenAI SDK、LangChain、LlamaIndex 等通常支持 `base_url` + `api_key` 覆写。',
-  '',
-  '## cURL',
-  '',
-  '```bash',
-  `curl -sS ${CLOUD_BASE}/chat/completions \\\\`,
-  '  -H "Authorization: Bearer YOUR_API_KEY" \\\\',
-  '  -H "Content-Type: application/json" \\\\',
-  `  -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'`,
-  '```',
-  '',
-  '## Python（openai package）',
-  '',
-  '```python',
-  'from openai import OpenAI',
-  '',
-  `client = OpenAI(base_url="${CLOUD_BASE}", api_key="sk-xxxx")`,
-  'print(client.chat.completions.create(',
-  '    model="gpt-4o-mini",',
-  '    messages=[{"role": "user", "content": "Hi"}],',
-  '))',
-  '```',
-  '',
-  '## Node',
-  '',
-  '```javascript',
-  "import OpenAI from 'openai';",
-  `const client = new OpenAI({ baseURL: '${CLOUD_BASE}', apiKey: process.env.ONE_ROUTER_KEY });`,
-  '```',
-  '',
-  '更完整的路由表见 [OpenAI 兼容参考](/docs/openai-compatible)。',
-].join('\n')
-
-const SDK_EN = [
-  '# SDKs & custom HTTP × 1router.ai',
-  '',
-  '> Any HTTPS client works. Official OpenAI SDKs accept `base_url` + `api_key` overrides.',
-  '',
-  '## cURL',
-  '',
-  '```bash',
-  `curl -sS ${CLOUD_BASE}/chat/completions \\\\`,
-  '  -H "Authorization: Bearer YOUR_API_KEY" \\\\',
-  '  -H "Content-Type: application/json" \\\\',
-  `  -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'`,
-  '```',
-  '',
-  '## Python',
-  '',
-  '```python',
-  'from openai import OpenAI',
-  `client = OpenAI(base_url="${CLOUD_BASE}", api_key="sk-xxxx")`,
-  '```',
-  '',
-  '## Node',
-  '',
-  '```javascript',
-  `const client = new OpenAI({ baseURL: '${CLOUD_BASE}', apiKey: process.env.ONE_ROUTER_KEY });`,
-  '```',
-  '',
-  'Browse the [OpenAI-compatible reference](/docs/openai-compatible) for additional routes.',
-].join('\n')
+const CC_SWITCH_ZH = CC_SWITCH_GUIDE_ZH
+const CC_SWITCH_EN = CC_SWITCH_GUIDE_EN
 
 export const INTEGRATION_MARKDOWN = {
   'cherry-studio': { zh: CHERRY_ZH, en: CHERRY_EN },
@@ -321,9 +160,9 @@ export const INTEGRATION_MARKDOWN = {
   'claude-code': { zh: CLAUDE_ZH, en: CLAUDE_EN },
   'codex-cli': { zh: CODEX_ZH, en: CODEX_EN },
   openclaw: { zh: OPENCLAW_ZH, en: OPENCLAW_EN },
-  continue: { zh: CONTINUE_ZH, en: CONTINUE_EN },
+  opencode: { zh: OPENCODE_GUIDE_ZH, en: OPENCODE_GUIDE_EN },
   lobechat: { zh: LOBE_ZH, en: LOBE_EN },
-  'sdk-and-http': { zh: SDK_ZH, en: SDK_EN },
+  'cc-switch': { zh: CC_SWITCH_ZH, en: CC_SWITCH_EN },
 }
 
 const OPENAPI_ZH = [
@@ -404,7 +243,7 @@ const OPENAPI_ZH = [
   '## 相关文档',
   '',
   '- [接入 Agent 工具](/docs/apps)',
-  '- [SDK 与 HTTP 示例](/docs/apps/sdk-and-http)',
+  '- [CC Switch 接入指南](/docs/apps/cc-switch)',
 ].join('\n')
 
 const OPENAPI_EN = [
@@ -483,7 +322,7 @@ const OPENAPI_EN = [
   '## Related',
   '',
   '- [Connect agent tools](/docs/apps)',
-  '- [SDK & HTTP samples](/docs/apps/sdk-and-http)',
+  '- [CC Switch guide](/docs/apps/cc-switch)',
 ].join('\n')
 
 export const OPENAI_COMPATIBLE_MARKDOWN = {

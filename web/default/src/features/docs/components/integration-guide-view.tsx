@@ -20,6 +20,7 @@ import {
 } from '@/features/docs/guides/integration-guide-content'
 import { getIntegrationMarkdown } from '@/features/docs/guides/integration-markdown'
 import { DocsCopyForAiButton } from '@/features/docs/components/docs-copy-for-ai-button'
+import { DocsStepFigure } from '@/features/docs/components/docs-step-figure'
 import { DOCS_BRAND } from '@/features/docs/guides/docs-brand'
 import type { IntegrationSlug } from '@/features/docs/guides/integration-types'
 
@@ -76,17 +77,29 @@ function GuideBody(props: {
 
           {section.steps ? (
             <ol className='border-border divide-border divide-y rounded-lg border'>
-              {section.steps.map((step, i) => (
-                <li
-                  key={i}
-                  className='text-foreground flex gap-3 px-4 py-3 text-sm leading-relaxed'
-                >
-                  <span className='text-muted-foreground w-5 shrink-0 tabular-nums font-medium'>
-                    {i + 1}.
-                  </span>
-                  <span>{tGuide(step, lang)}</span>
-                </li>
-              ))}
+              {section.steps.map((step, i) => {
+                const figures =
+                  section.stepFigures?.filter((f) => f.afterStepIndex === i) ?? []
+                return (
+                  <li key={i} className='text-foreground px-4 py-3 text-sm leading-relaxed'>
+                    <div className='flex gap-3'>
+                      <span className='text-muted-foreground w-5 shrink-0 tabular-nums font-medium'>
+                        {i + 1}.
+                      </span>
+                      <div className='min-w-0 flex-1'>
+                        <span className='whitespace-pre-line'>{tGuide(step, lang)}</span>
+                        {figures.map((fig) => (
+                          <DocsStepFigure
+                            key={fig.src}
+                            src={fig.src}
+                            alt={tGuide(fig.alt, lang)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </li>
+                )
+              })}
             </ol>
           ) : null}
 

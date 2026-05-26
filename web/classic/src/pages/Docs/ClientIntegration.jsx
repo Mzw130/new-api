@@ -23,9 +23,9 @@ const APP_KEYS = [
   'claudeCode',
   'codex',
   'openclaw',
-  'continue',
+  'opencode',
   'lobechat',
-  'generic',
+  'ccSwitch',
 ];
 
 export default function ClientIntegrationDocsPage() {

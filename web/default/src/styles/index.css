@@ -583,3 +583,44 @@ For commercial licensing, please contact support@quantumnous.com
     animation: none !important;
   }
 }
+
+/* Long-form integration guides (e.g. Claude Code) */
+.docs-guide-prose .docs-platform-card {
+  margin-top: 1.5rem;
+}
+.docs-guide-prose .docs-platform-body {
+  padding: 1rem 1.25rem 1.25rem;
+}
+@media (min-width: 768px) {
+  .docs-guide-prose .docs-platform-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+}
+.docs-guide-prose .docs-figure-grid {
+  display: grid;
+  gap: 0.75rem;
+  margin-block: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 768px) {
+  .docs-guide-prose .docs-figure-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.docs-guide-prose .docs-figure-grid figure {
+  margin: 0;
+}
+.docs-guide-prose .docs-figure-grid img {
+  max-width: 100%;
+}
+
+/* react-medium-image-zoom — doc screenshots (Fumadocs-style lightbox) */
+[data-rmiz-modal-overlay='visible'] {
+  background-color: rgb(0 0 0 / 0.88) !important;
+}
+[data-rmiz-modal][open] {
+  z-index: 200;
+}
+[data-rmiz-btn-unzoom] {
+  background-color: rgb(0 0 0 / 0.65);
+}

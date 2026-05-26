@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import DocsArticleShell from '../../features/docs/components/DocsArticleShell';
 import DocsContentCard from '../../features/docs/components/DocsContentCard';
 import DocsCopyForAiButton from '../../features/docs/components/DocsCopyForAiButton';
-import DocsMarkdown from '../../features/docs/components/DocsMarkdown';
+import DocsGuideMarkdown from '../../features/docs/components/DocsGuideMarkdown';
 import { getOpenAiCompatibleMarkdown } from '../../features/docs/guides/integration-markdown';
 import { extractMarkdownHeadings } from '../../features/docs/guides/markdown-heading-outline';
 
@@ -43,7 +43,7 @@ export default function OpenAiCompatibleDocPage() {
       }
     >
       <DocsContentCard bodyStyle={{ padding: '24px 28px' }}>
-        <DocsMarkdown content={bodyMd} className='docs-prose' />
+        <DocsGuideMarkdown content={bodyMd} className='docs-prose' />
       </DocsContentCard>
     </DocsArticleShell>
   );

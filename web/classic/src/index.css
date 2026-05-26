@@ -1552,3 +1552,251 @@ html.dark .with-pastel-balls::before {
 .docs-page-shell .docs-param-table .semi-table {
   background: var(--semi-color-bg-1);
 }
+
+/* Illustrated integration guides */
+.docs-step-figure-img {
+  display: block;
+  width: 100%;
+  max-width: min(100%, 56rem);
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid rgb(99 102 241 / 0.22);
+  background: var(--semi-color-bg-1);
+  box-shadow: 0 1px 3px rgb(99 102 241 / 0.08);
+  transition: box-shadow 0.15s ease;
+}
+
+.docs-step-figure-btn:hover .docs-step-figure-img {
+  box-shadow: 0 4px 14px rgb(99 102 241 / 0.14);
+}
+
+.docs-guide-prose .docs-guide-h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 2rem 0 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgb(99 102 241 / 0.18);
+  scroll-margin-top: 7rem;
+  color: var(--semi-color-text-0);
+}
+
+.docs-guide-prose .docs-guide-h2:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.docs-guide-prose .docs-guide-h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid rgb(99 102 241 / 0.2);
+  border-bottom: 0;
+  background: rgb(99 102 241 / 0.06);
+  scroll-margin-top: 7rem;
+  color: var(--semi-color-text-0);
+}
+
+.docs-guide-prose .docs-guide-step-h4 {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin: 1.25rem 0 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  scroll-margin-top: 7rem;
+  color: var(--semi-color-text-0);
+}
+
+.docs-guide-prose .docs-guide-step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: rgb(67 56 202);
+  background: rgb(99 102 241 / 0.12);
+}
+
+.docs-guide-prose .docs-platform-card {
+  margin: 1.5rem 0;
+  border-radius: 12px;
+  border: 1px solid rgb(99 102 241 / 0.22);
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgb(99 102 241 / 0.06);
+}
+
+.docs-guide-prose .docs-platform-body {
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .docs-guide-prose .docs-platform-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+}
+
+.docs-guide-prose .docs-figure-grid {
+  display: grid;
+  gap: 0.75rem;
+  margin-block: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 768px) {
+  .docs-guide-prose .docs-figure-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.docs-guide-prose .docs-figure-grid figure {
+  margin: 0;
+}
+
+.docs-guide-prose .docs-figure-grid .docs-step-figure-img {
+  max-width: 100%;
+}
+
+.docs-platform-nav-link:focus-visible {
+  outline: 2px solid rgb(99 102 241 / 0.5);
+  outline-offset: 2px;
+}
+
+/* ==================== Classic 首页落地页区块 ==================== */
+.home-landing-badge {
+  border: 1px solid rgb(99 102 241 / 0.25);
+  background: rgb(99 102 241 / 0.08);
+  box-shadow: 0 1px 8px rgb(99 102 241 / 0.08);
+}
+
+.dark .home-landing-badge {
+  border-color: rgb(129 140 248 / 0.3);
+  background: rgb(99 102 241 / 0.15);
+}
+
+.home-provider-tile {
+  background: rgb(255 255 255 / 0.7);
+  box-shadow: 0 4px 14px rgb(99 102 241 / 0.06);
+  ring: 1px solid rgb(0 0 0 / 0.04);
+  transition: transform 0.2s ease;
+}
+
+.dark .home-provider-tile {
+  background: rgb(255 255 255 / 0.06);
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.25);
+  ring: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.home-provider-tile:hover {
+  transform: scale(1.08);
+}
+
+.home-stats-section {
+  background: linear-gradient(
+    165deg,
+    rgb(204 251 241 / 0.2) 0%,
+    transparent 42%
+  );
+}
+
+.dark .home-stats-section {
+  background: linear-gradient(
+    165deg,
+    rgb(15 118 110 / 0.15) 0%,
+    transparent 45%
+  );
+}
+
+.home-stats-grid-bg {
+  background-image: linear-gradient(
+      to right,
+      rgb(99 102 241 / 0.06) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgb(99 102 241 / 0.06) 1px, transparent 1px);
+  background-size: 2.75rem 2.75rem;
+  mask-image: linear-gradient(to bottom, black 52%, transparent 100%);
+  opacity: 0.5;
+}
+
+.home-section-badge {
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.home-section-badge-amber {
+  border: 1px solid rgb(245 158 11 / 0.25);
+  background: rgb(245 158 11 / 0.08);
+  color: rgb(146 64 14);
+}
+
+.dark .home-section-badge-amber {
+  color: rgb(253 230 138 / 0.9);
+}
+
+.home-section-badge-violet {
+  border: 1px solid rgb(139 92 246 / 0.25);
+  background: rgb(139 92 246 / 0.08);
+  color: rgb(91 33 182);
+}
+
+.dark .home-section-badge-violet {
+  color: rgb(221 214 254 / 0.9);
+}
+
+.home-features-wash {
+  background: linear-gradient(
+    125deg,
+    rgb(99 102 241 / 0.08) 0%,
+    transparent 55%
+  );
+}
+
+.home-how-wash {
+  background: linear-gradient(
+    180deg,
+    rgb(238 242 255 / 0.5) 0%,
+    var(--semi-color-bg-0) 38%,
+    rgb(245 243 255 / 0.35) 100%
+  );
+}
+
+.dark .home-how-wash {
+  background: linear-gradient(
+    180deg,
+    rgb(30 27 75 / 0.35) 0%,
+    var(--semi-color-bg-0) 40%,
+    rgb(49 46 129 / 0.25) 100%
+  );
+}
+
+.home-cta-mesh {
+  background: radial-gradient(
+      ellipse 50% 50% at 30% 50%,
+      rgb(99 102 241 / 0.35) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 40% 40% at 70% 40%,
+      rgb(20 184 166 / 0.25) 0%,
+      transparent 70%
+    );
+}
+
+.home-terminal-card {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.home-terminal-card:hover {
+  transform: translateY(-2px);
+}

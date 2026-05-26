@@ -11,7 +11,7 @@
 | 单端长文（Cherry / Cursor / …） | `/docs/apps/<slug>`，如 `/docs/apps/cherry-studio`、`/docs/apps/sdk-and-http` |
 | OpenAI 兼容 HTTP 参考 | `/docs/openai-compatible` |
 
-`slug` 取值：`cherry-studio`、`cursor`、`claude-code`、`codex-cli`、`openclaw`、`continue`、`lobechat`、`sdk-and-http`。
+`slug` 取值：`cherry-studio`、`cursor`、`claude-code`、`codex-cli`、`openclaw`、`opencode`、`lobechat`、`sdk-and-http`。
 
 ## 源码位置
 

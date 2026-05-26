@@ -9,13 +9,41 @@ import {
   SLUG_APP_I18N_KEY,
   type IntegrationSlug,
 } from '@/features/docs/guides/integration-types'
+import { ClaudeCodeGuideView } from '@/features/docs/components/claude-code-guide-view'
+import { CcSwitchGuideView } from '@/features/docs/components/cc-switch-guide-view'
+import { CursorGuideView } from '@/features/docs/components/cursor-guide-view'
 import { IntegrationGuideView } from '@/features/docs/components/integration-guide-view'
+import { IntegrationMarkdownGuideView } from '@/features/docs/components/integration-markdown-guide-view'
+
+const MARKDOWN_GUIDE_SLUGS: IntegrationSlug[] = [
+  'codex-cli',
+  'openclaw',
+  'opencode',
+  'lobechat',
+]
 
 export function IntegrationGuideDetailPage() {
   const { t } = useTranslation()
   const { slug } = useParams({
     from: '/docs/apps/$slug',
   }) as { slug: IntegrationSlug }
+
+  if (slug === 'claude-code') {
+    return <ClaudeCodeGuideView />
+  }
+
+  if (slug === 'cursor') {
+    return <CursorGuideView />
+  }
+
+  if (slug === 'cc-switch') {
+    return <CcSwitchGuideView />
+  }
+
+  if (MARKDOWN_GUIDE_SLUGS.includes(slug)) {
+    return <IntegrationMarkdownGuideView slug={slug} />
+  }
+
   const appKey = SLUG_APP_I18N_KEY[slug]
   const title = t(`docs.integration.apps.${appKey}.title`)
 

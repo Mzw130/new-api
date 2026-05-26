@@ -22,9 +22,9 @@ const APP_KEYS = [
   'claudeCode',
   'codex',
   'openclaw',
-  'continue',
+  'opencode',
   'lobechat',
-  'generic',
+  'ccSwitch',
 ] as const
 
 export function ClientIntegrationDocsPage() {
@@ -116,10 +116,10 @@ export function ClientIntegrationDocsPage() {
           {t('docs.integration.curlSeeAlso')}{' '}
           <Link
             to='/docs/apps/$slug'
-            params={{ slug: 'sdk-and-http' }}
+            params={{ slug: 'cc-switch' }}
             className='text-primary hover:underline'
           >
-            {t('docs.integration.apps.generic.title')}
+            {t('docs.integration.apps.ccSwitch.title')}
           </Link>
         </p>
       </DocsSection>

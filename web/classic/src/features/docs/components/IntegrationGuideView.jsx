@@ -18,6 +18,7 @@ import {
 } from '../guides/integration-guide-content';
 import { getIntegrationMarkdown } from '../guides/integration-markdown';
 import DocsCopyForAiButton from './DocsCopyForAiButton';
+import DocsStepFigure from './DocsStepFigure';
 import { DOCS_BRAND } from '../guides/docs-brand';
 
 const { Text, Paragraph } = Typography;
@@ -83,6 +84,8 @@ function GuideBody({ guide, lang }) {
                   key: String(i),
                   index: i + 1,
                   text: tGuide(step, lang),
+                  figures:
+                    section.stepFigures?.filter((f) => f.afterStepIndex === i) ?? [],
                 }))}
                 renderItem={(item) => (
                   <List.Item
@@ -92,7 +95,16 @@ function GuideBody({ guide, lang }) {
                         <Text type='tertiary' strong className='w-5 shrink-0 tabular-nums'>
                           {item.index}.
                         </Text>
-                        <Text>{item.text}</Text>
+                        <div className='min-w-0 flex-1'>
+                          <Text className='whitespace-pre-line'>{item.text}</Text>
+                          {item.figures.map((fig) => (
+                            <DocsStepFigure
+                              key={fig.src}
+                              src={fig.src}
+                              alt={tGuide(fig.alt, lang)}
+                            />
+                          ))}
+                        </div>
                       </div>
                     }
                   />

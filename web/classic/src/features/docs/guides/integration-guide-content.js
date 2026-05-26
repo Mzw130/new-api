@@ -3,6 +3,10 @@ Copyright (C) 2023-2026 QuantumNous
 
 SPDX-License-Identifier: AGPL-3.0-or-later
 */
+import { DOCS_CLOUD_ORIGIN } from './docs-brand'
+
+
+
 const CLOUD_BASE = 'https://1router.ai/v1'
 
 function g(zh, en) {
@@ -43,12 +47,65 @@ const CHERRY = {
     {
       id: 'setup',
       title: g('配置步骤', 'Setup steps'),
+      stepFigures: [
+        {
+          afterStepIndex: 0,
+          src: '/docs/cherry-studio-01-copy-api-key.png',
+          alt: g(
+            '令牌管理页：在密钥列点击复制图标',
+            'API Keys page: click the copy icon in the Key column'
+          ),
+        },
+        {
+          afterStepIndex: 1,
+          src: '/docs/cherry-studio-02-providers.png',
+          alt: g('Cherry Studio 模型服务 / Providers 页面', 'Cherry Studio Providers / Model services screen'),
+        },
+        {
+          afterStepIndex: 2,
+          src: '/docs/cherry-studio-03-add-provider.png',
+          alt: g('新增自定义或 OpenAI Compatible 提供商', 'Add Custom or OpenAI Compatible provider'),
+        },
+        {
+          afterStepIndex: 2,
+          src: '/docs/cherry-studio-04-api-key-and-host.png',
+          alt: g('填入 API Key 与 API Host', 'Enter API Key and API Host'),
+        },
+        {
+          afterStepIndex: 3,
+          src: '/docs/cherry-studio-05-fetch-model-list.png',
+          alt: g('点击 Fetch Model List 获取模型列表', 'Click Fetch Model List to load models'),
+        },
+        {
+          afterStepIndex: 4,
+          src: '/docs/cherry-studio-06-add-models.png',
+          alt: g('选择模型并点击添加', 'Select models and click Add'),
+        },
+        {
+          afterStepIndex: 5,
+          src: '/docs/cherry-studio-07-health-check.png',
+          alt: g('健康检测按钮', 'Health check button'),
+        },
+        {
+          afterStepIndex: 6,
+          src: '/docs/cherry-studio-08-select-model.png',
+          alt: g('对话中通过 @ 选择模型', 'Pick a model with @ in chat'),
+        },
+      ],
       steps: [
+        g(
+          '在 1router 控制台复制 API Key（令牌 / API 密钥页）。',
+          'Copy your API key from the 1router console (API Keys / Tokens page).'
+        ),
         g('打开 Cherry Studio → 模型服务 / Providers。', 'Open Cherry Studio → Providers / Model services.'),
         g('新增「自定义」或「OpenAI Compatible」提供商。', 'Add a Custom or OpenAI-compatible provider.'),
-        g(`API 地址填 ${CLOUD_BASE}（若界面会自动拼接 /v1，请勿重复填写）。`, `Set API address to ${CLOUD_BASE} (do not duplicate /v1 if the UI appends it).`),
-        g('将密钥粘贴到 Password / Token 字段并保存。', 'Paste the API key into the token field and save.'),
-        g('在对话中选择对应模型前缀，或手动输入模型标识。', 'Pick the model prefix in chat or type the model id.'),
+        g(
+          '填入上方复制好的 API Key。\n输入 API Host：`https://1router.ai`\n点击 Fetch Model List 获取模型列表。',
+          'Paste the API key you copied from the console.\nEnter API Host: `https://1router.ai`\nClick Fetch Model List to load the model list.'
+        ),
+        g('选择想使用的模型并点击添加。', 'Select the models you want and click Add.'),
+        g('可点击健康检测按钮，测试配置是否正确。', 'Use Health check to verify the provider is configured correctly.'),
+        g('在对话中点击 @ 按钮，选择要使用的模型。', 'In chat, click @ and choose a model to use.'),
       ],
     },
     {
@@ -62,86 +119,53 @@ const CHERRY = {
   ],
 }
 
+/** Hub card summary; full guide at /docs/apps/cursor */
 const CURSOR = {
   subtitle: g(
-    '在模型设置中覆盖 OpenAI 兼容 Base URL，将请求转发至 1router.ai。',
-    'Override the OpenAI-compatible base URL in model settings to route through 1router.ai.'
+    '在 Cursor 中覆盖 OpenAI Base URL，对接 1router.ai（需 Pro 订阅）。',
+    'Override OpenAI Base URL in Cursor to use 1router.ai (Pro plan required).'
   ),
-  officialUrl: 'https://cursor.com/docs',
-  officialLabel: g('Cursor 文档', 'Cursor documentation'),
+  officialUrl: 'https://cursor.com/download',
+  officialLabel: g('下载 Cursor', 'Download Cursor'),
   sections: [
     {
-      id: 'parameters',
-      title: g('参数配置', 'Parameter configuration'),
-      params: [
-        {
-          field: g('Base URL', 'Base URL'),
-          value: g(CLOUD_BASE, CLOUD_BASE),
-        },
-        {
-          field: g('API Key', 'API Key'),
-          value: g('1router 控制台签发的令牌', 'Token from 1router console'),
-        },
-        {
-          field: g('模型', 'Model'),
-          value: g('与后台通道映射一致的模型名', 'Model id matching upstream mapping'),
-        },
-      ],
-    },
-    {
-      id: 'setup',
-      title: g('配置步骤', 'Setup steps'),
-      steps: [
-        g('打开 Settings → Models（或 Cursor Settings → AI → OpenAI API）。', 'Open Settings → Models (or Cursor Settings → AI → OpenAI API).'),
-        g(`将 Custom / Override base URL 设为 ${CLOUD_BASE}。`, `Set custom / override base URL to ${CLOUD_BASE}.`),
-        g('填入控制台签发的 API Key。', 'Paste your API key from the console.'),
-        g('若需二选一官方 Key，请关闭官方槽位，仅保留自定义网关。', 'If the UI forces official vs custom, disable official and keep custom only.'),
-        g('在 Composer / Chat 中选择正确模型。', 'Select the correct model in Composer / Chat.'),
-      ],
-    },
-    {
-      id: 'tips',
-      title: g('建议', 'Tips'),
+      id: 'overview',
+      title: g('说明', 'Overview'),
       bullets: [
-        g('先用 Playground 或 curl 验证链路，再配置 Cursor。', 'Verify with Playground or curl before Cursor.'),
-        g('团队环境建议每人使用独立子密钥。', 'Use per-user API keys in team setups.'),
+        g(
+          '完整图文步骤见本页；需 Cursor Pro 及以上方可启用自定义模型与 Base URL。',
+          'See the illustrated guide on this page; custom models require Cursor Pro or higher.'
+        ),
+        g(
+          `Base URL：${CLOUD_BASE}；API Key 在控制台签发。`,
+          `Base URL: ${CLOUD_BASE}; issue API keys in the console.`
+        ),
       ],
     },
   ],
 }
 
+/** Fallback summary for hub cards; full guide is markdown at /docs/apps/claude-code */
 const CLAUDE = {
   subtitle: g(
-    '通过 OpenAI 兼容网关字段接入，同一套密钥可复用多种上游模型。',
-    'Connect via OpenAI-compatible gateway fields; one key can cover multiple upstream models.'
+    '终端编程助手对接 1router.ai：Windows / macOS / Linux 图文安装与环境变量配置。',
+    'Connect Claude Code to 1router.ai with illustrated Windows, macOS, and Linux setup guides.'
   ),
   officialUrl: 'https://www.anthropic.com/claude-code',
-  officialLabel: g('Claude Code', 'Claude Code'),
+  officialLabel: g('Claude Code 官网', 'Claude Code website'),
   sections: [
     {
-      id: 'parameters',
-      title: g('参数配置', 'Parameter configuration'),
-      params: [
-        { field: g('Base URL', 'Base URL'), value: g(CLOUD_BASE, CLOUD_BASE) },
-        { field: g('API Key', 'API Key'), value: g('控制台签发', 'From console API Keys') },
-        { field: g('模型', 'Model'), value: g('以控制台展示为准', 'As shown in console') },
-      ],
-    },
-    {
-      id: 'setup',
-      title: g('配置步骤', 'Setup steps'),
-      steps: [
-        g('在客户端选择 Custom provider / OpenAI-compatible 入口。', 'Choose custom provider or OpenAI-compatible entry.'),
-        g(`API host / Base URL 填写 ${CLOUD_BASE}。`, `Set API host / base URL to ${CLOUD_BASE}.`),
-        g('Bearer 鉴权填入控制台令牌。', 'Use Bearer auth with your console token.'),
-        g('用简短提示词验证连通性。', 'Validate with a short test prompt.'),
-      ],
-    },
-    {
-      id: 'note',
-      title: g('协议说明', 'Protocol note'),
+      id: 'overview',
+      title: g('说明', 'Overview'),
       bullets: [
-        g('若网关仅暴露 /v1/chat/completions 等 OpenAI 路由，请选择 OpenAI compatible 模式。', 'If only OpenAI-style /v1 routes are exposed, pick OpenAI-compatible mode.'),
+        g(
+          '完整图文步骤（含截图）见本页正文；需设置 ANTHROPIC_BASE_URL 与 ANTHROPIC_API_KEY。',
+          'See the full illustrated guide on this page; set ANTHROPIC_BASE_URL and ANTHROPIC_API_KEY.'
+        ),
+        g(
+          `网关地址：${DOCS_CLOUD_ORIGIN}；API Key 在控制台签发。`,
+          `Gateway: ${DOCS_CLOUD_ORIGIN}; issue API keys in the console.`
+        ),
       ],
     },
   ],
@@ -209,30 +233,22 @@ const OPENCLAW = {
   ],
 }
 
-const CONTINUE = {
+const OPENCODE = {
   subtitle: g(
-    '在 Continue 插件中新增 OpenAI 兼容 REST 提供商。',
-    'Add an OpenAI-compatible REST provider in Continue.'
+    '通过交互式菜单或 opencode.json 接入 1router.ai。',
+    'Connect via /connect or opencode.json to 1router.ai.'
   ),
-  officialUrl: 'https://docs.continue.dev/',
-  officialLabel: g('Continue 文档', 'Continue docs'),
+  officialUrl: 'https://opencode.ai/docs',
+  officialLabel: g('OpenCode 文档', 'OpenCode docs'),
   sections: [
     {
-      id: 'parameters',
-      title: g('参数配置', 'Parameter configuration'),
-      params: [
-        { field: g('API URL', 'API URL'), value: g(CLOUD_BASE, CLOUD_BASE) },
-        { field: g('Provider', 'Provider'), value: g('OpenAI / 兼容', 'OpenAI / compatible') },
-        { field: g('API Key', 'API Key'), value: g('控制台签发', 'From console') },
-      ],
-    },
-    {
-      id: 'setup',
-      title: g('配置步骤', 'Setup steps'),
-      steps: [
-        g('VS Code / JetBrains：打开 Continue → Models → Add model。', 'Open Continue → Models → Add model.'),
-        g(`Base URL 填 ${CLOUD_BASE}，认证选 Bearer。`, `Base URL ${CLOUD_BASE}, Bearer auth.`),
-        g('保存后在 Chat / 补全中选择对应模型。', 'Select model in chat or inline completion.'),
+      id: 'overview',
+      title: g('说明', 'Overview'),
+      bullets: [
+        g(
+          '完整图文步骤见本页；支持 TUI `/connect` 与配置文件两种接入方式。',
+          'See the full guide on this page; use `/connect` or config file.'
+        ),
       ],
     },
   ],
@@ -270,35 +286,22 @@ const LOBE = {
   ],
 }
 
-const SDK = {
+const CC_SWITCH = {
   subtitle: g(
-    'OpenAI SDK、LangChain 或任意 HTTPS 客户端均可对接。',
-    'OpenAI SDKs, LangChain, or any HTTPS JSON client.'
+    '统一管理 Claude / Codex / Gemini CLI，支持从 1router 一键导入 Provider。',
+    'Manage Claude / Codex / Gemini CLIs; one-click Provider import from 1router.'
   ),
+  officialUrl: 'https://github.com/farion1231/cc-switch',
+  officialLabel: g('CC Switch GitHub', 'CC Switch on GitHub'),
   sections: [
     {
-      id: 'curl',
-      title: g('cURL', 'cURL'),
-      steps: [
-        g(`curl -sS ${CLOUD_BASE}/chat/completions \\`, `curl -sS ${CLOUD_BASE}/chat/completions \\`),
-        g(`  -H "Authorization: Bearer YOUR_API_KEY" \\`, `  -H "Authorization: Bearer YOUR_API_KEY" \\`),
-        g(`  -H "Content-Type: application/json" \\`, `  -H "Content-Type: application/json" \\`),
-        g(`  -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'`, `  -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'`),
-      ],
-    },
-    {
-      id: 'python',
-      title: g('Python', 'Python'),
-      steps: [
-        g('from openai import OpenAI', 'from openai import OpenAI'),
-        g(`client = OpenAI(base_url="${CLOUD_BASE}", api_key="sk-…")`, `client = OpenAI(base_url="${CLOUD_BASE}", api_key="sk-…")`),
-      ],
-    },
-    {
-      id: 'node',
-      title: g('Node.js', 'Node.js'),
-      steps: [
-        g(`const client = new OpenAI({ baseURL: '${CLOUD_BASE}', apiKey: process.env.ONE_ROUTER_KEY });`, `const client = new OpenAI({ baseURL: '${CLOUD_BASE}', apiKey: process.env.ONE_ROUTER_KEY });`),
+      id: 'overview',
+      title: g('说明', 'Overview'),
+      bullets: [
+        g(
+          '完整图文步骤见本页；在 [/keys](/keys) 令牌菜单选择 CC Switch 即可 Deep Link 导入。',
+          'See the full guide on this page; use CC Switch in the [/keys](/keys) row menu to import via Deep Link.'
+        ),
       ],
     },
   ],
@@ -310,9 +313,9 @@ export const INTEGRATION_GUIDE_CONTENT = {
   'claude-code': CLAUDE,
   'codex-cli': CODEX,
   openclaw: OPENCLAW,
-  continue: CONTINUE,
+  opencode: OPENCODE,
   lobechat: LOBE,
-  'sdk-and-http': SDK,
+  'cc-switch': CC_SWITCH,
 }
 
 export function pickGuideLang(language) {

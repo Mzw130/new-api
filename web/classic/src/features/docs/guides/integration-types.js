@@ -4,7 +4,7 @@ Copyright (C) 2023-2026 QuantumNous
 SPDX-License-Identifier: AGPL-3.0-or-later
 */
 
-/** @typedef {'cherry-studio'|'cursor'|'claude-code'|'codex-cli'|'openclaw'|'continue'|'lobechat'|'sdk-and-http'} IntegrationSlug */
+/** @typedef {'cherry-studio'|'cursor'|'claude-code'|'codex-cli'|'openclaw'|'opencode'|'lobechat'|'cc-switch'} IntegrationSlug */
 
 export const INTEGRATION_SLUGS = [
   'cherry-studio',
@@ -12,9 +12,9 @@ export const INTEGRATION_SLUGS = [
   'claude-code',
   'codex-cli',
   'openclaw',
-  'continue',
+  'opencode',
   'lobechat',
-  'sdk-and-http',
+  'cc-switch',
 ];
 
 export const SLUG_APP_I18N_KEY = {
@@ -23,9 +23,9 @@ export const SLUG_APP_I18N_KEY = {
   'claude-code': 'claudeCode',
   'codex-cli': 'codex',
   openclaw: 'openclaw',
-  continue: 'continue',
+  opencode: 'opencode',
   lobechat: 'lobechat',
-  'sdk-and-http': 'generic',
+  'cc-switch': 'ccSwitch',
 };
 
 export function isIntegrationSlug(s) {

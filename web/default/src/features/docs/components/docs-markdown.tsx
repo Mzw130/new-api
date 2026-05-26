@@ -3,6 +3,7 @@ Copyright (C) 2023-2026 QuantumNous
 
 SPDX-License-Identifier: AGPL-3.0-or-later
 */
+import type { Components } from 'react-markdown'
 import { Markdown } from '@/components/ui/markdown'
 import { cn } from '@/lib/utils'
 
@@ -22,10 +23,15 @@ function headingText(children: React.ReactNode): string {
   return ''
 }
 
-export function DocsMarkdown(props: { children: string; className?: string }) {
+export function DocsMarkdown(props: {
+  children: string
+  className?: string
+  components?: Components
+}) {
   return (
     <Markdown
       components={{
+        ...props.components,
         h2: ({ children }) => {
           const text = headingText(children)
           const id = slugifyHeading(text)
