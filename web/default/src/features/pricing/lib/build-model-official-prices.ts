@@ -17,11 +17,33 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { QUOTA_TYPE_VALUES } from '../constants'
+import { getUsdExchangeRate } from './format-official-price'
 import type { OfficialCompareRow, OfficialPriceEntry } from '../types-official'
 import type { PricingModel } from '../types'
 import type { ModelOfficialPrice } from './official-price-map'
 import { listOfficialModelKeys } from './models-dev'
 import { resolveOfficialModelKey } from './resolve-official-key'
+
+function platformInputInOfficialCurrency(
+  platformUsd: number,
+  official: OfficialPriceEntry
+): number {
+  if (official.currency === 'CNY') {
+    return platformUsd * getUsdExchangeRate()
+  }
+  return platformUsd
+}
+
+function officialDiscountPercent(
+  platformUsd: number,
+  official: OfficialPriceEntry
+): number | null {
+  if (!official.input_per_m || official.input_per_m <= 0 || platformUsd <= 0) {
+    return null
+  }
+  const platformComparable = platformInputInOfficialCurrency(platformUsd, official)
+  return (1 - platformComparable / official.input_per_m) * 100
+}
 
 function getMinGroupRatio(
   enableGroups: string[],
@@ -85,15 +107,13 @@ export function buildOfficialPriceByModels(
     if (!off?.input_per_m) continue
 
     const platformIn = platformInputUSDPerM(model, groupRatio)
-    let discount: number | null = null
-    if (off.input_per_m > 0 && platformIn > 0) {
-      discount = (1 - platformIn / off.input_per_m) * 100
-    }
+    const discount = officialDiscountPercent(platformIn, off)
 
     map.set(name, {
       canonicalKey: canonical,
       officialInputPerM: off.input_per_m,
       officialOutputPerM: off.output_per_m,
+      officialCurrency: off.currency,
       discountPercent: discount,
     })
   }
@@ -134,6 +154,7 @@ export function buildOfficialCompareRows(
                 output_per_m: off.output_per_m,
                 cache_read_per_m: off.cache_read_per_m,
                 provider: off.provider,
+                currency: off.currency,
               }
             : null,
           platform_input_per_m: inUsd,
@@ -164,6 +185,7 @@ export function buildOfficialCompareRows(
         output_per_m: off.output_per_m,
         cache_read_per_m: off.cache_read_per_m,
         provider: off.provider,
+        currency: off.currency,
       }
     }
   }
@@ -174,13 +196,11 @@ export function buildOfficialCompareRows(
     g.row.variants = [...g.variants.values()].sort((a, b) =>
       a.model_name.localeCompare(b.model_name)
     )
-    if (
-      g.row.official?.input_per_m &&
-      g.row.platform_input_per_m > 0 &&
-      g.row.official.input_per_m > 0
-    ) {
-      g.row.discount_percent =
-        (1 - g.row.platform_input_per_m / g.row.official.input_per_m) * 100
+    if (g.row.official?.input_per_m && g.row.platform_input_per_m > 0) {
+      g.row.discount_percent = officialDiscountPercent(
+        g.row.platform_input_per_m,
+        g.row.official
+      )
     }
     rows.push(g.row)
   }

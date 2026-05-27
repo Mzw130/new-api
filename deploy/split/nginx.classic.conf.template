@@ -1,0 +1,95 @@
+# Classic SPA — same-origin static + API proxy (runtime: BACKEND_NEW_API via entrypoint).
+# Bare-metal / cloud host API on docker0 gateway: BACKEND_NEW_API=http://172.17.0.1:3002
+# Compose same network as new-api: BACKEND_NEW_API=http://1router.ai:3000
+
+server {
+    listen 80;
+    server_name _;
+    resolver 127.0.0.11 ipv6=off valid=30s;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript application/xml image/svg+xml;
+    gzip_min_length 256;
+
+    location ~* ^/static/.*\.(?:js|css)$ {
+        expires 7d;
+        add_header Cache-Control "public";
+        try_files $uri =404;
+    }
+
+    # Optional runtime overrides (web/classic/public/config.json); do not cache.
+    location = /config.json {
+        add_header Cache-Control "no-cache, no-store, must-revalidate" always;
+        etag off;
+        expires off;
+        try_files $uri =404;
+    }
+
+    location = / {
+        try_files /index.html =404;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    set $backend_new_api ${BACKEND_NEW_API};
+    proxy_http_version 1.1;
+    proxy_buffering off;
+    proxy_read_timeout 3600s;
+    proxy_send_timeout 3600s;
+    proxy_connect_timeout 75s;
+
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "";
+
+    location ~ ^/(api|v1)/ {
+        add_header Access-Control-Allow-Origin * always;
+        add_header Access-Control-Allow-Headers "Authorization, Content-Type" always;
+        add_header Access-Control-Allow-Methods "GET, POST, OPTIONS" always;
+
+        if ($request_method = OPTIONS) {
+            add_header Access-Control-Allow-Origin *;
+            add_header Access-Control-Allow-Headers "Authorization, Content-Type";
+            add_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
+            add_header Content-Length 0;
+            add_header Content-Type text/plain;
+            return 204;
+        }
+
+        proxy_set_header Origin "";
+        proxy_set_header Referer "";
+
+        proxy_pass $backend_new_api;
+
+        proxy_http_version 1.1;
+        proxy_buffering off;
+
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
+        proxy_connect_timeout 75s;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+
+        proxy_set_header Connection "";
+    }
+
+    location /pg/ {
+        proxy_pass $backend_new_api;
+    }
+
+    location /mj/ {
+        proxy_pass $backend_new_api;
+    }
+}

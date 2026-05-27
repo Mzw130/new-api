@@ -21,6 +21,8 @@ import { ChevronDown, ChevronRight, ExternalLink } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { formatBillingCurrencyFromUSD } from '@/lib/currency'
+import { formatOfficialPerM } from '../lib/format-official-price'
+import type { OfficialPriceEntry } from '../types-official'
 import { getLobeIcon } from '@/lib/lobe-icon'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -33,15 +35,27 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import type { OfficialCompareRow } from '../types-official'
 
-function formatUsdPerM(value: number | null | undefined): string {
+function formatPlatformPerM(value: number | null | undefined): string {
   if (value == null || Number.isNaN(value) || value <= 0) return '—'
   return formatBillingCurrencyFromUSD(value, { digitsLarge: 4, digitsSmall: 4 })
+}
+
+function formatOfficialEntryPerM(
+  value: number | null | undefined,
+  official: OfficialPriceEntry | null | undefined
+): string {
+  if (value == null || Number.isNaN(value) || value <= 0) return '—'
+  return (
+    formatOfficialPerM(value, official?.currency, 'M') ??
+    '—'
+  )
 }
 
 function SavingsBadge({ percent }: { percent: number | null | undefined }) {
   const { t } = useTranslation()
   if (percent == null || Number.isNaN(percent)) return null
-  const positive = percent > 0
+  const savePercent = Math.max(0, percent)
+  const positive = savePercent > 0
   return (
     <Badge
       variant={positive ? 'default' : 'secondary'}
@@ -50,9 +64,9 @@ function SavingsBadge({ percent }: { percent: number | null | undefined }) {
         positive && 'bg-emerald-600/90 hover:bg-emerald-600'
       )}
     >
-      {positive
-        ? t('Save {{percent}}%', { percent: percent.toFixed(1) })
-        : t('{{percent}}% vs official', { percent: percent.toFixed(1) })}
+      {t('Save {{percent}}%', {
+        percent: positive ? savePercent.toFixed(1) : savePercent.toFixed(0),
+      })}
     </Badge>
   )
 }
@@ -93,7 +107,7 @@ function VariantList({ row }: { row: OfficialCompareRow }) {
         >
           <span className='font-mono'>{v.model_name}</span>
           <span className='tabular-nums'>
-            {t('Platform')}: {formatUsdPerM(v.input_per_m)}
+            {t('Platform')}: {formatPlatformPerM(v.input_per_m)}
           </span>
         </li>
       ))}
@@ -224,7 +238,10 @@ export function OfficialCompareTable({
                       {t('Official input / 1M')}
                     </span>
                     <span className='tabular-nums text-sm font-medium'>
-                      {formatUsdPerM(row.official?.input_per_m)}
+                      {formatOfficialEntryPerM(
+                        row.official?.input_per_m,
+                        row.official
+                      )}
                     </span>
                   </div>
                   <div className='flex justify-between gap-2 md:block'>
@@ -232,7 +249,7 @@ export function OfficialCompareTable({
                       {t('Platform input / 1M')}
                     </span>
                     <span className='tabular-nums text-sm font-medium'>
-                      {formatUsdPerM(row.platform_input_per_m)}
+                      {formatPlatformPerM(row.platform_input_per_m)}
                     </span>
                   </div>
                   <div className='flex justify-between gap-2 md:block'>
@@ -240,7 +257,10 @@ export function OfficialCompareTable({
                       {t('Official output / 1M')}
                     </span>
                     <span className='tabular-nums text-sm'>
-                      {formatUsdPerM(row.official?.output_per_m)}
+                      {formatOfficialEntryPerM(
+                        row.official?.output_per_m,
+                        row.official
+                      )}
                     </span>
                   </div>
                   <div className='flex justify-end md:items-center'>

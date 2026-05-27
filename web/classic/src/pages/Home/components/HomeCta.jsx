@@ -22,13 +22,13 @@ export default function HomeCta({ isChinese, isMobile }) {
   }
 
   return (
-    <section className='home-landing-section home-cta-section relative overflow-hidden px-4 py-20 md:px-6 md:py-28'>
-      <div className='home-cta-mesh pointer-events-none absolute inset-0 opacity-25 dark:opacity-[0.12]' aria-hidden />
-      <div className='relative mx-auto max-w-2xl text-center'>
+    <section className='home-landing-section home-cta-section home-section-blend relative overflow-hidden px-4 py-20 md:px-6 md:py-28'>
+      <div className='home-cta-mesh pointer-events-none absolute inset-0' aria-hidden />
+      <div className='home-cta-panel relative mx-auto max-w-2xl rounded-[2rem] px-6 py-12 text-center backdrop-blur-md md:px-12 md:py-14'>
         <h2 className='text-2xl font-bold leading-tight tracking-tight md:text-4xl'>
           {copy.ctaTitle}
           <br />
-          <span className='bg-gradient-to-r from-indigo-600 via-violet-600 to-teal-600 bg-clip-text text-transparent dark:from-indigo-400 dark:via-violet-400 dark:to-teal-400'>
+          <span className='bg-gradient-to-r from-indigo-600 via-violet-600 to-rose-500 bg-clip-text text-transparent dark:from-indigo-300 dark:via-violet-300 dark:to-rose-400'>
             {copy.ctaTitleAccent}
           </span>
         </h2>
@@ -41,14 +41,17 @@ export default function HomeCta({ isChinese, isMobile }) {
               theme='solid'
               type='primary'
               size={isMobile ? 'default' : 'large'}
-              className='!rounded-3xl border-0 bg-gradient-to-r from-indigo-600 to-violet-600 px-8 shadow-lg shadow-indigo-500/25'
+              className='!rounded-3xl border-0 bg-gradient-to-r from-indigo-600 via-violet-600 to-teal-500 px-8 shadow-lg shadow-indigo-500/30 hover:from-indigo-500 hover:via-violet-500 hover:to-teal-400'
               icon={<IconPlay />}
             >
               {copy.ctaPrimary}
             </Button>
           </Link>
           <Link to='/pricing'>
-            <Button size={isMobile ? 'default' : 'large'} className='!rounded-3xl px-6'>
+            <Button
+              size={isMobile ? 'default' : 'large'}
+              className='!rounded-3xl border border-violet-200/60 bg-white/80 px-6 !text-violet-700 shadow-sm hover:border-violet-300 hover:bg-violet-50/80 dark:border-violet-500/30 dark:bg-violet-500/10 dark:!text-violet-200 dark:hover:bg-violet-500/20'
+            >
               {copy.ctaSecondary}
             </Button>
           </Link>

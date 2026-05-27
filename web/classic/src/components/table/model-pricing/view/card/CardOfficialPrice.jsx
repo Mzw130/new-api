@@ -31,11 +31,13 @@ const CardOfficialPrice = ({ official, tokenUnit, displayPrice, t }) => {
     official.officialInputPerM,
     tokenUnit,
     displayPrice,
+    official.officialCurrency,
   );
   const outputLabel = formatOfficialTokenPrice(
     official.officialOutputPerM,
     tokenUnit,
     displayPrice,
+    official.officialCurrency,
   );
 
   if (!inputLabel && !outputLabel) {
@@ -43,8 +45,9 @@ const CardOfficialPrice = ({ official, tokenUnit, displayPrice, t }) => {
   }
 
   const discount = official.discountPercent;
-  const showSavings =
-    discount != null && !Number.isNaN(discount) && discount > 0.05;
+  const canShowSavings =
+    discount != null && !Number.isNaN(discount);
+  const savePercent = canShowSavings ? Math.max(0, discount) : null;
 
   return (
     <div
@@ -68,9 +71,9 @@ const CardOfficialPrice = ({ official, tokenUnit, displayPrice, t }) => {
           {t('输出')} {outputLabel}/{unitLabel}
         </span>
       ) : null}
-      {showSavings ? (
-        <Tag size='small' color='green'>
-          {t('Save {{percent}}%', { percent: discount.toFixed(0) })}
+      {savePercent != null ? (
+        <Tag size='small' color={savePercent > 0 ? 'green' : 'grey'}>
+          {t('Save {{percent}}%', { percent: savePercent.toFixed(0) })}
         </Tag>
       ) : null}
     </div>

@@ -32,6 +32,7 @@ import {
   renderDescription,
 } from '../../../../common/ui/RenderUtils';
 import { useIsMobile } from '../../../../../hooks/common/useIsMobile';
+import CardOfficialPrice from '../card/CardOfficialPrice';
 
 function renderQuotaType(type, t) {
   switch (type) {
@@ -113,6 +114,7 @@ export const getPricingTableColumns = ({
   tokenUnit,
   displayPrice,
   showRatio,
+  officialByModel,
 }) => {
   const isMobile = useIsMobile();
   const priceDataCache = new WeakMap();
@@ -235,15 +237,28 @@ export const getPricingTableColumns = ({
     render: (text, record, index) => {
       const priceData = getPriceData(record);
       const priceItems = getModelPriceItems(priceData, t, siteDisplayType);
+      const official = officialByModel?.get?.(record.model_name);
+      const showOfficial =
+        official &&
+        record.quota_type === 0 &&
+        !priceData?.isDynamicPricing;
 
       return (
-        <div className='space-y-1'>
+        <div className='space-y-1' onClick={(e) => e.stopPropagation()}>
           {priceItems.map((item) => (
             <div key={item.key} className='text-gray-700'>
               {item.label} {item.value}
               {item.suffix}
             </div>
           ))}
+          {showOfficial ? (
+            <CardOfficialPrice
+              official={official}
+              tokenUnit={tokenUnit}
+              displayPrice={displayPrice}
+              t={t}
+            />
+          ) : null}
         </div>
       );
     },

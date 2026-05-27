@@ -17,11 +17,15 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
+export type OfficialPriceCurrency = 'USD' | 'CNY'
+
 export type OfficialPriceEntry = {
   input_per_m: number
   output_per_m?: number
   cache_read_per_m?: number
   provider?: string
+  /** When set, `input_per_m` / `output_per_m` are in this currency (default USD). */
+  currency?: OfficialPriceCurrency
 }
 
 export type OfficialPlatformVariant = {

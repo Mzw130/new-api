@@ -17,10 +17,13 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
+import type { OfficialPriceCurrency } from '../types-official'
+
 export type ModelOfficialPrice = {
   canonicalKey: string
   officialInputPerM?: number
   officialOutputPerM?: number
+  officialCurrency?: OfficialPriceCurrency
   /** Input savings vs official (positive = cheaper than official). */
   discountPercent?: number | null
 }

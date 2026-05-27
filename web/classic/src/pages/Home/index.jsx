@@ -42,8 +42,9 @@ const Home = () => {
   const isMobile = useIsMobile();
   const isDemoSiteMode = statusState?.status?.demo_site_enabled || false;
   const docsLink = statusState?.status?.docs_link || '';
-  const serverAddress =
-    statusState?.status?.server_address || `${window.location.origin}`;
+  const serverAddress = (
+    statusState?.status?.server_address || window.location.origin
+  ).replace(/\/$/, '');
   const endpointItems = API_ENDPOINTS.map((e) => ({ value: e }));
   const isChinese = i18n.language.startsWith('zh');
 
@@ -130,7 +131,7 @@ const Home = () => {
           <HomeFeatures isChinese={isChinese} />
           <HomeHowItWorks isChinese={isChinese} />
           <HomeCta isChinese={isChinese} isMobile={isMobile} />
-        </div>
+          </div>
       ) : (
         <div className='w-full overflow-x-hidden'>
           {homePageContent.startsWith('https://') ? (

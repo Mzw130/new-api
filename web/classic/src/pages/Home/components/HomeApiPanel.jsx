@@ -87,7 +87,7 @@ export default function HomeApiPanel({ serverAddress, isChinese }) {
           </div>
           <div className='rounded-xl border border-violet-100/60 bg-violet-50/40 px-2 py-2.5 dark:border-white/10 dark:bg-white/[0.04]'>
             <div className='text-lg font-bold text-violet-600 dark:text-violet-300'>
-              30+
+              API
             </div>
             <div className='text-[10px] font-medium text-semi-color-text-2'>
               {t('渠道')}

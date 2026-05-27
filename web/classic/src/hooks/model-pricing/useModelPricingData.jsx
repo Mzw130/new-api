@@ -178,18 +178,15 @@ export const useModelPricingData = () => {
     [selectedRowKeys],
   );
 
+  // showWithRecharge：仅控制是否展示货币选择（USD/CNY/自定义），不参与充值倍率折算。
   const displayPrice = (usdPrice) => {
-    let priceInUSD = usdPrice;
-    if (showWithRecharge) {
-      priceInUSD = (usdPrice * priceRate) / usdExchangeRate;
-    }
-
     if (currency === 'CNY') {
-      return `¥${(priceInUSD * usdExchangeRate).toFixed(3)}`;
-    } else if (currency === 'CUSTOM') {
-      return `${customCurrencySymbol}${(priceInUSD * customExchangeRate).toFixed(3)}`;
+      return `¥${(usdPrice * usdExchangeRate).toFixed(3)}`;
     }
-    return `$${priceInUSD.toFixed(3)}`;
+    if (currency === 'CUSTOM') {
+      return `${customCurrencySymbol}${(usdPrice * customExchangeRate).toFixed(3)}`;
+    }
+    return `$${usdPrice.toFixed(3)}`;
   };
 
   const setModelsFormat = (models, groupRatio, vendorMap) => {

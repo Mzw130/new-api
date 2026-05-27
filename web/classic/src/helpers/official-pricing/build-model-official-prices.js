@@ -17,9 +17,28 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
+import { getUsdExchangeRate } from '../render';
 import { QUOTA_TYPE_TOKEN } from './constants';
 import { listOfficialModelKeys } from './models-dev';
 import { resolveOfficialModelKey } from './resolve-official-key';
+
+function platformInputInOfficialCurrency(platformUsd, official) {
+  if (official.currency === 'CNY') {
+    return platformUsd * getUsdExchangeRate();
+  }
+  return platformUsd;
+}
+
+function officialDiscountPercent(platformUsd, official) {
+  if (!official.input_per_m || official.input_per_m <= 0 || platformUsd <= 0) {
+    return null;
+  }
+  const platformComparable = platformInputInOfficialCurrency(
+    platformUsd,
+    official,
+  );
+  return (1 - platformComparable / official.input_per_m) * 100;
+}
 
 function getMinGroupRatio(enableGroups, groupRatio) {
   let min = Number.POSITIVE_INFINITY;
@@ -61,15 +80,13 @@ export function buildOfficialPriceByModels(models, groupRatio, official) {
     if (!off?.input_per_m) continue;
 
     const platformIn = platformInputUSDPerM(model, groupRatio);
-    let discount = null;
-    if (off.input_per_m > 0 && platformIn > 0) {
-      discount = (1 - platformIn / off.input_per_m) * 100;
-    }
+    const discount = officialDiscountPercent(platformIn, off);
 
     map.set(name, {
       canonicalKey: canonical,
       officialInputPerM: off.input_per_m,
       officialOutputPerM: off.output_per_m,
+      officialCurrency: off.currency,
       discountPercent: discount,
     });
   }

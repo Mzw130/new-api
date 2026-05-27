@@ -1,7 +1,8 @@
 # New-API Docker Compose — frontend/backend SPLIT by default (scheme A: same-origin SPA + Nginx proxy)
 #
 # API image: Dockerfile.api-only (stub embed only).
-# Frontend: Dockerfile.web (`spa`), Dockerfile.web.classic (`classic-spa`), both + Nginx + deploy/split/nginx.spa.conf.
+# Frontend: Dockerfile.web (`spa`) + deploy/split/nginx.spa.conf;
+# Classic: Dockerfile.web.classic (`classic-spa`) + deploy/split/nginx.classic.conf.template (BACKEND_NEW_API).
 #
 # 1) Start API + DB + SPA (recommended):
 #      docker compose up -d --build
@@ -135,6 +136,9 @@ services:
     restart: always
     depends_on:
       - new-api
+    environment:
+      # API upstream for Nginx proxy (Compose network). Cloud host API: http://172.17.0.1:3002
+      BACKEND_NEW_API: "${BACKEND_NEW_API:-http://1router.ai:3000}"
     ports:
       - "${SPA_CLASSIC_HOST_PORT:-3001}:80"
     networks:

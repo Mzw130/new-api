@@ -1096,6 +1096,24 @@ export function renderQuotaWithAmount(amount) {
 }
 
 /**
+ * USD/CNY 汇率（1 USD = rate CNY），与站点「显示货币」无关。
+ * 用于官网人民币标价换算、DeepSeek 等 CNY 官方价对比。
+ */
+export function getUsdExchangeRate() {
+  const statusStr = localStorage.getItem('status');
+  try {
+    if (statusStr) {
+      const s = JSON.parse(statusStr);
+      const rate = Number(s?.usd_exchange_rate);
+      if (Number.isFinite(rate) && rate > 0) return rate;
+    }
+  } catch (e) {
+    /* ignore */
+  }
+  return 7;
+}
+
+/**
  * 获取当前货币配置信息
  * @returns {Object} - { symbol, rate, type }
  */

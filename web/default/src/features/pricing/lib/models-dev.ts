@@ -18,6 +18,8 @@ For commercial licensing, please contact support@quantumnous.com
 */
 import { MODELS_DEV_API_URL } from '../constants'
 import type { OfficialPriceEntry } from '../types-official'
+import { resolveOfficialProvider } from './resolve-official-provider'
+import { applyDeepSeekOfficialCnyOverrides } from './vendors/deepseek-official-cny'
 
 type ModelsDevCost = {
   input?: number | null
@@ -36,16 +38,7 @@ function isValidCost(v: number): boolean {
   return Number.isFinite(v) && v >= 0
 }
 
-function shouldPrefer(
-  cur: { input: number; provider: string },
-  next: { input: number; provider: string }
-): boolean {
-  if (cur.input === 0 && next.input > 0) return true
-  if (next.input > 0 && cur.input > 0 && next.input < cur.input) return true
-  return next.provider < cur.provider
-}
-
-/** Fetch official USD/1M prices from models.dev (browser → models.dev, CORS allowed). */
+/** Fetch vendor list prices from models.dev (only each model's official provider bucket). */
 export async function fetchModelsDevOfficialPrices(): Promise<
   Map<string, OfficialPriceEntry>
 > {
@@ -67,10 +60,13 @@ export async function fetchModelsDevOfficialPrices(): Promise<
     const models = upstream[provider]?.models ?? {}
     const names = Object.keys(models).sort()
     for (const modelName of names) {
+      const officialProvider = resolveOfficialProvider(modelName)
+      if (!officialProvider || officialProvider !== provider) continue
+
       const cost = models[modelName]?.cost
       const input = cost?.input
       if (input == null || !isValidCost(input)) continue
-      const candidate = {
+      selected.set(modelName, {
         input,
         output:
           cost?.output != null && isValidCost(cost.output)
@@ -81,11 +77,7 @@ export async function fetchModelsDevOfficialPrices(): Promise<
             ? cost.cache_read
             : undefined,
         provider,
-      }
-      const cur = selected.get(modelName)
-      if (!cur || shouldPrefer(cur, candidate)) {
-        selected.set(modelName, candidate)
-      }
+      })
     }
   }
 
@@ -98,6 +90,7 @@ export async function fetchModelsDevOfficialPrices(): Promise<
       provider: c.provider,
     })
   }
+  applyDeepSeekOfficialCnyOverrides(out)
   return out
 }
 

@@ -18,30 +18,10 @@ For commercial licensing, please contact support@quantumnous.com
 */
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
-import { formatBillingCurrencyFromUSD } from '@/lib/currency'
 import { Badge } from '@/components/ui/badge'
+import { formatOfficialPerM } from '../lib/format-official-price'
 import type { ModelOfficialPrice } from '../lib/official-price-map'
 import type { TokenUnit } from '../types'
-
-function usdPerUnit(
-  perM: number | undefined,
-  tokenUnit: TokenUnit
-): number | undefined {
-  if (perM == null || perM <= 0) return undefined
-  return tokenUnit === 'K' ? perM / 1000 : perM
-}
-
-function formatOfficial(
-  perM: number | undefined,
-  tokenUnit: TokenUnit
-): string | null {
-  const amount = usdPerUnit(perM, tokenUnit)
-  if (amount == null) return null
-  return formatBillingCurrencyFromUSD(amount, {
-    digitsLarge: 4,
-    digitsSmall: 4,
-  })
-}
 
 type ModelCardOfficialPriceProps = {
   official: ModelOfficialPrice
@@ -56,16 +36,25 @@ export function ModelCardOfficialPrice({
 }: ModelCardOfficialPriceProps) {
   const { t } = useTranslation()
   const unitLabel = tokenUnit === 'K' ? '1K' : '1M'
-  const inputLabel = formatOfficial(official.officialInputPerM, tokenUnit)
-  const outputLabel = formatOfficial(official.officialOutputPerM, tokenUnit)
+  const inputLabel = formatOfficialPerM(
+    official.officialInputPerM,
+    official.officialCurrency,
+    tokenUnit
+  )
+  const outputLabel = formatOfficialPerM(
+    official.officialOutputPerM,
+    official.officialCurrency,
+    tokenUnit
+  )
 
   if (!inputLabel && !outputLabel) {
     return null
   }
 
   const discount = official.discountPercent
-  const showSavings =
-    discount != null && !Number.isNaN(discount) && discount > 0.05
+  const canShowSavings =
+    discount != null && !Number.isNaN(discount)
+  const savePercent = canShowSavings ? Math.max(0, discount) : null
 
   return (
     <div
@@ -95,12 +84,15 @@ export function ModelCardOfficialPrice({
           /{unitLabel}
         </span>
       ) : null}
-      {showSavings ? (
+      {savePercent != null ? (
         <Badge
-          variant='secondary'
-          className='h-5 px-1.5 text-[10px] font-medium tabular-nums sm:text-[11px]'
+          variant={savePercent > 0 ? 'default' : 'secondary'}
+          className={cn(
+            'h-5 px-1.5 text-[10px] font-medium tabular-nums sm:text-[11px]',
+            savePercent > 0 && 'bg-emerald-600/90 hover:bg-emerald-600'
+          )}
         >
-          {t('Save {{percent}}%', { percent: discount.toFixed(0) })}
+          {t('Save {{percent}}%', { percent: savePercent.toFixed(0) })}
         </Badge>
       ) : null}
     </div>

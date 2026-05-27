@@ -17,15 +17,30 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 
-/** Format USD/1M official price using the same token unit rules as pricing cards. */
+import { getUsdExchangeRate } from '../render';
+
+/** Convert vendor-native /1M price to system USD for display formatting. */
+export function officialUsdPerM(perM, currency) {
+  if (currency === 'CNY') {
+    return perM / getUsdExchangeRate();
+  }
+  return perM;
+}
+
+/**
+ * Format official list price using the same token unit and currency selector as platform prices.
+ * Native CNY/USD is normalized to USD first, then passed through `displayPrice`.
+ */
 export function formatOfficialTokenPrice(
-  usdPerM,
+  perM,
   tokenUnit,
   displayPrice,
+  currency,
   precision = 4,
 ) {
-  if (usdPerM == null || usdPerM <= 0) return null;
+  if (perM == null || perM <= 0) return null;
   const unitDivisor = tokenUnit === 'K' ? 1000 : 1;
+  const usdPerM = officialUsdPerM(perM, currency);
   const rawDisplayPrice = displayPrice(usdPerM);
   const match = rawDisplayPrice.match(/^([^\d]*)([\d.]+)/);
   if (!match) return rawDisplayPrice;

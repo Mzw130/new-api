@@ -93,7 +93,7 @@ const SearchActions = memo(
           <>
             <Divider layout='vertical' margin='8px' />
 
-            {/* 充值价格显示开关 */}
+            {/* 显示货币单位：仅展开 USD/CNY/自定义 选择，不改价格数值 */}
             {supportsCurrencyDisplay && (
               <div className='flex items-center gap-2'>
                 <span className='text-sm text-gray-600'>{t('充值价格显示')}</span>
